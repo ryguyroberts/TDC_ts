@@ -1,12 +1,14 @@
 import Phaser, { Tilemaps } from "phaser";
-import { debugDraw } from "../utils/debug";
+// import { debugDraw } from "../utils/debug";
 
 // Import Animations
 import { createFaunaAnims } from "../anims/FainaAnims";
+import { createTower1Anims } from "../anims/Tower1Anims";
 
 // import '../characters/Fauna'
 // Import Sprites Classes
-import '../characters/Fauna.ts';
+import '../characters/Fauna';
+import '../towers/Tower1';
 
 
 // Utitilies
@@ -16,6 +18,9 @@ import '../characters/Fauna.ts';
 export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private fauna!: Phaser.GameObjects.Sprite;
+  private tower1_01!: Phaser.GameObjects.Sprite;
+  private tower1_02!: Phaser.GameObjects.Sprite;
+  private tower1_03!: Phaser.GameObjects.Sprite;
 
 
   constructor() {
@@ -38,6 +43,7 @@ export class MainGame extends Phaser.Scene {
 
   // Animations
   createFaunaAnims(this.anims);
+  createTower1Anims(this.anims);
     
   // Tileset
 
@@ -65,7 +71,7 @@ export class MainGame extends Phaser.Scene {
       throw new Error("Failed to load Wall layer");
     }
     wallsLayer.setCollisionByProperty({ collides: true})
-    debugDraw(wallsLayer, this)
+    // debugDraw(wallsLayer, this)
 
     // Create Fauna 
     this.fauna = this.add.fauna(600, 128, 'fauna')
@@ -73,6 +79,17 @@ export class MainGame extends Phaser.Scene {
     // Colliders
     this.physics.add.collider(this.fauna, wallsLayer);
 
+    // Test Towers
+
+    this.tower1_01 = this.add.tower1(784, 128, 'tower1');
+    this.physics.add.existing(this.tower1_01);
+
+    this.tower1_02 = this.add.tower1(884, 128, 'tower1');
+    this.physics.add.existing(this.tower1_02);
+
+    this.tower1_03 = this.add.tower1(984, 128, 'tower1');
+    this.physics.add.existing(this.tower1_03);
+   
 
   };
 

@@ -14,10 +14,10 @@
         },
         "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx": {
             "scale": 1.246875,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 480.4010025062656,
-                "y": 366.5162907268171
+                "x": 479.5989974937344,
+                "y": 515.6892230576441
             }
         },
         "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#Tech_TD_Ced": {
@@ -58,8 +58,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 560,
-                "y": 448
+                "x": 800,
+                "y": 480
             }
         },
         "tech_map02.tmx#Tech_TD_Ced": {
