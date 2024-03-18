@@ -12,8 +12,11 @@ export class Preloader extends Phaser.Scene {
     this.load.image('tilemap_npcs', 'tech_map/npc x1.png');
     this.load.image('tilemap_items', 'tech_map/props and items x1.png');
 
+    // The actual Map
     this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map03.json');
     // Sprites
+    this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
+
 
     // UI
 

@@ -1,13 +1,23 @@
 import Phaser, { Tilemaps } from "phaser";
 import { debugDraw } from "../utils/debug";
 
-// Import Sprites
+// Import Animations
+import { createFaunaAnims } from "../anims/FainaAnims";
+
+// import '../characters/Fauna'
+// Import Sprites Classes
+import '../characters/Fauna.ts';
+
 
 // Utitilies
 
 // States from Mobx
 
 export class MainGame extends Phaser.Scene {
+  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private fauna!: Phaser.GameObjects.Sprite;
+
+
   constructor() {
     super('main_game');
   };
@@ -15,10 +25,19 @@ export class MainGame extends Phaser.Scene {
 
   preload() {
     // Cursors here
+      if (this.input.keyboard) {
+        this.cursors = this.input.keyboard.createCursorKeys();
+      } else {
+        throw new Error("Keyboard input is not available.");
+    }
+
+
   };
 
   create() {
 
+  // Animations
+  createFaunaAnims(this.anims);
     
   // Tileset
 
@@ -33,16 +52,13 @@ export class MainGame extends Phaser.Scene {
     if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
       throw new Error("Failed to load tileset");
     }
-    
-
-    
+        
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
     map.createLayer('Tile Layer 1', allLayers);
     const wallsLayer = map.createLayer('Wall Layer', allLayers)
     map.createLayer('props', allLayers)
     map.createLayer('effect', allLayers)
-
     // Collision Debugging
 
     if (!wallsLayer) {
@@ -51,6 +67,19 @@ export class MainGame extends Phaser.Scene {
     wallsLayer.setCollisionByProperty({ collides: true})
     debugDraw(wallsLayer, this)
 
+    // Create Fauna 
+    this.fauna = this.add.fauna(600, 128, 'fauna')
+
+    // Colliders
+    this.physics.add.collider(this.fauna, wallsLayer);
+
+
   };
 
+  
+  update() {
+    if (this.fauna) {
+      this.fauna.update(this.cursors);
+    };
+  }
 };
