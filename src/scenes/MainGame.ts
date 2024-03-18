@@ -1,4 +1,5 @@
-import Phaser from "phaser";
+import Phaser, { Tilemaps } from "phaser";
+import { debugDraw } from "../utils/debug";
 
 // Import Sprites
 
@@ -18,31 +19,37 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
+    
   // Tileset
-  // const map = this.make.tilemap({key:'map'});
-    const map = this.make.tilemap({ key: 'mainmap' });
-    const tileset = map.addTilesetImage('Dungeon Prison', 'tiles')
 
-    if (!tileset) {
-        throw new Error("Failed to load tileset");
+    const map = this.make.tilemap({ key: 'tilemap' });
+
+    const tilemap_base_props1 = map.addTilesetImage('Tech_TD_Ced', 'tilemap_base_props1');
+    const tilemap_base_props2 = map.addTilesetImage('Tech_TD_Ced_02', 'tilemap_base_props2');
+    const tilemap_npcs = map.addTilesetImage('npc x1', 'tilemap_npcs');
+    const tilemap_items = map.addTilesetImage('props and items x1', 'tilemap_items');
+
+    // Check if null
+    if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
+      throw new Error("Failed to load tileset");
     }
+    
 
-    map.createLayer('Ground', tileset);
+    
+    const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
+    map.createLayer('Tile Layer 1', allLayers);
+    const wallsLayer = map.createLayer('Wall Layer', allLayers)
+    map.createLayer('props', allLayers)
+    map.createLayer('effect', allLayers)
 
-    const wallsLayer = map.createLayer('Walls', tileset);
+    // Collision Debugging
 
     if (!wallsLayer) {
-      throw new Error("Failed to load tileset");
-    } 
-
+      throw new Error("Failed to load Wall layer");
+    }
     wallsLayer.setCollisionByProperty({ collides: true})
-
-
-  // // const tileset = map.addTilesetImage('tech_towers', 'tiles', 32, 32);
-
-  // console.log(map)
-  // // map.createLayer('Floor', tileset)
+    debugDraw(wallsLayer, this)
 
   };
 

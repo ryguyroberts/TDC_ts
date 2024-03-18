@@ -35,6 +35,7 @@
         "webpack-merge": "^5.10.0"
     },
     "dependencies": {
+        "mobx": "^6.12.0",
         "phaser": "^3.80.1"
     }
 }

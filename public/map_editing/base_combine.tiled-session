@@ -1,0 +1,77 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "tech_map.tmx",
+    "expandedProjectPaths": [
+        "."
+    ],
+    "fileStates": {
+        "": {
+            "scaleInDock": 2
+        },
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx": {
+            "scale": 1.246875,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 480.4010025062656,
+                "y": 366.5162907268171
+            }
+        },
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#Tech_TD_Ced": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#Tech_TD_Ced_02": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#npc x1": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#props and items x1": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tech factory.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "tech_map.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 684,
+                "y": 176.66666666666663
+            }
+        },
+        "tech_map.tmx#tech factory": {
+            "scaleInDock": 1
+        },
+        "tech_map.tmx#tech tower": {
+            "scaleInDock": 1.5
+        },
+        "tech_map02.tmx#props and items x1": {
+            "scaleInEditor": 1
+        }
+    },
+    "last.exportedFilePath": "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map",
+    "last.imagePath": "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/map_editing",
+    "map.height": 30,
+    "map.lastUsedExportFilter": "JSON map files (*.tmj *.json)",
+    "map.lastUsedFormat": "tmx",
+    "map.width": 50,
+    "openFiles": [
+        "tech_map.tmx"
+    ],
+    "project": "base_combine.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "tech_map.tmx",
+        "tech factory.tsx"
+    ],
+    "tileset.embedInMap": true,
+    "tileset.lastUsedFormat": "tsx"
+}

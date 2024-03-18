@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.10" tiledversion="1.10.2" orientation="orthogonal" renderorder="right-down" width="30" height="30" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="1">
  <tileset firstgid="1" name="Tech_TD_Ced" tilewidth="32" tileheight="32" tilecount="851" columns="37">
-  <image source="../Downloads/Tech Dungeon Roguelite - Asset Pack (DEMO)/tileset x1.png" width="1184" height="736"/>
+  <image source="../map_editing/tileset x1.png" width="1184" height="736"/>
  </tileset>
  <tileset firstgid="852" name="Tech_TD_Ced_02" tilewidth="32" tileheight="32" tilecount="3404" columns="74">
-  <image source="../Downloads/Tech Dungeon Roguelite - Asset Pack (DEMO)/tileset x2.png" width="2368" height="1472"/>
+  <image source="../map_editing/tileset x2.png" width="2368" height="1472"/>
  </tileset>
  <tileset firstgid="4256" name="props and items x1" tilewidth="32" tileheight="32" tilecount="528" columns="24">
-  <image source="../Downloads/Tech Dungeon Roguelite - Asset Pack (v5)/Props and Items/props and items x1.png" width="768" height="704"/>
+  <image source="../map_editing/props and items x1.png" width="768" height="704"/>
  </tileset>
  <tileset firstgid="4784" name="npc x1" tilewidth="32" tileheight="32" tilecount="18" columns="6">
-  <image source="../Downloads/Tech Dungeon Roguelite - Asset Pack (v5)/NPC/No Outlines/npc x1.png" width="192" height="96"/>
+  <image source="../map_editing/npc x1.png" width="192" height="96"/>
  </tileset>
  <layer id="1" name="Tile Layer 1" width="30" height="30">
   <data encoding="csv">

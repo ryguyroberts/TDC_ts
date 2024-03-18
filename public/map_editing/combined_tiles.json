@@ -1,0 +1,83 @@
+{
+	"textures": [
+		{
+			"image": "combined_tiles.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 2048,
+				"h": 1024
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "tileset x1.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 1184,
+						"h": 736
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 1184,
+						"h": 736
+					},
+					"frame": {
+						"x": 1,
+						"y": 1,
+						"w": 1184,
+						"h": 736
+					}
+				},
+				{
+					"filename": "props and items x1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 768,
+						"h": 704
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 7,
+						"w": 768,
+						"h": 697
+					},
+					"frame": {
+						"x": 1187,
+						"y": 1,
+						"w": 768,
+						"h": 697
+					}
+				},
+				{
+					"filename": "npc x1.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 192,
+						"h": 96
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 5,
+						"w": 178,
+						"h": 91
+					},
+					"frame": {
+						"x": 1,
+						"y": 739,
+						"w": 178,
+						"h": 91
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:fec329ad350c06ced478b8c4cf29cea0:8b0eac2c3a23fdafb55368a020800072:743e3e0539c547b21c631df5e0e5d2dd$"
+	}
+}
