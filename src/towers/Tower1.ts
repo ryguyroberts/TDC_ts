@@ -24,7 +24,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     // properties for projectiles
     this.shootRange = 100;
-    this.shootTime = 0;
+    this.shootTime = 2;
     this.shootDelay  = 100;
   };
 
@@ -53,20 +53,21 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
   shoot(target: Phaser.GameObjects.Sprite) {
     // Create sprite and shoot towards the target (fauna)
-      console.log("I'm shooting");
-      const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
-      this.scene.physics.add.existing(projectile);
+    const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
+    this.scene.physics.add.existing(projectile);
 
-      if (target) {
-        this.scene.physics.moveToObject(projectile, target, 150);
-      }
+    // Function to continuously check the distance between the projectile and the target
+    const checkDistance = () => {
+        if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 10) {
+            projectile.destroy();
+        } else {
+            this.scene.physics.moveToObject(projectile, target, 200);
+            this.scene.time.delayedCall(100, checkDistance);
+        }
+    };
 
-      this.scene.time.delayedCall(4000, () => {
-        projectile.destroy();
-       });
-      // this.scene.physics.moveToObject(projectile, target, 150); // Adjust projectile speed as needed
-}
-
+    checkDistance();
+  }
 }
 
 Phaser.GameObjects.GameObjectFactory.register('tower1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
