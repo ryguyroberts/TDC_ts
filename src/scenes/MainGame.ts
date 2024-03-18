@@ -23,9 +23,10 @@ export class MainGame extends Phaser.Scene {
     const map = this.make.tilemap({ key: 'mainmap' });
     const tileset = map.addTilesetImage('Dungeon Prison', 'tiles')
 
-     if (!tileset) {
+    if (!tileset) {
         throw new Error("Failed to load tileset");
-    }  
+    }
+
     map.createLayer('Ground', tileset);
 
 
@@ -37,7 +38,7 @@ export class MainGame extends Phaser.Scene {
 
     wallsLayer.setCollisionByProperty({ collides: true})
 
-    
+
   // // const tileset = map.addTilesetImage('tech_towers', 'tiles', 32, 32);
 
   // console.log(map)
