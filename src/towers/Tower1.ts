@@ -35,8 +35,9 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   preUpdate(t: number, dt: number) {
     super.preUpdate(t, dt);
 
+
     this.spiderGroup = (this.scene as any).spiderGroup
-    // Get all spiders in spider group
+        // Get all spiders in spider group
     const spiders = this.spiderGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
    
     let closestSpider: Phaser.Physics.Arcade.Sprite | null = null;

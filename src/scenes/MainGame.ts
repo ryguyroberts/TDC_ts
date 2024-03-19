@@ -132,6 +132,14 @@ export class MainGame extends Phaser.Scene {
     // Test spiders
 
     this.spiderGroup = this.physics.add.group();
+
+    
+
+    // Create Player owned Tower Group
+
+ 
+
+
     // this.spiderbot = this.add.spiderbot(500, 200, 'spiderbot');
     // this.physics.add.existing(this.spiderbot);
     // this.physics.add.collider(this.spiderbot, this.wallsLayer)
@@ -148,8 +156,8 @@ export class MainGame extends Phaser.Scene {
 
   createSpider() {
 
-    const spider = this.add.spiderbot(125, 450, 'spiderbot');
-    // Add spider to the physics system if needed
+    const spider = this.add.spiderbot(125, 450, 'spiderbot', 'spiderbot_run');
+   // Add spider to the physics system if needed
     // Add to mobx?
     const spiderID = Phaser.Math.RND.uuid()
     //set a property on our game object
