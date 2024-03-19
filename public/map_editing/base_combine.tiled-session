@@ -58,8 +58,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 800,
-                "y": 480
+                "x": 558,
+                "y": 446
             }
         },
         "tech_map02.tmx#Tech_TD_Ced": {
@@ -83,11 +83,13 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
-        "tech_map02.tmx"
+        "tech_map02.tmx",
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx"
     ],
     "project": "base_combine.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx",
         "tech_map02.tmx",
         "tech_map.tmx",
         "tech factory.tsx"

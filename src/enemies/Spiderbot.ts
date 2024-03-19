@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { observable } from "mobx";
 
 // For typescript
 declare global {
@@ -10,6 +11,9 @@ declare global {
 }
 
 export default class Spiderbot extends Phaser.Physics.Arcade.Sprite {
+
+  // For health state
+  @observable accessor health: number = 100;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 

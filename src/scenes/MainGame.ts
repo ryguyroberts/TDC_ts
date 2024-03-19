@@ -15,6 +15,7 @@ import '../enemies/Spiderbot';
 // Utitilies
 
 // States from Mobx
+import { spiderbotStore } from "../states/SpiderbotStore";
 
 export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -50,6 +51,11 @@ export class MainGame extends Phaser.Scene {
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
   createSpiderbotAnims(this.anims);
+
+  // Test text
+
+    let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
+  phaseLabel.setDepth(1);
     
   // Tileset
 
@@ -114,11 +120,17 @@ export class MainGame extends Phaser.Scene {
   createSpider() {
     const spider = this.add.spiderbot(500, 200, 'spiderbot');
     // Add spider to the physics system if needed
+    // Add to mobx?
+    const spiderID = Phaser.Math.RND.uuid()
+    spider.setData('id', spiderID)
+    console.log("Spider ID from data:", spider.getData('id'));
+    spiderbotStore.logSpiderbots();
     // this.physics.add.existing(spider);
     this.physics.add.collider(spider, this.wallsLayer); 
     // Add spider to the group
     this.spiderGroup.add(spider);
 
+    spiderbotStore.addSpiderbot(spiderID, spider);
     // remove spider after certain duration
   }
   
