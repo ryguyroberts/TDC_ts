@@ -1,5 +1,6 @@
 import Phaser from "phaser";
-
+import Spiderbot from "../enemies/Spiderbot";
+import { spiderbotStore } from "../states/SpiderbotStore";
 // For typescript
 declare global {
   namespace Phaser.GameObjects {
@@ -14,6 +15,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private shootTime: number;
   private shootDelay: number;
   private spiderGroup!: Phaser.Physics.Arcade.Group
+  private attackDmg: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -26,7 +28,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // properties for projectiles
     this.shootRange = 100;
     this.shootTime = 2;
-    this.shootDelay  = 200;
+    this.shootDelay  = 1000;
+    this.attackDmg = 20;
   };
 
   preUpdate(t: number, dt: number) {
@@ -54,21 +57,6 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
    
     }
   
-  // detectAndShoot(spider: Phaser.GameObjects.Sprite) {
-  //   if (!spider) {
-  //     return;
-  //   };
-
-  //   // Between tower and Fauna
-  //   const distance = Phaser.Math.Distance.Between(this.x, this.y, spider.x, spider.y);
-
-  //   if (distance <= this.shootRange && this.scene.time.now > this.shootTime) {
-  //     this.shoot(spider);
-  //     this.shootTime = this.scene.time.now + this.shootDelay;
-  // //   };
-
-  // }
-
   shoot(target: Phaser.Physics.Arcade.Sprite) {
     // Create sprite and shoot towards the target (spider)
     const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
@@ -78,6 +66,11 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     const checkDistance = () => {
       if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 10) {
         projectile.destroy();
+
+        if (target instanceof Spiderbot) { // Ensure target is Spiderbot
+          (target as Spiderbot).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to Spiderbot and call decreaseHealth
+          spiderbotStore.updateSpiderbotHealth(target.getData('id'), target.health);
+        }
       } else {
         this.scene.physics.moveToObject(projectile, target, 200);
         this.scene.time.delayedCall(100, checkDistance);

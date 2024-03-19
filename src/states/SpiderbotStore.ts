@@ -25,6 +25,13 @@ class SpiderbotStore {
     console.log(Array.from(this.spiderbots.entries()));
   }
 
+  updateSpiderbotHealth(id: string, newHealth: number) {
+    const spiderbot = this.spiderbots.get(id);
+    if (spiderbot) {
+      spiderbot.health = newHealth;
+    }
+  }
+
 };
 
 export const spiderbotStore = new SpiderbotStore();

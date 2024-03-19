@@ -1,5 +1,6 @@
 import Phaser from "phaser";
 import { observable } from "mobx";
+import { spiderbotStore } from "../states/SpiderbotStore";
 
 // For typescript
 declare global {
@@ -29,6 +30,30 @@ export default class Spiderbot extends Phaser.Physics.Arcade.Sprite {
     super.preUpdate(t, dt);
     this.setVelocityY(50);
 
+  }
+
+  decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {
+
+    this.health -= amount;
+
+    // if not dead do the tint or kill it 
+    if (this.health > 0) {
+      this.setTint(0xff0000);
+      scene.time.delayedCall(500, () => {
+        this.clearTint(); // Revert the tint back to its original color after 0.5 seconds
+      });
+    }
+   
+    // Remove spider object if health is zero
+    if (this.health <= 0) {
+      this.anims.play('spiderbot_death');
+
+      // Allow time to play animation before destroy
+      scene.time.delayedCall(1020, () => {
+        this.destroy();
+        spiderbotStore.removeSpiderbot(id);
+      });
+    }
   }
 };
 

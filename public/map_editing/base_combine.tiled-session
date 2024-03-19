@@ -16,8 +16,8 @@
             "scale": 1.246875,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 479.5989974937344,
-                "y": 515.6892230576441
+                "x": 480.4010025062657,
+                "y": 479.5989974937343
             }
         },
         "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#Tech_TD_Ced": {
@@ -58,8 +58,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 558,
-                "y": 446
+                "x": 800,
+                "y": 480
             }
         },
         "tech_map02.tmx#Tech_TD_Ced": {

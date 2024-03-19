@@ -17,6 +17,14 @@ anims.create({
   frameRate: 8
 })
 
+anims.create({
+  key: 'spiderbot_death',
+  frames: anims.generateFrameNames('spiderbot', { start: 0, end: 6, prefix: 'die/0', suffix: '.png' }),
+  repeat: 0,
+  frameRate: 8
+
+})
+
 };
 
 export {

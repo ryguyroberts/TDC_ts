@@ -103,6 +103,8 @@ export class MainGame extends Phaser.Scene {
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     map.createLayer('effect', allLayers)
+    map.createLayer('props', allLayers)
+
     // Collision Debugging
 
     this.wallsLayer.setCollisionByProperty({ collides: true})
@@ -134,7 +136,7 @@ export class MainGame extends Phaser.Scene {
     // this.physics.add.existing(this.spiderbot);
     // this.physics.add.collider(this.spiderbot, this.wallsLayer)
 
-    const spawnInterval = 2500; // milliseconds (e.g., spawn a spider every 5 seconds)
+    const spawnInterval = 2000; // milliseconds (e.g., spawn a spider every 5 seconds)
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
@@ -153,9 +155,6 @@ export class MainGame extends Phaser.Scene {
     //set a property on our game object
     spider.setData('id', spiderID)
 
-    console.log("Spider ID from data:", spider.getData('id'));
-    spiderbotStore.logSpiderbots();
-
     // this.physics.add.existing(spider);
     this.physics.add.collider(spider, this.wallsLayer); 
     // Add spider to the group
@@ -163,12 +162,12 @@ export class MainGame extends Phaser.Scene {
 
     spiderbotStore.addSpiderbot(spiderID, spider);
     // remove spider after certain duration
-    const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
+    // const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
 
-    this.time.delayedCall(destructionDelay, () => {
-        spider.destroy(); // Destroy the spider after the delay
-        spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
-    }, [], this);
+    // this.time.delayedCall(destructionDelay, () => {
+    //     spider.destroy(); // Destroy the spider after the delay
+    //     spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
+    // }, [], this);
 
   }
   
