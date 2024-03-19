@@ -19,7 +19,7 @@ import '../enemies/Spiderbot';
 export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private fauna!: Phaser.GameObjects.Sprite;
-  private spiderbot!: Phaser.GameObjects.Sprite;
+  // private spiderbot!: Phaser.GameObjects.Sprite;
   private tower1_01!: Phaser.GameObjects.Sprite;
   private tower1_02!: Phaser.GameObjects.Sprite;
   private tower1_03!: Phaser.GameObjects.Sprite;
@@ -97,26 +97,29 @@ export class MainGame extends Phaser.Scene {
     // Test spiders
 
     this.spiderGroup = this.physics.add.group();
-    this.spiderbot = this.add.spiderbot(500, 200, 'spiderbot');
-    this.physics.add.existing(this.spiderbot);
-    this.physics.add.collider(this.spiderbot, this.wallsLayer)
+    // this.spiderbot = this.add.spiderbot(500, 200, 'spiderbot');
+    // this.physics.add.existing(this.spiderbot);
+    // this.physics.add.collider(this.spiderbot, this.wallsLayer)
 
-    const spawnInterval = 5000; // milliseconds (e.g., spawn a spider every 5 seconds)
+    const spawnInterval = 2500; // milliseconds (e.g., spawn a spider every 5 seconds)
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
       callback: this.createSpider,
       callbackScope: this
     });
-  };
+
+    };
 
   createSpider() {
     const spider = this.add.spiderbot(500, 200, 'spiderbot');
     // Add spider to the physics system if needed
-    this.physics.add.existing(spider);
+    // this.physics.add.existing(spider);
     this.physics.add.collider(spider, this.wallsLayer); 
     // Add spider to the group
     this.spiderGroup.add(spider);
+
+    // remove spider after certain duration
   }
   
   update() {
@@ -124,4 +127,6 @@ export class MainGame extends Phaser.Scene {
       this.fauna.update(this.cursors);
     };
   }
+
+
 };
