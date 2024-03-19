@@ -19,6 +19,8 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
+  // Launch UI scene
+  this.scene.launch('ui');
     
   // Tileset
 
@@ -28,13 +30,11 @@ export class MainGame extends Phaser.Scene {
     const tilemap_base_props2 = map.addTilesetImage('Tech_TD_Ced_02', 'tilemap_base_props2');
     const tilemap_npcs = map.addTilesetImage('npc x1', 'tilemap_npcs');
     const tilemap_items = map.addTilesetImage('props and items x1', 'tilemap_items');
-
+  
     // Check if null
     if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
       throw new Error("Failed to load tileset");
     }
-    
-
     
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
@@ -42,6 +42,7 @@ export class MainGame extends Phaser.Scene {
     const wallsLayer = map.createLayer('Wall Layer', allLayers)
     map.createLayer('props', allLayers)
     map.createLayer('effect', allLayers)
+    map.createLayer('Tower UI Sprites', allLayers)
 
     // Collision Debugging
 
@@ -50,7 +51,6 @@ export class MainGame extends Phaser.Scene {
     }
     wallsLayer.setCollisionByProperty({ collides: true})
     debugDraw(wallsLayer, this)
-
   };
 
 };

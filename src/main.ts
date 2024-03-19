@@ -1,5 +1,6 @@
 import { Game, Types } from "phaser";
 import { Preloader } from "./scenes/Preloader";
+import { UI } from "./scenes/UI";
 import { MainGame } from "./scenes/MainGame";
 
 
@@ -25,7 +26,8 @@ const config: Types.Core.GameConfig = {
     },
     scene: [
       Preloader,
-      MainGame
+      MainGame,
+      UI,
     ]
 };
 
