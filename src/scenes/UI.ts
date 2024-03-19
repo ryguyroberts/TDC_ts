@@ -106,8 +106,9 @@ export class UI extends Phaser.Scene {
       // If selected tower is already selected -> Deselect
       if (selectedTowerState.selectedTower === tower) {
         tower.clearTint();
+        console.log('youve deselected a tower', tower);
         selectedTowerState.deselectTower();
-        // this.towerInfoText.setText('');
+        // Remove tower info display here
       } else {
 
         if (selectedTowerState.selectedTower) {
@@ -122,9 +123,13 @@ export class UI extends Phaser.Scene {
         selectedTowerState.selectTower(tower);
 
         // Display tower info
-        // this.displayTowerInfo(tower);
+        this.displayTowerInfo(tower);
       }
     });
+  }
+
+  private displayTowerInfo(tower: Phaser.GameObjects.Sprite) {
+    console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
   }
 
 }
