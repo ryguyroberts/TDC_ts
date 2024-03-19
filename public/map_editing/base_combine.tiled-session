@@ -3,20 +3,21 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tech_map.tmx",
+    "activeFile": "tech_map02.tmx",
     "expandedProjectPaths": [
         "."
     ],
     "fileStates": {
         "": {
-            "scaleInDock": 2
+            "scaleInDock": 2,
+            "scaleInEditor": 1
         },
         "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx": {
             "scale": 1.246875,
-            "selectedLayer": 0,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 480.4010025062656,
-                "y": 366.5162907268171
+                "x": 479.5989974937344,
+                "y": 515.6892230576441
             }
         },
         "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx#Tech_TD_Ced": {
@@ -53,7 +54,25 @@
         "tech_map.tmx#tech tower": {
             "scaleInDock": 1.5
         },
+        "tech_map02.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 558,
+                "y": 446
+            }
+        },
+        "tech_map02.tmx#Tech_TD_Ced": {
+            "scaleInDock": 1
+        },
+        "tech_map02.tmx#Tech_TD_Ced_02": {
+            "scaleInDock": 1
+        },
+        "tech_map02.tmx#npc x1": {
+            "scaleInDock": 1
+        },
         "tech_map02.tmx#props and items x1": {
+            "scaleInDock": 1,
             "scaleInEditor": 1
         }
     },
@@ -64,11 +83,14 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
-        "tech_map.tmx"
+        "tech_map02.tmx",
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx"
     ],
     "project": "base_combine.tiled-project",
     "property.type": "bool",
     "recentFiles": [
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx",
+        "tech_map02.tmx",
         "tech_map.tmx",
         "tech factory.tsx"
     ],
