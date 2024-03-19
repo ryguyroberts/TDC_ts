@@ -14,18 +14,18 @@ export class Preloader extends Phaser.Scene {
 
     // The actual Map
     this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map03.json');
+
     // Sprites
     this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
     this.load.atlas('spiderbot', 'enemies/spiderbot.png', 'enemies/spiderbot.json')
 
     // Tower
-
     this.load.atlas('tower1', 'towers/tower1.png', 'towers/tower1.json')
+
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
-
   }
 
   // Once asset all preloaded start our game! (Our main menu here)

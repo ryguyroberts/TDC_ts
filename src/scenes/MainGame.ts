@@ -26,7 +26,7 @@ export class MainGame extends Phaser.Scene {
   private tower1_01!: Phaser.GameObjects.Sprite;
   private tower1_02!: Phaser.GameObjects.Sprite;
   private tower1_03!: Phaser.GameObjects.Sprite;
-  private spiderGroup!: Phaser.Physics.Arcade.Group
+  private spiderGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
@@ -82,13 +82,10 @@ export class MainGame extends Phaser.Scene {
     () => updateSpiderTexts()
   );
 
-
-
     // let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
     // phaseLabel.setDepth(1);
     
   // Tileset
-
     const map = this.make.tilemap({ key: 'tilemap' });
 
     const tilemap_base_props1 = map.addTilesetImage('Tech_TD_Ced', 'tilemap_base_props1');
@@ -114,13 +111,12 @@ export class MainGame extends Phaser.Scene {
     // Create Fauna 
     this.fauna = this.add.fauna(100, 450, 'fauna')
 
-
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
 
      // Test Towers
 
-    this.tower1_01 = this.add.tower1(176, 578, 'tower1');
+    this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
     this.physics.add.existing(this.tower1_01);
 
     this.tower1_02 = this.add.tower1(176, 674, 'tower1');
@@ -128,7 +124,6 @@ export class MainGame extends Phaser.Scene {
 
     this.tower1_03 = this.add.tower1(176, 770, 'tower1');
     this.physics.add.existing(this.tower1_03);
-
    
     // Test spiders
 

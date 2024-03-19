@@ -1,6 +1,7 @@
 import Phaser, { Tilemaps } from "phaser";
-import towerState from "./TowerStore";
-import selectedTowerState from "./selected_tower";
+import { towerState } from "../states/TowerStore";
+import selectedTowerState from "../states/selected_tower";
+
 
 export class UI extends Phaser.Scene {
   tileSize: number;
@@ -14,7 +15,6 @@ export class UI extends Phaser.Scene {
 
     // UI Tilemap Creation
     const uiMap = this.make.tilemap({ key: 'ui_tilemap' });
-
     const tileset_ui = uiMap.addTilesetImage('ui x2', 'ui_tilemap_left_ui');
     const tilemap_tower_ui = uiMap.addTilesetImage('enemies x2', 'ui_tilemap_towers');
     const towers = uiMap.getObjectLayer('Tower Creation UI');
@@ -44,9 +44,10 @@ export class UI extends Phaser.Scene {
 
         // Tower Sprite Creation
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
-          const tower = this.add.sprite(localX, localY, 'insertTowerSprite');
+          const tower = this.add.tower1(localX, localY, 'tower1');
           tower.setAlpha(0.5);
-          towerState.addTower(tower);
+          const towerID = Phaser.Math.RND.uuid();
+          towerState.addTower(towerID, tower);
 
           tower.setInteractive();
 
@@ -101,6 +102,10 @@ export class UI extends Phaser.Scene {
 
   }
 
+  // createTower(x: number, y: number, texture: string, width: number, height: number) {
+  //   const tower = this.add.
+  // }
+
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
     tower.on('pointerdown', () => {
       // If selected tower is already selected -> Deselect
@@ -133,3 +138,6 @@ export class UI extends Phaser.Scene {
   }
 
 }
+
+// Change towerstore to Map,
+// create tower group and match createSpider(); 
