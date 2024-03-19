@@ -27,7 +27,7 @@ export default class Spiderbot extends Phaser.Physics.Arcade.Sprite {
 
   protected preUpdate(t: number, dt: number){
     super.preUpdate(t, dt);
-    this.setVelocityX(50);
+    this.setVelocityY(50);
 
   }
 };

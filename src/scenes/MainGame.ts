@@ -15,7 +15,9 @@ import '../enemies/Spiderbot';
 // Utitilies
 
 // States from Mobx
+import { reaction } from "mobx";
 import { spiderbotStore } from "../states/SpiderbotStore";
+
 
 export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -53,9 +55,34 @@ export class MainGame extends Phaser.Scene {
   createSpiderbotAnims(this.anims);
 
   // Test text
+  const spiderTexts: Phaser.GameObjects.Text[] = [];
 
-    let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
-  phaseLabel.setDepth(1);
+  // Function to update the text
+  const updateSpiderTexts = () => {
+    spiderTexts.forEach((text) => text.destroy());
+    let index = 0;
+    spiderbotStore.spiderbots.forEach((spiderbot, id) => {
+      const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${spiderbot.health}`, {
+        fontSize: "16px",
+        color: "#ffffff",
+      });
+      spiderTexts.push(text);
+      index++;
+    });
+  };
+
+  // Initial update
+  updateSpiderTexts();
+
+  reaction(
+    () => Array.from(spiderbotStore.spiderbots.entries()),
+    () => updateSpiderTexts()
+  );
+
+
+
+    // let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
+    // phaseLabel.setDepth(1);
     
   // Tileset
 
@@ -82,7 +109,7 @@ export class MainGame extends Phaser.Scene {
     // debugDraw(wallsLayer, this)
 
     // Create Fauna 
-    this.fauna = this.add.fauna(600, 128, 'fauna')
+    this.fauna = this.add.fauna(100, 450, 'fauna')
 
 
     // Colliders
@@ -90,13 +117,13 @@ export class MainGame extends Phaser.Scene {
 
      // Test Towers
 
-    this.tower1_01 = this.add.tower1(784, 128, 'tower1');
+    this.tower1_01 = this.add.tower1(176, 578, 'tower1');
     this.physics.add.existing(this.tower1_01);
 
-    this.tower1_02 = this.add.tower1(884, 128, 'tower1');
+    this.tower1_02 = this.add.tower1(176, 674, 'tower1');
     this.physics.add.existing(this.tower1_02);
 
-    this.tower1_03 = this.add.tower1(984, 128, 'tower1');
+    this.tower1_03 = this.add.tower1(176, 770, 'tower1');
     this.physics.add.existing(this.tower1_03);
 
    
@@ -118,13 +145,17 @@ export class MainGame extends Phaser.Scene {
     };
 
   createSpider() {
-    const spider = this.add.spiderbot(500, 200, 'spiderbot');
+
+    const spider = this.add.spiderbot(125, 450, 'spiderbot');
     // Add spider to the physics system if needed
     // Add to mobx?
     const spiderID = Phaser.Math.RND.uuid()
+    //set a property on our game object
     spider.setData('id', spiderID)
+
     console.log("Spider ID from data:", spider.getData('id'));
     spiderbotStore.logSpiderbots();
+
     // this.physics.add.existing(spider);
     this.physics.add.collider(spider, this.wallsLayer); 
     // Add spider to the group
@@ -132,6 +163,13 @@ export class MainGame extends Phaser.Scene {
 
     spiderbotStore.addSpiderbot(spiderID, spider);
     // remove spider after certain duration
+    const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
+
+    this.time.delayedCall(destructionDelay, () => {
+        spider.destroy(); // Destroy the spider after the delay
+        spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
+    }, [], this);
+
   }
   
   update() {
