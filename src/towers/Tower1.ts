@@ -1,6 +1,6 @@
 import Phaser from "phaser";
-import Spiderbot from "../enemies/Spiderbot";
-import { spiderbotStore } from "../states/SpiderbotStore";
+import MobTier1 from "../enemies/MobTier1";
+import { mobStore } from "../states/MobStore";
 // For typescript
 declare global {
   namespace Phaser.GameObjects {
@@ -14,7 +14,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private shootRange: number;
   private shootTime: number;
   private shootDelay: number;
-  private spiderGroup!: Phaser.Physics.Arcade.Group
+  private mobGroup!: Phaser.Physics.Arcade.Group
   private attackDmg: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
@@ -36,14 +36,14 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     super.preUpdate(t, dt);
 
 
-    this.spiderGroup = (this.scene as any).spiderGroup
+    this.mobGroup = (this.scene as any).mobGroup
         // Get all spiders in spider group
-    const spiders = this.spiderGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
+    const mobs = this.mobGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
    
     let closestSpider: Phaser.Physics.Arcade.Sprite | null = null;
     let closestDistance = Infinity;
 
-    spiders.forEach((spider: Phaser.Physics.Arcade.Sprite) => {
+    mobs.forEach((spider: Phaser.Physics.Arcade.Sprite) => {
       const distance = Phaser.Math.Distance.Between(this.x, this.y, spider.x, spider.y);
       if (distance < closestDistance) {
         closestSpider = spider;
@@ -68,9 +68,9 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
       if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 10) {
         projectile.destroy();
 
-        if (target instanceof Spiderbot) { // Ensure target is Spiderbot
-          (target as Spiderbot).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to Spiderbot and call decreaseHealth
-          spiderbotStore.updateSpiderbotHealth(target.getData('id'), target.health);
+        if (target instanceof MobTier1) { // Ensure target is MobTier1
+          (target as MobTier1).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to MobTier1 and call decreaseHealth
+          mobStore.updateMobHealth(target.getData('id'), target.health);
         }
       } else {
         this.scene.physics.moveToObject(projectile, target, 200);

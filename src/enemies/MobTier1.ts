@@ -1,17 +1,17 @@
 import Phaser from "phaser";
 import { observable } from "mobx";
-import { spiderbotStore } from "../states/SpiderbotStore";
+import { mobStore} from "../states/MobStore";
 
 // For typescript
 declare global {
   namespace Phaser.GameObjects {
     interface GameObjectFactory {
-      spiderbot(x: number, y: number, texture: string, frame?: string | number): Spiderbot
+      mob_t1(x: number, y: number, texture: string, frame?: string | number): MobTier1
     }
   }
 }
 
-export default class Spiderbot extends Phaser.Physics.Arcade.Sprite {
+export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
   @observable accessor health: number = 100;
@@ -50,21 +50,21 @@ export default class Spiderbot extends Phaser.Physics.Arcade.Sprite {
     if (this.health <= 0) {
       this.speed = 0;
       this.setTint(0xff0000);
-      this.anims.play('spiderbot_death');
+      this.anims.play('mob_t1_death');
 
       // Allow time to play animation before destroy
       scene.time.delayedCall(1000, () => {
         this.destroy();
-        spiderbotStore.removeSpiderbot(id);
+        mobStore.removeMob(id);
       });
     }
   }
 };
 
 
-// Add Fauna to game object Factory
-Phaser.GameObjects.GameObjectFactory.register('spiderbot', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
-  const sprite = new Spiderbot(this.scene, x, y, texture, frame);
+// Add Mob t1 to game object Factory
+Phaser.GameObjects.GameObjectFactory.register('mob_t1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
+  const sprite = new MobTier1(this.scene, x, y, texture, frame);
   this.displayList.add(sprite);
   this.updateList.add(sprite);
 

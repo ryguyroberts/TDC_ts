@@ -4,19 +4,19 @@ import Phaser, { Tilemaps } from "phaser";
 // Import Animations
 import { createFaunaAnims } from "../anims/FainaAnims";
 import { createTower1Anims } from "../anims/Tower1Anims";
-import { createSpiderbotAnims } from "../anims/SpiderbotAnims";
+import { createMobTier1Anims } from "../anims/MobTier1Anims";
 
 // import '../characters/Fauna'
 // Import Sprites Classes
 import '../characters/Fauna';
 import '../towers/Tower1';
-import '../enemies/Spiderbot';
+import '../enemies/MobTier1';
 
 // Utitilies
 
 // States from Mobx
 import { reaction } from "mobx";
-import { spiderbotStore } from "../states/SpiderbotStore";
+import { mobStore } from "../states/MobStore";
 
 
 export class MainGame extends Phaser.Scene {
@@ -26,13 +26,13 @@ export class MainGame extends Phaser.Scene {
   private tower1_01!: Phaser.GameObjects.Sprite;
   private tower1_02!: Phaser.GameObjects.Sprite;
   private tower1_03!: Phaser.GameObjects.Sprite;
-  private spiderGroup!: Phaser.Physics.Arcade.Group
+  private mobGroup!: Phaser.Physics.Arcade.Group
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
   constructor() {
     super('main_game');
-    this.createSpider = this.createSpider.bind(this); // Bind createSpider method to the current instance
+    this.createMobTier1 = this.createMobTier1.bind(this); // Bind createSpider method to the current instance
   };
 
 
@@ -52,7 +52,7 @@ export class MainGame extends Phaser.Scene {
   // Animations
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
-  createSpiderbotAnims(this.anims);
+  createMobTier1Anims(this.anims);
 
   // Test text
   const spiderTexts: Phaser.GameObjects.Text[] = [];
@@ -61,7 +61,7 @@ export class MainGame extends Phaser.Scene {
   const updateSpiderTexts = () => {
     spiderTexts.forEach((text) => text.destroy());
     let index = 0;
-    spiderbotStore.spiderbots.forEach((spiderbot, id) => {
+    mobStore.mobs.forEach((spiderbot, id) => {
       const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${spiderbot.health}`, {
         fontSize: "16px",
         color: "#ffffff",
@@ -75,7 +75,7 @@ export class MainGame extends Phaser.Scene {
   updateSpiderTexts();
 
   reaction(
-    () => Array.from(spiderbotStore.spiderbots.entries()),
+    () => Array.from(mobStore.mobs.entries()),
     () => updateSpiderTexts()
   );
 
@@ -131,7 +131,7 @@ export class MainGame extends Phaser.Scene {
    
     // Test spiders
 
-    this.spiderGroup = this.physics.add.group();
+    this.mobGroup = this.physics.add.group();
 
     
 
@@ -148,27 +148,27 @@ export class MainGame extends Phaser.Scene {
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
-      callback: this.createSpider,
+      callback: this.createMobTier1,
       callbackScope: this
     });
 
     };
 
-  createSpider() {
+  createMobTier1() {
 
-    const spider = this.add.spiderbot(125, 450, 'spiderbot', 'spiderbot_run');
+    const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1', 'mob_t1_run');
    // Add spider to the physics system if needed
     // Add to mobx?
-    const spiderID = Phaser.Math.RND.uuid()
+    const mobID = Phaser.Math.RND.uuid()
     //set a property on our game object
-    spider.setData('id', spiderID)
+    mob_t1.setData('id', mobID)
 
     // this.physics.add.existing(spider);
-    this.physics.add.collider(spider, this.wallsLayer); 
+    this.physics.add.collider(mob_t1, this.wallsLayer); 
     // Add spider to the group
-    this.spiderGroup.add(spider);
+    this.mobGroup.add(mob_t1);
 
-    spiderbotStore.addSpiderbot(spiderID, spider);
+    mobStore.addMob(mobID, mob_t1);
     // remove spider after certain duration
     // const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
 

@@ -16,7 +16,7 @@ export class Preloader extends Phaser.Scene {
     this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map03.json');
     // Sprites
     this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
-    this.load.atlas('spiderbot', 'enemies/spiderbot.png', 'enemies/spiderbot.json')
+    this.load.atlas('mob_t1', 'enemies/mob_t1.png', 'enemies/mob_t1.json')
 
     // Tower
 

@@ -1,7 +1,7 @@
 {
 	"textures": [
 		{
-			"image": "spiderbot.png",
+			"image": "mob_t1.png",
 			"format": "RGBA8888",
 			"size": {
 				"w": 123,
@@ -330,6 +330,6 @@
 	"meta": {
 		"app": "https://www.codeandweb.com/texturepacker",
 		"version": "3.0",
-		"smartupdate": "$TexturePacker:SmartUpdate:7b9d117ef93780cf7699593eee866f25:3fe9381ae9227b58ac4f1dc0e7ec487c:f2f59e086a5ff3a33915dc019239cfd5$"
+		"smartupdate": "$TexturePacker:SmartUpdate:66952c4137ebdd5874ae80584da5166b:3fe9381ae9227b58ac4f1dc0e7ec487c:db86cb59b9208063be3860be7750b1d2$"
 	}
 }
