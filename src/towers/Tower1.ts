@@ -72,6 +72,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
           (target as MobTier1).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to MobTier1 and call decreaseHealth
           mobStore.updateMobHealth(target.getData('id'), target.health);
         }
+        // another if here? for mobtier1?
       } else {
         this.scene.physics.moveToObject(projectile, target, 200);
         this.scene.time.delayedCall(100, checkDistance);

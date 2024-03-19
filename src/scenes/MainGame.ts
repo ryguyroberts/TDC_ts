@@ -11,6 +11,7 @@ import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import '../characters/Fauna';
 import '../towers/Tower1';
 import '../enemies/MobTier1';
+import '../enemies/MobTier2';
 
 // Utitilies
 
@@ -129,10 +130,12 @@ export class MainGame extends Phaser.Scene {
     this.physics.add.existing(this.tower1_03);
 
    
-    // Test spiders
+    // Test mobs
 
     this.mobGroup = this.physics.add.group();
 
+    const mob_t2 = this.add.mob_t2(125, 300, 'mob_t1','mob_t1_run' );
+    this.mobGroup.add(mob_t2);
     
 
     // Create Player owned Tower Group
