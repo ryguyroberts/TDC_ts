@@ -50,6 +50,9 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
+  // Launch UI scene
+  this.scene.launch('ui');
+  
   // Animations
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
@@ -80,20 +83,17 @@ export class MainGame extends Phaser.Scene {
     () => updateSpiderTexts()
   );
 
-
-
     // let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
     // phaseLabel.setDepth(1);
     
   // Tileset
-
     const map = this.make.tilemap({ key: 'tilemap' });
 
     const tilemap_base_props1 = map.addTilesetImage('Tech_TD_Ced', 'tilemap_base_props1');
     const tilemap_base_props2 = map.addTilesetImage('Tech_TD_Ced_02', 'tilemap_base_props2');
     const tilemap_npcs = map.addTilesetImage('npc x1', 'tilemap_npcs');
     const tilemap_items = map.addTilesetImage('props and items x1', 'tilemap_items');
-
+  
     // Check if null
     if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
       throw new Error("Failed to load tileset");
@@ -114,13 +114,12 @@ export class MainGame extends Phaser.Scene {
     // Create Fauna 
     this.fauna = this.add.fauna(100, 450, 'fauna')
 
-
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
 
      // Test Towers
 
-    this.tower1_01 = this.add.tower1(176, 578, 'tower1');
+    this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
     this.physics.add.existing(this.tower1_01);
 
     this.tower1_02 = this.add.tower1(176, 674, 'tower1');
@@ -128,7 +127,6 @@ export class MainGame extends Phaser.Scene {
 
     this.tower1_03 = this.add.tower1(176, 770, 'tower1');
     this.physics.add.existing(this.tower1_03);
-
    
     // Test mobs
 
