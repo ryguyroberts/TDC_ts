@@ -42,7 +42,6 @@ export class MainGame extends Phaser.Scene {
     const wallsLayer = map.createLayer('Wall Layer', allLayers)
     map.createLayer('props', allLayers)
     map.createLayer('effect', allLayers)
-    map.createLayer('Tower UI Sprites', allLayers)
 
     // Collision Debugging
 

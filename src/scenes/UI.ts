@@ -1,4 +1,6 @@
 import Phaser, { Tilemaps } from "phaser";
+import towerState from "./TowerStore";
+import selectedTowerState from "./selected_tower";
 
 export class UI extends Phaser.Scene {
   tileSize: number;
@@ -29,7 +31,6 @@ export class UI extends Phaser.Scene {
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
-      console.log(towerObj);
       // Ensure towerObj is not null / undefined
       if (towerObj) {
         const towerSprite = this.add.rectangle(
@@ -45,19 +46,25 @@ export class UI extends Phaser.Scene {
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
           const tower = this.add.sprite(localX, localY, 'insertTowerSprite');
           tower.setAlpha(0.5);
-          // Update state for activeTowers here
+          towerState.addTower(tower);
+
           tower.setInteractive();
 
+          let isPlaced = false;
+
           this.input.on('pointermove', (pointer: any) => {
+            if (isPlaced) return; // Ignore listener if placed 
             tower.x = pointer.x;
             tower.y = pointer.y;
           });
 
           // Tower Placement
           this.input.on('pointerup', () => {
+            if (isPlaced) return; // Ignore listener if placed 
+
             // Calc nearest grid position where the pointer is
-            const gridX = Math.floor(pointer.x / this.tileSize) * this. tileSize + this.tileSize / 2;
-            const gridY = Math.floor(pointer.y / this.tileSize) * this. tileSize + this.tileSize / 2;
+            const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
+            const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
 
             // Move tower to nearest grid position
             tower.x = gridX;
@@ -68,11 +75,10 @@ export class UI extends Phaser.Scene {
 
             //Remove pointermove listener
             this.input.off('pointermove');
-          });
+            isPlaced = true;
 
-          // Select any active tower
-          tower.on('pointerdown', () => {
-            //
+            // Attach tower selection handler
+            this.attachTowerSelection(tower);
           });
         });
       }
@@ -82,16 +88,43 @@ export class UI extends Phaser.Scene {
     const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
       color: '#ffffff',
       fontSize: '16px',
-    }
-    
+    };
+
     // Delete tower button
     const deleteTower = this.add.text(0, 0, 'Delete Tower', textStyle).setInteractive();
     deleteTower.on('pointerdown', () => {
       // if (this.selectedTower) {
       //   // find index in tower state
       // }
-    })
+    });
 
 
   }
+
+  private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
+    tower.on('pointerdown', () => {
+      // If selected tower is already selected -> Deselect
+      if (selectedTowerState.selectedTower === tower) {
+        tower.clearTint();
+        selectedTowerState.deselectTower();
+        // this.towerInfoText.setText('');
+      } else {
+
+        if (selectedTowerState.selectedTower) {
+          selectedTowerState.selectedTower.clearTint();
+        }
+
+        console.log('you selected a tower', tower);
+        // Highlight tower
+        tower.setTint(0xff000);
+
+        // Update selectedTower state
+        selectedTowerState.selectTower(tower);
+
+        // Display tower info
+        // this.displayTowerInfo(tower);
+      }
+    });
+  }
+
 }
