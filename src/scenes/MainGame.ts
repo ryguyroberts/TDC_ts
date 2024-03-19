@@ -23,17 +23,19 @@ import { mobStore } from "../states/MobStore";
 export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private fauna!: Phaser.GameObjects.Sprite;
-  // private spiderbot!: Phaser.GameObjects.Sprite;
+
+  // So many towers
   private tower1_01!: Phaser.GameObjects.Sprite;
   private tower1_02!: Phaser.GameObjects.Sprite;
   private tower1_03!: Phaser.GameObjects.Sprite;
-  private mobGroup!: Phaser.Physics.Arcade.Group
+  private tower1_04!: Phaser.GameObjects.Sprite;
+
+  private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
   constructor() {
     super('main_game');
-    this.createMobTier1 = this.createMobTier1.bind(this); // Bind createSpider method to the current instance
   };
 
 
@@ -43,14 +45,13 @@ export class MainGame extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
       } else {
         throw new Error("Keyboard input is not available.");
-    }
-
-
+    };
   };
 
   create() {
 
   // Launch UI scene
+  // turned this off
   // this.scene.launch('ui');
   
   // Animations
@@ -58,7 +59,7 @@ export class MainGame extends Phaser.Scene {
   createTower1Anims(this.anims);
   createMobTier1Anims(this.anims);
 
-  // Test text
+  // Test text Displays mobstate
   const spiderTexts: Phaser.GameObjects.Text[] = [];
 
   // Function to update the text
@@ -74,17 +75,14 @@ export class MainGame extends Phaser.Scene {
       index++;
     });
   };
-
   // Initial update
   updateSpiderTexts();
 
+  // Watch for change
   reaction(
     () => Array.from(mobStore.mobs.entries()),
     () => updateSpiderTexts()
   );
-
-    // let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
-    // phaseLabel.setDepth(1);
     
   // Tileset
     const map = this.make.tilemap({ key: 'tilemap' });
@@ -106,12 +104,13 @@ export class MainGame extends Phaser.Scene {
     map.createLayer('effect', allLayers)
     map.createLayer('props', allLayers)
 
-    // Collision Debugging
-
+    // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true})
+
+    // Collision Debugging
     // debugDraw(wallsLayer, this)
 
-    // Create Fauna 
+    // Create Fauna - Testing
     this.fauna = this.add.fauna(100, 450, 'fauna')
 
     // Colliders
@@ -128,24 +127,15 @@ export class MainGame extends Phaser.Scene {
     this.tower1_03 = this.add.tower1(176, 770, 'tower1');
     this.physics.add.existing(this.tower1_03);
    
+    this.tower1_04 = this.add.tower1(176, 862, 'tower1');
+    this.physics.add.existing(this.tower1_04);
+
+
+
     // Test mobs
-
     this.mobGroup = this.physics.add.group();
-
-    // const mob_t2 = this.add.mob_t2(125, 300, 'mob_t1','mob_t1_run' );
-    // this.physics.add.collider(mob_t2, this.wallsLayer)
-    // this.mobGroup.add(mob_t2);
-    
-
-    // Create Player owned Tower Group
-
- 
-
-
-    // this.spiderbot = this.add.spiderbot(500, 200, 'spiderbot');
-    // this.physics.add.existing(this.spiderbot);
-    // this.physics.add.collider(this.spiderbot, this.wallsLayer)
-
+   
+    // Spawn mobs for testing
     const spawnInterval = 2000; // milliseconds (e.g., spawn a spider every 5 seconds)
     this.time.addEvent({
       delay: spawnInterval,
@@ -156,34 +146,9 @@ export class MainGame extends Phaser.Scene {
 
     };
 
-  // createMobTier1() {
-
-  //   const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1', 'mob_t1_run');
-  //  // Add spider to the physics system if needed
-  //   // Add to mobx?
-  //   const mobID = Phaser.Math.RND.uuid()
-  //   //set a property on our game object
-  //   mob_t1.setData('id', mobID)
-
-  //   // this.physics.add.existing(spider);
-  //   this.physics.add.collider(mob_t1, this.wallsLayer); 
-  //   // Add spider to the group
-  //   this.mobGroup.add(mob_t1);
-
-  //   mobStore.addMob(mobID, mob_t1);
-  //   // remove spider after certain duration
-  //   // const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
-
-  //   // this.time.delayedCall(destructionDelay, () => {
-  //   //     spider.destroy(); // Destroy the spider after the delay
-  //   //     spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
-  //   // }, [], this);
-
-  // }
-
   createMobRandom() {
     // Randomly decide whether to create MobTier1 or MobTier2
-    const randomMobType = Phaser.Math.RND.between(1, 2); // Generates either 1 or 2
+    const randomMobType = Phaser.Math.RND.between(1, 2);
   
     if (randomMobType === 1) {
       this.createMobTier1();
@@ -202,7 +167,7 @@ export class MainGame extends Phaser.Scene {
     this.physics.add.existing(mob_t1);
     this.physics.add.collider(mob_t1, this.wallsLayer); 
   
-    // Add to mob group and MobStore
+    // Add to mob group and MobStore why both Ryan?
     this.mobGroup.add(mob_t1);
     mobStore.addMob(mobID, mob_t1);
   }
@@ -227,6 +192,4 @@ export class MainGame extends Phaser.Scene {
       this.fauna.update(this.cursors);
     };
   }
-
-
 };

@@ -1,6 +1,7 @@
 import Phaser from "phaser";
 import MobTier1 from "../enemies/MobTier1";
 import { mobStore } from "../states/MobStore";
+
 // For typescript
 declare global {
   namespace Phaser.GameObjects {
@@ -28,7 +29,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // properties for projectiles
     this.shootRange = 100;
     this.shootTime = 2;
-    this.shootDelay  = 800;
+    this.shootDelay  = 1000;
     this.attackDmg = 20;
   };
 
@@ -37,29 +38,29 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
 
     this.mobGroup = (this.scene as any).mobGroup
-        // Get all spiders in spider group
+        // Get all mobs in the mob group - use mobstore instead??
     const mobs = this.mobGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
    
-    let closestSpider: Phaser.Physics.Arcade.Sprite | null = null;
+    let closestMob: Phaser.Physics.Arcade.Sprite | null = null;
     let closestDistance = Infinity;
 
-    mobs.forEach((spider: Phaser.Physics.Arcade.Sprite) => {
-      const distance = Phaser.Math.Distance.Between(this.x, this.y, spider.x, spider.y);
+    mobs.forEach((mob: Phaser.Physics.Arcade.Sprite) => {
+      const distance = Phaser.Math.Distance.Between(this.x, this.y, mob.x, mob.y);
       if (distance < closestDistance) {
-        closestSpider = spider;
+        closestMob = mob;
         closestDistance = distance;
       }
     });
 
-    if (closestSpider && closestDistance <= this.shootRange && this.scene.time.now > this.shootTime) {
-      this.shoot(closestSpider);
+    if (closestMob && closestDistance <= this.shootRange && this.scene.time.now > this.shootTime) {
+      this.shoot(closestMob);
       this.shootTime = this.scene.time.now + this.shootDelay;
     }
    
-    }
+  }
   
   shoot(target: Phaser.Physics.Arcade.Sprite) {
-    // Create sprite and shoot towards the target (spider)
+    // Create sprite and shoot towards the target (mob)
     const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
     this.scene.physics.add.existing(projectile);
 
@@ -72,7 +73,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
           (target as MobTier1).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to MobTier1 and call decreaseHealth
           mobStore.updateMobHealth(target.getData('id'), target.health);
         }
-        // another if here? for mobtier1?
+        // another if here? for mobtier
       } else {
         this.scene.physics.moveToObject(projectile, target, 200);
         this.scene.time.delayedCall(100, checkDistance);
