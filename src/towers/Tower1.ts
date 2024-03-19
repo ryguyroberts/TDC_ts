@@ -28,7 +28,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // properties for projectiles
     this.shootRange = 100;
     this.shootTime = 2;
-    this.shootDelay  = 1000;
+    this.shootDelay  = 800;
     this.attackDmg = 20;
   };
 

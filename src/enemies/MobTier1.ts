@@ -16,6 +16,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
   // For health state
   @observable accessor health: number = 100;
   private speed: number = 50;
+ 
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 

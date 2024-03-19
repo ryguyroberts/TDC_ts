@@ -51,7 +51,7 @@ export class MainGame extends Phaser.Scene {
   create() {
 
   // Launch UI scene
-  this.scene.launch('ui');
+  // this.scene.launch('ui');
   
   // Animations
   createFaunaAnims(this.anims);
@@ -132,8 +132,9 @@ export class MainGame extends Phaser.Scene {
 
     this.mobGroup = this.physics.add.group();
 
-    const mob_t2 = this.add.mob_t2(125, 300, 'mob_t1','mob_t1_run' );
-    this.mobGroup.add(mob_t2);
+    // const mob_t2 = this.add.mob_t2(125, 300, 'mob_t1','mob_t1_run' );
+    // this.physics.add.collider(mob_t2, this.wallsLayer)
+    // this.mobGroup.add(mob_t2);
     
 
     // Create Player owned Tower Group
@@ -149,35 +150,76 @@ export class MainGame extends Phaser.Scene {
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
-      callback: this.createMobTier1,
+      callback: this.createMobRandom,
       callbackScope: this
     });
 
     };
 
+  // createMobTier1() {
+
+  //   const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1', 'mob_t1_run');
+  //  // Add spider to the physics system if needed
+  //   // Add to mobx?
+  //   const mobID = Phaser.Math.RND.uuid()
+  //   //set a property on our game object
+  //   mob_t1.setData('id', mobID)
+
+  //   // this.physics.add.existing(spider);
+  //   this.physics.add.collider(mob_t1, this.wallsLayer); 
+  //   // Add spider to the group
+  //   this.mobGroup.add(mob_t1);
+
+  //   mobStore.addMob(mobID, mob_t1);
+  //   // remove spider after certain duration
+  //   // const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
+
+  //   // this.time.delayedCall(destructionDelay, () => {
+  //   //     spider.destroy(); // Destroy the spider after the delay
+  //   //     spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
+  //   // }, [], this);
+
+  // }
+
+  createMobRandom() {
+    // Randomly decide whether to create MobTier1 or MobTier2
+    const randomMobType = Phaser.Math.RND.between(1, 2); // Generates either 1 or 2
+  
+    if (randomMobType === 1) {
+      this.createMobTier1();
+    } else {
+      this.createMobTier2();
+    }
+  }
+  
   createMobTier1() {
-
     const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1', 'mob_t1_run');
-   // Add spider to the physics system if needed
-    // Add to mobx?
-    const mobID = Phaser.Math.RND.uuid()
-    //set a property on our game object
-    mob_t1.setData('id', mobID)
-
-    // this.physics.add.existing(spider);
+    // Add properties
+    const mobID = Phaser.Math.RND.uuid();
+    mob_t1.setData('id', mobID);
+  
+    // Add to physics system and collider
+    this.physics.add.existing(mob_t1);
     this.physics.add.collider(mob_t1, this.wallsLayer); 
-    // Add spider to the group
+  
+    // Add to mob group and MobStore
     this.mobGroup.add(mob_t1);
-
     mobStore.addMob(mobID, mob_t1);
-    // remove spider after certain duration
-    // const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
-
-    // this.time.delayedCall(destructionDelay, () => {
-    //     spider.destroy(); // Destroy the spider after the delay
-    //     spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
-    // }, [], this);
-
+  }
+  
+  createMobTier2() {
+    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t1', 'mob_t1_run');
+    // Add properties
+    const mobID = Phaser.Math.RND.uuid();
+    mob_t2.setData('id', mobID);
+  
+    // Add to physics system and collider
+    this.physics.add.existing(mob_t2);
+    this.physics.add.collider(mob_t2, this.wallsLayer); 
+  
+    // Add to mob group and MobStore
+    this.mobGroup.add(mob_t2);
+    mobStore.addMob(mobID, mob_t2);
   }
   
   update() {
