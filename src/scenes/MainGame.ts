@@ -23,9 +23,9 @@ export class MainGame extends Phaser.Scene {
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private fauna!: Phaser.GameObjects.Sprite;
   // private spiderbot!: Phaser.GameObjects.Sprite;
-  private tower1_01!: Phaser.GameObjects.Sprite;
-  private tower1_02!: Phaser.GameObjects.Sprite;
-  private tower1_03!: Phaser.GameObjects.Sprite;
+  // private tower1_01!: Phaser.GameObjects.Sprite;
+  // private tower1_02!: Phaser.GameObjects.Sprite;
+  // private tower1_03!: Phaser.GameObjects.Sprite;
   private spiderGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
 
@@ -38,93 +38,89 @@ export class MainGame extends Phaser.Scene {
 
   preload() {
     // Cursors here
-      if (this.input.keyboard) {
-        this.cursors = this.input.keyboard.createCursorKeys();
-      } else {
-        throw new Error("Keyboard input is not available.");
+    if (this.input.keyboard) {
+      this.cursors = this.input.keyboard.createCursorKeys();
+    } else {
+      throw new Error("Keyboard input is not available.");
     }
 
 
   };
 
   create() {
+    // Animations
+    createFaunaAnims(this.anims);
+    createTower1Anims(this.anims);
+    createSpiderbotAnims(this.anims);
 
-  // Launch UI scene
-  this.scene.launch('ui');
-  
-  // Animations
-  createFaunaAnims(this.anims);
-  createTower1Anims(this.anims);
-  createSpiderbotAnims(this.anims);
+    // Test text
+    const spiderTexts: Phaser.GameObjects.Text[] = [];
 
-  // Test text
-  const spiderTexts: Phaser.GameObjects.Text[] = [];
-
-  // Function to update the text
-  const updateSpiderTexts = () => {
-    spiderTexts.forEach((text) => text.destroy());
-    let index = 0;
-    spiderbotStore.spiderbots.forEach((spiderbot, id) => {
-      const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${spiderbot.health}`, {
-        fontSize: "16px",
-        color: "#ffffff",
+    // Function to update the text
+    const updateSpiderTexts = () => {
+      spiderTexts.forEach((text) => text.destroy());
+      let index = 0;
+      spiderbotStore.spiderbots.forEach((spiderbot, id) => {
+        const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${spiderbot.health}`, {
+          fontSize: "16px",
+          color: "#ffffff",
+        });
+        spiderTexts.push(text);
+        index++;
       });
-      spiderTexts.push(text);
-      index++;
-    });
-  };
+    };
 
-  // Initial update
-  updateSpiderTexts();
+    // Initial update
+    updateSpiderTexts();
 
-  reaction(
-    () => Array.from(spiderbotStore.spiderbots.entries()),
-    () => updateSpiderTexts()
-  );
+    reaction(
+      () => Array.from(spiderbotStore.spiderbots.entries()),
+      () => updateSpiderTexts()
+    );
 
     // let phaseLabel = this.add.text(20, 40, 'im a text', { fontSize: '32px', color: '#fffff' });
     // phaseLabel.setDepth(1);
-    
-  // Tileset
+
+    // Tileset
     const map = this.make.tilemap({ key: 'tilemap' });
 
     const tilemap_base_props1 = map.addTilesetImage('Tech_TD_Ced', 'tilemap_base_props1');
     const tilemap_base_props2 = map.addTilesetImage('Tech_TD_Ced_02', 'tilemap_base_props2');
     const tilemap_npcs = map.addTilesetImage('npc x1', 'tilemap_npcs');
     const tilemap_items = map.addTilesetImage('props and items x1', 'tilemap_items');
-  
+
     // Check if null
     if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
       throw new Error("Failed to load tileset");
     }
-        
+
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
-    map.createLayer('effect', allLayers)
+    map.createLayer('effect', allLayers);
     // Collision Debugging
 
-    this.wallsLayer.setCollisionByProperty({ collides: true})
+    this.wallsLayer.setCollisionByProperty({ collides: true });
     // debugDraw(wallsLayer, this)
 
     // Create Fauna 
-    this.fauna = this.add.fauna(100, 450, 'fauna')
+    this.fauna = this.add.fauna(100, 450, 'fauna');
 
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
 
-     // Test Towers
+    // Test Towers
 
-    this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
-    this.physics.add.existing(this.tower1_01);
+    // this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
+    // this.physics.add.existing(this.tower1_01);
 
-    this.tower1_02 = this.add.tower1(176, 674, 'tower1');
-    this.physics.add.existing(this.tower1_02);
+    // this.tower1_02 = this.add.tower1(176, 674, 'tower1');
+    // this.physics.add.existing(this.tower1_02);
 
-    this.tower1_03 = this.add.tower1(176, 770, 'tower1');
-    this.physics.add.existing(this.tower1_03);
-   
+    // this.tower1_03 = this.add.tower1(176, 770, 'tower1');
+    // this.physics.add.existing(this.tower1_03);
+
     // Test spiders
 
     this.spiderGroup = this.physics.add.group();
@@ -140,22 +136,25 @@ export class MainGame extends Phaser.Scene {
       callbackScope: this
     });
 
-    };
+    // Launch UI scene
+    this.scene.launch('ui', { spiderGroup: this.spiderGroup });
+
+  };
 
   createSpider() {
 
     const spider = this.add.spiderbot(125, 450, 'spiderbot');
     // Add spider to the physics system if needed
     // Add to mobx?
-    const spiderID = Phaser.Math.RND.uuid()
+    const spiderID = Phaser.Math.RND.uuid();
     //set a property on our game object
-    spider.setData('id', spiderID)
+    spider.setData('id', spiderID);
 
     console.log("Spider ID from data:", spider.getData('id'));
     spiderbotStore.logSpiderbots();
 
     // this.physics.add.existing(spider);
-    this.physics.add.collider(spider, this.wallsLayer); 
+    this.physics.add.collider(spider, this.wallsLayer);
     // Add spider to the group
     this.spiderGroup.add(spider);
 
@@ -164,12 +163,11 @@ export class MainGame extends Phaser.Scene {
     const destructionDelay = 12000; // 5000 milliseconds = 5 seconds
 
     this.time.delayedCall(destructionDelay, () => {
-        spider.destroy(); // Destroy the spider after the delay
-        spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
+      spider.destroy(); // Destroy the spider after the delay
+      spiderbotStore.removeSpiderbot(spiderID); // Remove spider from the store
     }, [], this);
-
   }
-  
+
   update() {
     if (this.fauna) {
       this.fauna.update(this.cursors);

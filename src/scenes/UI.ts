@@ -1,10 +1,20 @@
 import Phaser, { Tilemaps } from "phaser";
+
+// Mobx State
+import { reaction } from "mobx";
 import { towerState } from "../states/TowerStore";
+import { spiderbotStore } from "../states/SpiderbotStore";
 import selectedTowerState from "../states/selected_tower";
 
 
+
 export class UI extends Phaser.Scene {
+  private spiderGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
+
+  init(data: any) {
+    this.spiderGroup = data.spiderGroup;
+  }
 
   constructor() {
     super('ui');
@@ -12,12 +22,15 @@ export class UI extends Phaser.Scene {
   }
 
   create() {
+    // Init spidergroup
+    this.spiderGroup = this.physics.add.group();
 
     // UI Tilemap Creation
     const uiMap = this.make.tilemap({ key: 'ui_tilemap' });
     const tileset_ui = uiMap.addTilesetImage('ui x2', 'ui_tilemap_left_ui');
     const tilemap_tower_ui = uiMap.addTilesetImage('enemies x2', 'ui_tilemap_towers');
     const towers = uiMap.getObjectLayer('Tower Creation UI');
+
 
     // Error case if tileset is null
     if (!tileset_ui || !tilemap_tower_ui || !towers) {
@@ -28,6 +41,18 @@ export class UI extends Phaser.Scene {
 
     uiMap.createLayer('Left Panel UI', allUiLayers);
     uiMap.createLayer('Right Panel UI', allUiLayers);
+
+    reaction(
+      () => Array.from(spiderbotStore.spiderbots.entries()),
+      (spiderbots) => {
+        this.spiderGroup.clear(true, true);
+
+        spiderbots.forEach((entry) => {
+          const spiderbot = entry[1];
+          this.spiderGroup.add(spiderbot);
+        })
+      },
+    )
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
@@ -44,6 +69,7 @@ export class UI extends Phaser.Scene {
 
         // Tower Sprite Creation
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
+          console.log('num of spiders in the spiderGroup', this.spiderGroup.getLength());
           const tower = this.add.tower1(localX, localY, 'tower1');
           tower.setAlpha(0.5);
           const towerID = Phaser.Math.RND.uuid();
