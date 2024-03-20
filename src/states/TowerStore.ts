@@ -15,6 +15,10 @@ class TowerState {
   removeTower(id: string) {
     this.activeTowers.delete(id);
   }
+
+  getTower(id: string) {
+    return this.activeTowers.get(id);
+  }
 };
 
 export const towerState = new TowerState();
