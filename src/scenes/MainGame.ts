@@ -6,6 +6,7 @@ import { createFaunaAnims } from "../anims/FainaAnims";
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
+import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
 // import '../characters/Fauna'
 // Import Sprites Classes
@@ -59,6 +60,7 @@ export class MainGame extends Phaser.Scene {
   createTowerTier1Anims(this.anims);
   createMobTier1Anims(this.anims);
   createMobTier2Anims(this.anims);
+  createGreenProjectAnims(this.anims);
 
   // Test text Displays mobstate
   const spiderTexts: Phaser.GameObjects.Text[] = [];

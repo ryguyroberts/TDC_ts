@@ -61,7 +61,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   
   shoot(target: Phaser.Physics.Arcade.Sprite) {
     // Create sprite and shoot towards the target (mob)
-    const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
+    const projectile = this.scene.add.sprite(this.x, this.y, 'green_project');
     projectile.setDepth(50);
     this.scene.physics.add.existing(projectile);
 

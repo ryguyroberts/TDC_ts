@@ -23,10 +23,14 @@ export class Preloader extends Phaser.Scene {
     // Tower
     this.load.atlas('tower_t1', 'towers/tower_t1.png', 'towers/tower_t1.json')
 
+    // Projectiles
+    this.load.atlas('green_project', 'projectiles/green_project.png', 'projectiles/green_project.json')
+
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
+
   }
 
   // Once asset all preloaded start our game! (Our main menu here)
