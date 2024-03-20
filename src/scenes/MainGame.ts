@@ -21,11 +21,12 @@ import findPath from '../utils/findPath'
 // States from Mobx
 import { reaction } from "mobx";
 import { mobStore } from "../states/MobStore";
+import Fauna from "../characters/Fauna";
 
 
 export class MainGame extends Phaser.Scene {
-  private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  private fauna!: Phaser.GameObjects.Sprite;
+  // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  private fauna!: Fauna;
 
   // So many towers
   // private tower1_01!: Phaser.GameObjects.Sprite;
@@ -44,12 +45,12 @@ export class MainGame extends Phaser.Scene {
 
 
   preload() {
-    // Cursors here
-      if (this.input.keyboard) {
-        this.cursors = this.input.keyboard.createCursorKeys();
-      } else {
-        throw new Error("Keyboard input is not available.");
-    };
+    // // Cursors here
+    //   if (this.input.keyboard) {
+    //     this.cursors = this.input.keyboard.createCursorKeys();
+    //   } else {
+    //     throw new Error("Keyboard input is not available.");
+    // };
   };
 
   create() {
@@ -116,7 +117,11 @@ export class MainGame extends Phaser.Scene {
     // Collision Debugging
     // debugDraw(wallsLayer, this)
 
-    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+
+    // add fauna
+  this.fauna = this.add.fauna(448, 192, 'fauna')
+    
+  this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
       const { worldX, worldY } = pointer
 
       const startVec = this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y)
@@ -134,8 +139,8 @@ export class MainGame extends Phaser.Scene {
       this.fauna.moveAlong(path)
   })
 
-  // Create Fauna - Testing
-    this.fauna = this.add.fauna(448, 192, 'fauna')
+  // // Create Fauna - Testing
+  //   this.fauna = this.add.fauna(448, 192, 'fauna')
 
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
@@ -214,7 +219,7 @@ export class MainGame extends Phaser.Scene {
 
   update() {
     if (this.fauna) {
-      this.fauna.update(this.cursors);
+      this.fauna.update();
     };
   }
 };
