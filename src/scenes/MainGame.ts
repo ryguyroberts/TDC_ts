@@ -16,6 +16,7 @@ import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 
 // Utitilies
+import findPath from '../utils/findPath'
 
 // States from Mobx
 import { reaction } from "mobx";
@@ -34,6 +35,7 @@ export class MainGame extends Phaser.Scene {
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
+  private groundLayer!: Phaser.Tilemaps.TilemapLayer;
 
 
   constructor() {
@@ -102,19 +104,38 @@ export class MainGame extends Phaser.Scene {
 
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
-    map.createLayer('Tile Layer 1', allLayers);
+    this.groundLayer = map.createLayer('Tile Layer 1', allLayers) as Phaser.Tilemaps.TilemapLayer;
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     map.createLayer('effect', allLayers)
     map.createLayer('props', allLayers)
 
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true})
+    this.groundLayer.setCollisionByProperty({ collides: false})
 
     // Collision Debugging
     // debugDraw(wallsLayer, this)
 
-    // Create Fauna - Testing
-    this.fauna = this.add.fauna(100, 450, 'fauna')
+    this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
+      const { worldX, worldY } = pointer
+
+      const startVec = this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y)
+      console.log("fauna x:",this.fauna.x)
+      console.log("fauna y:", this.fauna.y)
+      console.log("startVec:", this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y))
+      const targetVec = this.groundLayer.worldToTileXY(worldX, worldY)
+      console.log("Target x:",worldX)
+      console.log("Target y:", worldY)
+      console.log("TargetVec:", this.groundLayer.worldToTileXY(worldX, worldY))
+
+      const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer) // Use findPath function
+
+      // Move the player along the path
+      this.fauna.moveAlong(path)
+  })
+
+  // Create Fauna - Testing
+    this.fauna = this.add.fauna(448, 192, 'fauna')
 
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
