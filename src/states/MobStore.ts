@@ -26,10 +26,14 @@ class MobStore {
   }
 
   updateMobHealth(id: string, newHealth: number) {
-    const spiderbot = this.mobs.get(id);
-    if (spiderbot) {
-      spiderbot.health = newHealth;
+    const mob = this.mobs.get(id);
+    if (mob) {
+      mob.health = newHealth;
     }
+  }
+
+  getMobsArray(): MobTier1[] {
+    return Array.from(this.mobs.values());
   }
 
 };

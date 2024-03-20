@@ -5,6 +5,7 @@ import Phaser, { Tilemaps } from "phaser";
 import { createFaunaAnims } from "../anims/FainaAnims";
 import { createTower1Anims } from "../anims/Tower1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
+import { createMobTier2Anims } from "../anims/MobTier2Anims";
 
 // import '../characters/Fauna'
 // Import Sprites Classes
@@ -52,12 +53,15 @@ export class MainGame extends Phaser.Scene {
 
   // Launch UI scene
   // turned this off
-  // this.scene.launch('ui');
+  this.scene.launch('ui', {
+    mobGroup: this.mobGroup
+  });
   
   // Animations
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
   createMobTier1Anims(this.anims);
+  createMobTier2Anims(this.anims);
 
   // Test text Displays mobstate
   const spiderTexts: Phaser.GameObjects.Text[] = [];
@@ -153,12 +157,13 @@ export class MainGame extends Phaser.Scene {
     if (randomMobType === 1) {
       this.createMobTier1();
     } else {
+      // console.log('made a mob2');
       this.createMobTier2();
     }
   }
   
   createMobTier1() {
-    const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1', 'mob_t1_run');
+    const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t1.setData('id', mobID);
@@ -173,7 +178,7 @@ export class MainGame extends Phaser.Scene {
   }
   
   createMobTier2() {
-    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t1', 'mob_t1_run');
+    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t2');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);

@@ -1,5 +1,4 @@
 import Phaser from "phaser";
-import { observable } from "mobx";
 import { mobStore} from "../states/MobStore";
 
 // For typescript
@@ -14,7 +13,7 @@ declare global {
 export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
-  @observable accessor health: number = 100;
+  accessor health: number = 100;
   private speed: number = 50;
  
 
@@ -22,7 +21,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
     super(scene, x, y, texture, frame);
     scene.physics.world.enable(this);
-    this.anims.play(frame as string);
+    this.anims.play('mob_t1_run');
    
   };
 

@@ -17,7 +17,15 @@ export default class MobTier2 extends MobTier1 {
     super(scene, x, y, texture, frame);
 
     this.health = 150;
-    this.setScale(2.0);
+    
+    if(!this.body) {
+      throw new Error("Failed to load t2_body");
+    }
+
+    this.body.setSize(0.5, 0.5);
+
+    
+    this.anims.play('mob_t2_run');
 
   };
 
