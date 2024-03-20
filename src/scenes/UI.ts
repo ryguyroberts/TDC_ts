@@ -71,6 +71,7 @@ export class UI extends Phaser.Scene {
           tower.setAlpha(0.5);
           const towerID = Phaser.Math.RND.uuid();
           towerState.addTower(towerID, tower);
+          tower.placed = false;
 
           tower.setInteractive();
 
@@ -99,6 +100,7 @@ export class UI extends Phaser.Scene {
 
             //Remove pointermove listener
             this.input.off('pointermove');
+            tower.placed = true;
             isPlaced = true;
 
             // Attach tower selection handler
@@ -159,8 +161,4 @@ export class UI extends Phaser.Scene {
   private displayTowerInfo(tower: Phaser.GameObjects.Sprite) {
     console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
   }
-
 }
-
-// Change towerstore to Map,
-// create tower group and match createSpider(); 

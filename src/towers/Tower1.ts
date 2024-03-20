@@ -17,6 +17,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private shootDelay: number;
   private mobGroup!: Phaser.Physics.Arcade.Group
   private attackDmg: number;
+  placed: boolean = false;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -36,6 +37,9 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   preUpdate(t: number, dt: number) {
     super.preUpdate(t, dt);
 
+    if (!this.placed) {
+      return; // if not placed, exit preUpdate
+    }
 
     this.mobGroup = (this.scene as any).mobGroup
         // Get all mobs in the mob group - use mobstore instead??
