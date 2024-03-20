@@ -24,14 +24,21 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     super(scene, x, y, texture, frame);
     scene.physics.world.enable(this);
-    this.setScale(2.0);
 
     this.anims.play('t1_idle');
 
+    this.setScale(2.0)
+
+    if (!this.body) {
+      throw new Error('no physics body');
+    }
+    this.body.setSize(16, 16);
+
+
     // properties for projectiles
-    this.shootRange = 100;
+    this.shootRange = 1000;
     this.shootTime = 2;
-    this.shootDelay = 1000;
+    this.shootDelay = 500;
     this.attackDmg = 20;
   };
 
