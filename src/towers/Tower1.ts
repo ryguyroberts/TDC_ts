@@ -17,8 +17,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private shootDelay: number;
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private attackDmg: number;
+  private projectiles: Phaser.GameObjects.Sprite[] = [];
   placed: boolean = false;
-  projectiles: Phaser.GameObjects.Sprite[] = [];
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 

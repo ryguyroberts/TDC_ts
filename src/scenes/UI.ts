@@ -138,7 +138,7 @@ export class UI extends Phaser.Scene {
             // Remove tower from active towers state 
             towerState.removeTower(id);
           }
-          
+
         } else {
           console.log('Selected tower not found in tower state');
         }
@@ -147,8 +147,6 @@ export class UI extends Phaser.Scene {
         console.log('No tower selected for deletion');
       }
     });
-
-
   }
 
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
