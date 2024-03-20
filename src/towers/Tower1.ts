@@ -1,4 +1,6 @@
 import Phaser from "phaser";
+import MobTier1 from "../enemies/MobTier1";
+import { mobStore } from "../states/MobStore";
 
 // For typescript
 declare global {
@@ -13,7 +15,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private shootRange: number;
   private shootTime: number;
   private shootDelay: number;
-  private spiderGroup!: Phaser.Physics.Arcade.Group
+  private mobGroup!: Phaser.Physics.Arcade.Group
+  private attackDmg: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -26,51 +29,38 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // properties for projectiles
     this.shootRange = 100;
     this.shootTime = 2;
-    this.shootDelay  = 200;
+    this.shootDelay  = 1000;
+    this.attackDmg = 20;
   };
 
   preUpdate(t: number, dt: number) {
     super.preUpdate(t, dt);
 
-    this.spiderGroup = (this.scene as any).spiderGroup
-    // Get all spiders in spider group
-    const spiders = this.spiderGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
+
+    this.mobGroup = (this.scene as any).mobGroup
+        // Get all mobs in the mob group - use mobstore instead??
+    const mobs = this.mobGroup.getChildren() as Phaser.Physics.Arcade.Sprite[];
    
-    let closestSpider: Phaser.Physics.Arcade.Sprite | null = null;
+    let closestMob: Phaser.Physics.Arcade.Sprite | null = null;
     let closestDistance = Infinity;
 
-    spiders.forEach((spider: Phaser.Physics.Arcade.Sprite) => {
-      const distance = Phaser.Math.Distance.Between(this.x, this.y, spider.x, spider.y);
+    mobs.forEach((mob: Phaser.Physics.Arcade.Sprite) => {
+      const distance = Phaser.Math.Distance.Between(this.x, this.y, mob.x, mob.y);
       if (distance < closestDistance) {
-        closestSpider = spider;
+        closestMob = mob;
         closestDistance = distance;
       }
     });
 
-    if (closestSpider && closestDistance <= this.shootRange && this.scene.time.now > this.shootTime) {
-      this.shoot(closestSpider);
+    if (closestMob && closestDistance <= this.shootRange && this.scene.time.now > this.shootTime) {
+      this.shoot(closestMob);
       this.shootTime = this.scene.time.now + this.shootDelay;
     }
    
-    }
+  }
   
-  // detectAndShoot(spider: Phaser.GameObjects.Sprite) {
-  //   if (!spider) {
-  //     return;
-  //   };
-
-  //   // Between tower and Fauna
-  //   const distance = Phaser.Math.Distance.Between(this.x, this.y, spider.x, spider.y);
-
-  //   if (distance <= this.shootRange && this.scene.time.now > this.shootTime) {
-  //     this.shoot(spider);
-  //     this.shootTime = this.scene.time.now + this.shootDelay;
-  // //   };
-
-  // }
-
   shoot(target: Phaser.Physics.Arcade.Sprite) {
-    // Create sprite and shoot towards the target (spider)
+    // Create sprite and shoot towards the target (mob)
     const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
     this.scene.physics.add.existing(projectile);
 
@@ -78,6 +68,12 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     const checkDistance = () => {
       if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 10) {
         projectile.destroy();
+
+        if (target instanceof MobTier1) { // Ensure target is MobTier1
+          (target as MobTier1).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to MobTier1 and call decreaseHealth
+          mobStore.updateMobHealth(target.getData('id'), target.health);
+        }
+        // another if here? for mobtier
       } else {
         this.scene.physics.moveToObject(projectile, target, 200);
         this.scene.time.delayedCall(100, checkDistance);

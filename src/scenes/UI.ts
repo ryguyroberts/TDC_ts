@@ -3,7 +3,6 @@ import Phaser, { Tilemaps } from "phaser";
 // Mobx State
 import { reaction } from "mobx";
 import { towerState } from "../states/TowerStore";
-import { spiderbotStore } from "../states/SpiderbotStore";
 import selectedTowerState from "../states/selected_tower";
 
 
@@ -42,17 +41,17 @@ export class UI extends Phaser.Scene {
     uiMap.createLayer('Left Panel UI', allUiLayers);
     uiMap.createLayer('Right Panel UI', allUiLayers);
 
-    reaction(
-      () => Array.from(spiderbotStore.spiderbots.entries()),
-      (spiderbots) => {
-        this.spiderGroup.clear(true, true);
+    // reaction(
+    //   () => Array.from(spiderbotStore.spiderbots.entries()),
+    //   (spiderbots) => {
+    //     this.spiderGroup.clear(true, true);
 
-        spiderbots.forEach((entry) => {
-          const spiderbot = entry[1];
-          this.spiderGroup.add(spiderbot);
-        })
-      },
-    )
+    //     spiderbots.forEach((entry) => {
+    //       const spiderbot = entry[1];
+    //       this.spiderGroup.add(spiderbot);
+    //     })
+    //   },
+    // )
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
