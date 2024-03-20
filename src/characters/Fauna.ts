@@ -11,72 +11,95 @@ declare global {
 
 export default class Fauna extends Phaser.Physics.Arcade.Sprite {
 
+  private movePath: Phaser.Math.Vector2[] = []
+  private moveToTarget?: Phaser.Math.Vector2
+
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
+      super(scene, x, y, texture, frame)
 
-    super(scene, x, y, texture, frame);
-    scene.physics.world.enable(this);
+      this.anims.play('fauna-idle-down')
+  }
 
-    if (!this.body) {
-      throw new Error('body no load');
-    }
-    this.body.setSize(this.width * 0.5, this.height * 0.8);
-    this.anims.play('fauna-idle-down');
-  };
+  moveAlong(path: Phaser.Math.Vector2[]) {
+      if (!path || path.length <= 0) {
+          return
+      }
 
-  update( cursors: Phaser.Types.Input.Keyboard.CursorKeys ) {
-    if(!cursors || !this.body || !this.anims.currentAnim) {
-      return
-    }
-    const speed =150
+      this.movePath = path
+      this.moveTo(this.movePath.shift()!)
+  }
 
-    let velocityX = 0;
-    let velocityY = 0;
+  moveTo(target: Phaser.Math.Vector2) {
+      this.moveToTarget = target
+  }
 
+  update() {
     
-    if (cursors.left?.isDown) {
+      let dx = 0
+      let dy = 0
 
-      this.anims.play('fauna-run-side', true)
-      velocityX = -speed;
+      if (this.moveToTarget) {
+          dx = this.moveToTarget.x - this.x
+          dy = this.moveToTarget.y - this.y
 
-      this.scaleX = -1
-      this.body.offset.x = 24
+          if (Math.abs(dx) < 5) {
+              dx = 0
+          }
+          if (Math.abs(dy) < 5) {
+              dy = 0
+          }
 
-    } else if (cursors.right?.isDown) {
+          if (dx === 0 && dy === 0) {
+              if (this.movePath.length > 0) {
+                  this.moveTo(this.movePath.shift()!)
+                  return
+              }
 
-      this.anims.play('fauna-run-side', true)
-      velocityX = speed;
+              this.moveToTarget = undefined
+          }
+      }
 
-      this.scaleX = 1
-      this.body.offset.x = 8
+      const leftDown = dx < 0
+      const rightDown = dx > 0
+      const upDown = dy < 0
+      const downDown = dy > 0
 
-    } else if (cursors.up?.isDown) {
+      const speed = 100
 
-      this.anims.play('fauna-run-up', true)
-      velocityY = -speed;
+      if (leftDown) {
+          this.anims.play('fauna-run-side', true)
+          this.setVelocity(-speed, 0)
 
-      
-    } else if (cursors.down?.isDown) {
+          this.flipX = true
+      } else if (rightDown) {
+          this.anims.play('fauna-run-side', true)
+          this.setVelocity(speed, 0)
 
-      this.anims.play('fauna-run-down', true)
-      velocityY = +speed;
+          this.flipX = false
+      } else if (upDown) {
+          this.anims.play('fauna-run-up', true)
+          this.setVelocity(0, -speed)
+      } else if (downDown) {
+          this.anims.play('fauna-run-down', true)
+          this.setVelocity(0, speed)
+      } else {
+          const parts = this.anims.currentAnim.key.split('-')
+          parts[1] = 'idle'
+          this.anims.play(parts.join('-'))
+          this.setVelocity(0, 0)
+      }
+  }
+}
 
-
-    } else {
-      const parts = this.anims.currentAnim.key.split('-')
-      parts[1] = 'idle'
-      this.anims.play(parts.join('-'))
-    }
-    this.setVelocity(velocityX, velocityY);
-  };
-
-};
-
-
-// Add Fauna to game object Factory
 Phaser.GameObjects.GameObjectFactory.register('fauna', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
-  const sprite = new Fauna(this.scene, x, y, texture, frame);
-  this.displayList.add(sprite);
-  this.updateList.add(sprite);
+  var sprite = new Fauna(this.scene, x, y, texture, frame)
 
-  return sprite;
-});
+  this.displayList.add(sprite)
+  this.updateList.add(sprite)
+
+  this.scene.physics.world.enableBody(sprite, Phaser.Physics.Arcade.DYNAMIC_BODY)
+
+  sprite.body.setSize(sprite.width * 0.5, sprite.height * 0.8)
+
+  return sprite
+})
