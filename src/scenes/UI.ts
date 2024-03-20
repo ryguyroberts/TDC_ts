@@ -5,6 +5,7 @@ import { reaction } from "mobx";
 import { towerState } from "../states/TowerStore";
 import selectedTowerState from "../states/selected_tower";
 import { mobStore } from "../states/MobStore";
+import { gamephase } from "../states/GamePhase";
 
 
 
@@ -146,6 +147,27 @@ export class UI extends Phaser.Scene {
       } else {
         console.log('No tower selected for deletion');
       }
+    });
+
+    // Current phase Display for testing
+    const gamePhaseText = this.add.text(10,875, 'Current Phase: Placeholder', textStyle);
+ 
+    const updategPT = () => {
+      gamePhaseText.setText(`Current Phase: ${gamephase.stage}`);
+    }
+    // run once
+    updategPT();
+
+    // update text whenever the phase changes
+    reaction(
+      () => gamephase.stage,
+      () => updategPT()
+    );
+
+    const NextPhase = this.add.text(10, 905, 'Start Combat', textStyle).setInteractive();
+      console.log(NextPhase);
+    deleteTower.on('pointerdown', () => {
+    
     });
   }
 
