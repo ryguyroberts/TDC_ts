@@ -21,7 +21,7 @@ export class Preloader extends Phaser.Scene {
     this.load.atlas('mob_t2', 'enemies/mob_t2.png', 'enemies/mob_t2.json')
 
     // Tower
-    this.load.atlas('tower1', 'towers/tower1.png', 'towers/tower1.json')
+    this.load.atlas('tower_t1', 'towers/tower_t1.png', 'towers/tower_t1.json')
 
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');

@@ -3,7 +3,7 @@ import Phaser, { Tilemaps } from "phaser";
 
 // Import Animations
 import { createFaunaAnims } from "../anims/FainaAnims";
-import { createTower1Anims } from "../anims/Tower1Anims";
+import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
 
@@ -56,7 +56,7 @@ export class MainGame extends Phaser.Scene {
 
   // Animations
   createFaunaAnims(this.anims);
-  createTower1Anims(this.anims);
+  createTowerTier1Anims(this.anims);
   createMobTier1Anims(this.anims);
   createMobTier2Anims(this.anims);
 
@@ -135,7 +135,7 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup = this.physics.add.group();
    
     // Spawn mobs for testing
-    const spawnInterval = 2000; // milliseconds (e.g., spawn a spider every 5 seconds)
+    const spawnInterval = 1000; // milliseconds (e.g., spawn a spider every 5 seconds)
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
@@ -175,7 +175,7 @@ export class MainGame extends Phaser.Scene {
   }
   
   createMobTier2() {
-    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t2');
+    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);

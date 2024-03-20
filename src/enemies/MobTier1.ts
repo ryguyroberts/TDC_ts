@@ -22,6 +22,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture, frame);
     scene.physics.world.enable(this);
     this.anims.play('mob_t1_run');
+    this.setDepth(100);
    
   };
 

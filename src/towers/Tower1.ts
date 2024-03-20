@@ -22,14 +22,14 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     super(scene, x, y, texture, frame);
     scene.physics.world.enable(this);
-    this.setScale(0.50);
+    this.setScale(2.0);
 
-    this.anims.play('tower-idle');
+    this.anims.play('t1_idle');
 
     // properties for projectiles
-    this.shootRange = 100;
-    this.shootTime = 2;
-    this.shootDelay  = 1000;
+    this.shootRange = 1000;
+    this.shootTime = 50;
+    this.shootDelay  = 200;
     this.attackDmg = 20;
   };
 
@@ -62,6 +62,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   shoot(target: Phaser.Physics.Arcade.Sprite) {
     // Create sprite and shoot towards the target (mob)
     const projectile = this.scene.add.sprite(this.x, this.y, 'fauna');
+    projectile.setDepth(50);
     this.scene.physics.add.existing(projectile);
 
     // Function to continuously check the distance between the projectile and the target
