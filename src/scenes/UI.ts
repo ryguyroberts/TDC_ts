@@ -164,10 +164,10 @@ export class UI extends Phaser.Scene {
       () => updategPT()
     );
 
-    const NextPhase = this.add.text(10, 905, 'Start Combat', textStyle).setInteractive();
+    const NextPhase = this.add.text(10, 905, 'Toggle Phase', textStyle).setInteractive();
       console.log(NextPhase);
-    deleteTower.on('pointerdown', () => {
-    
+      NextPhase.on('pointerdown', () => {
+      gamephase.toggleStage();
     });
   }
 

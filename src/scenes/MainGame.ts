@@ -33,6 +33,7 @@ export class MainGame extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private mobSpawnEvent: Phaser.Time.TimerEvent
+  private phaseChangeEvent: Phaser.Time.TimerEvent
 
 
   constructor() {
@@ -61,33 +62,7 @@ export class MainGame extends Phaser.Scene {
   createMobTier2Anims(this.anims);
   createGreenProjectAnims(this.anims);
 
-  // Test text Displays mobstate
 
-  
-  // const mobsText: Phaser.GameObjects.Text[] = [];
-
-  //   // Function to update the text
-  // const updateMobsTexts = () => {
-  //   mobsText.forEach((text) => text.destroy());
-  //   let index = 0;
-  //   mobStore.mobs.forEach((mob, id) => {
-  //     const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${mob.health}`, {
-  //       fontSize: "16px",
-  //       color: "#ffffff",
-  //     });
-  //     mobsText.push(text);
-  //     index++;
-  //   });
-  // };
-  // // Initial update
-  // updateMobsTexts();
-
-  // // Watch for change
-  // reaction(
-  //   () => Array.from(mobStore.mobs.entries()),
-  //   () => updateMobsTexts()
-  // );
-    
   // Tileset
     const map = this.make.tilemap({ key: 'tilemap' });
 
@@ -122,8 +97,8 @@ export class MainGame extends Phaser.Scene {
     // Start in build Phase!
     this.startBuildPhase;
     
-    this.time.addEvent({
-      delay: 15000, // 60 seconds
+    this.phaseChangeEvent = this.time.addEvent({
+      delay: 15000, // Our Time Delay
       loop: true,
       callback: this.togglePhase,
       callbackScope: this
@@ -148,6 +123,8 @@ togglePhase() {
     if (this.mobSpawnEvent) {
       this.mobSpawnEvent.remove(false);
     }
+
+    this.phaseChangeEvent.reset({ delay: 15000 });
   };
 
 
@@ -162,6 +139,8 @@ togglePhase() {
       callback: this.createMobRandom,
       callbackScope: this
     });
+
+    this.phaseChangeEvent.reset({ delay: 15000 });
   }
 
  // Move these out somehow? 
