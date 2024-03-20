@@ -25,10 +25,10 @@ export class MainGame extends Phaser.Scene {
   private fauna!: Phaser.GameObjects.Sprite;
 
   // So many towers
-  private tower1_01!: Phaser.GameObjects.Sprite;
-  private tower1_02!: Phaser.GameObjects.Sprite;
-  private tower1_03!: Phaser.GameObjects.Sprite;
-  private tower1_04!: Phaser.GameObjects.Sprite;
+  // private tower1_01!: Phaser.GameObjects.Sprite;
+  // private tower1_02!: Phaser.GameObjects.Sprite;
+  // private tower1_03!: Phaser.GameObjects.Sprite;
+  // private tower1_04!: Phaser.GameObjects.Sprite;
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -51,9 +51,8 @@ export class MainGame extends Phaser.Scene {
   create() {
 
   // Launch UI scene
-  // turned this off
-  // this.scene.launch('ui');
-  
+  this.scene.launch('ui', { mobGroup: this.mobGroup });
+
   // Animations
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
@@ -118,17 +117,17 @@ export class MainGame extends Phaser.Scene {
 
     // Test Towers
 
-    this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
-    this.physics.add.existing(this.tower1_01);
+    // this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
+    // this.physics.add.existing(this.tower1_01);
 
-    this.tower1_02 = this.add.tower1(176, 674, 'tower1');
-    this.physics.add.existing(this.tower1_02);
+    // this.tower1_02 = this.add.tower1(176, 674, 'tower1');
+    // this.physics.add.existing(this.tower1_02);
 
-    this.tower1_03 = this.add.tower1(176, 770, 'tower1');
-    this.physics.add.existing(this.tower1_03);
+    // this.tower1_03 = this.add.tower1(176, 770, 'tower1');
+    // this.physics.add.existing(this.tower1_03);
    
-    this.tower1_04 = this.add.tower1(176, 862, 'tower1');
-    this.physics.add.existing(this.tower1_04);
+    // this.tower1_04 = this.add.tower1(176, 862, 'tower1');
+    // this.physics.add.existing(this.tower1_04);
 
     // Test mobs
     this.mobGroup = this.physics.add.group();
@@ -142,9 +141,6 @@ export class MainGame extends Phaser.Scene {
       callbackScope: this
     });
 
-    // Launch UI scene
-    // this.scene.launch('ui', { spiderGroup: this.spiderGroup });
-
   };
 
   createMobRandom() {
@@ -153,8 +149,10 @@ export class MainGame extends Phaser.Scene {
   
     if (randomMobType === 1) {
       this.createMobTier1();
+      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
     } else {
       this.createMobTier2();
+      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
     }
   }
   

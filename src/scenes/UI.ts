@@ -4,15 +4,16 @@ import Phaser, { Tilemaps } from "phaser";
 import { reaction } from "mobx";
 import { towerState } from "../states/TowerStore";
 import selectedTowerState from "../states/selected_tower";
+import { mobStore } from "../states/MobStore";
 
 
 
 export class UI extends Phaser.Scene {
-  private spiderGroup!: Phaser.Physics.Arcade.Group;
+  private mobGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
 
   init(data: any) {
-    this.spiderGroup = data.spiderGroup;
+    this.mobGroup = data.mobGroup;
   }
 
   constructor() {
@@ -21,8 +22,8 @@ export class UI extends Phaser.Scene {
   }
 
   create() {
-    // Init spidergroup
-    this.spiderGroup = this.physics.add.group();
+    // Init mobgroup
+    this.mobGroup = this.physics.add.group();
 
     // UI Tilemap Creation
     const uiMap = this.make.tilemap({ key: 'ui_tilemap' });
@@ -41,17 +42,15 @@ export class UI extends Phaser.Scene {
     uiMap.createLayer('Left Panel UI', allUiLayers);
     uiMap.createLayer('Right Panel UI', allUiLayers);
 
-    // reaction(
-    //   () => Array.from(spiderbotStore.spiderbots.entries()),
-    //   (spiderbots) => {
-    //     this.spiderGroup.clear(true, true);
-
-    //     spiderbots.forEach((entry) => {
-    //       const spiderbot = entry[1];
-    //       this.spiderGroup.add(spiderbot);
-    //     })
-    //   },
-    // )
+    reaction(
+      () => Array.from(mobStore.mobs.entries()),
+      (mobs) => {
+        mobs.forEach((entry) => {
+          const mob = entry[1];
+          this.mobGroup.add(mob);
+        })
+      },
+    )
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
@@ -68,7 +67,6 @@ export class UI extends Phaser.Scene {
 
         // Tower Sprite Creation
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
-          console.log('num of spiders in the spiderGroup', this.spiderGroup.getLength());
           const tower = this.add.tower1(localX, localY, 'tower1');
           tower.setAlpha(0.5);
           const towerID = Phaser.Math.RND.uuid();
