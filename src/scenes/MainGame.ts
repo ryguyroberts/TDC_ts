@@ -26,10 +26,10 @@ export class MainGame extends Phaser.Scene {
   private fauna!: Phaser.GameObjects.Sprite;
 
   // So many towers
-  private tower1_01!: Phaser.GameObjects.Sprite;
-  private tower1_02!: Phaser.GameObjects.Sprite;
-  private tower1_03!: Phaser.GameObjects.Sprite;
-  private tower1_04!: Phaser.GameObjects.Sprite;
+  // private tower1_01!: Phaser.GameObjects.Sprite;
+  // private tower1_02!: Phaser.GameObjects.Sprite;
+  // private tower1_03!: Phaser.GameObjects.Sprite;
+  // private tower1_04!: Phaser.GameObjects.Sprite;
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -52,11 +52,8 @@ export class MainGame extends Phaser.Scene {
   create() {
 
   // Launch UI scene
-  // turned this off
-  this.scene.launch('ui', {
-    mobGroup: this.mobGroup
-  });
-  
+  this.scene.launch('ui', { mobGroup: this.mobGroup });
+
   // Animations
   createFaunaAnims(this.anims);
   createTower1Anims(this.anims);
@@ -95,12 +92,12 @@ export class MainGame extends Phaser.Scene {
     const tilemap_base_props2 = map.addTilesetImage('Tech_TD_Ced_02', 'tilemap_base_props2');
     const tilemap_npcs = map.addTilesetImage('npc x1', 'tilemap_npcs');
     const tilemap_items = map.addTilesetImage('props and items x1', 'tilemap_items');
-  
+
     // Check if null
     if (!tilemap_base_props1 || !tilemap_base_props2 || !tilemap_npcs || !tilemap_items) {
       throw new Error("Failed to load tileset");
     }
-        
+
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
     map.createLayer('Tile Layer 1', allLayers);
@@ -120,21 +117,19 @@ export class MainGame extends Phaser.Scene {
     // Colliders
     this.physics.add.collider(this.fauna, this.wallsLayer);
 
-     // Test Towers
+    // Test Towers
 
-    this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
-    this.physics.add.existing(this.tower1_01);
+    // this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
+    // this.physics.add.existing(this.tower1_01);
 
-    this.tower1_02 = this.add.tower1(176, 674, 'tower1');
-    this.physics.add.existing(this.tower1_02);
+    // this.tower1_02 = this.add.tower1(176, 674, 'tower1');
+    // this.physics.add.existing(this.tower1_02);
 
-    this.tower1_03 = this.add.tower1(176, 770, 'tower1');
-    this.physics.add.existing(this.tower1_03);
+    // this.tower1_03 = this.add.tower1(176, 770, 'tower1');
+    // this.physics.add.existing(this.tower1_03);
    
-    this.tower1_04 = this.add.tower1(176, 862, 'tower1');
-    this.physics.add.existing(this.tower1_04);
-
-
+    // this.tower1_04 = this.add.tower1(176, 862, 'tower1');
+    // this.physics.add.existing(this.tower1_04);
 
     // Test mobs
     this.mobGroup = this.physics.add.group();
@@ -148,7 +143,7 @@ export class MainGame extends Phaser.Scene {
       callbackScope: this
     });
 
-    };
+  };
 
   createMobRandom() {
     // Randomly decide whether to create MobTier1 or MobTier2
@@ -156,9 +151,11 @@ export class MainGame extends Phaser.Scene {
   
     if (randomMobType === 1) {
       this.createMobTier1();
+      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
     } else {
       // console.log('made a mob2');
       this.createMobTier2();
+      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
     }
   }
   
@@ -191,7 +188,7 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
   }
-  
+
   update() {
     if (this.fauna) {
       this.fauna.update(this.cursors);
