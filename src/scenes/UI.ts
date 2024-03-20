@@ -164,11 +164,31 @@ export class UI extends Phaser.Scene {
       () => updategPT()
     );
 
-    const NextPhase = this.add.text(10, 905, 'Toggle Phase', textStyle).setInteractive();
-      console.log(NextPhase);
+      // Build phase timer
+    const buildTime = this.add.text(10,842, 'Placeholder', textStyle);
+    const updateBT = () => {
+      buildTime .setText(`Build Time: ${gamephase.buildtime}`);
+    }
+    updateBT();
+
+    reaction(
+      () => gamephase.buildtime,
+      () => updateBT()
+    );
+
+
+
+      
+    const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
       NextPhase.on('pointerdown', () => {
-      gamephase.toggleStage();
+        // if combat stage don't advance change button text?
+        if (gamephase.stage === 'combat') {
+          return;
+        }
+        gamephase.toggleStage();
     });
+     
+
   }
 
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {

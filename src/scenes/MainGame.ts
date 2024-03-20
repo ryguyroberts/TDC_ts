@@ -20,6 +20,7 @@ import '../enemies/MobTier2';
 // import { reaction } from "mobx";
 import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
+import { reaction } from "mobx";
 
 export class MainGame extends Phaser.Scene {
   // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
@@ -32,9 +33,9 @@ export class MainGame extends Phaser.Scene {
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
-  private mobSpawnEvent: Phaser.Time.TimerEvent
-  private phaseChangeEvent: Phaser.Time.TimerEvent
-
+  private mobSpawnEvent: Phaser.Time.TimerEvent;
+  private buildPhaseEndEv: Phaser.Time.TimerEvent;
+  private buildPhaseEvent: Phaser.Time.TimerEvent;
 
   constructor() {
     super('main_game');
@@ -95,22 +96,64 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup = this.physics.add.group();
 
     // Start in build Phase!
-    this.startBuildPhase;
+    this.startBuildPhase()
     
-    this.phaseChangeEvent = this.time.addEvent({
-      delay: 15000, // Our Time Delay
-      loop: true,
-      callback: this.togglePhase,
-      callbackScope: this
-    });
+    // this.time.addEvent({
+    //   delay: 15000, // Our Time Delay
+    //   loop: true,
+    //   callback: this.togglePhase,
+    //   callbackScope: this
+    // });
+
+    // if gamephase changes react appropriately
+    reaction(
+      () => gamephase.stage,
+      () => this.dynamicPhase()
+    );
+      
+    // if mob enters array run my check if no more mobs end combat
+    reaction(
+      () => Array.from(mobStore.mobs.entries()),
+      () => this.checkEndCombat()
+    )
+
   };
 
-// Method to toggle between build and combat phases
-togglePhase() {
-  gamephase.toggleStage();
+// Method to toggle between build and combat phases for machines?
+// togglePhase() {
+//   gamephase.toggleStage();
+//   if (gamephase.stage === 'build') {
+//     this.startBuildPhase();
+//   } else {
+//     this.startCombatPhase();
+//   }
+// }
+
+// if mobx state has no mobs (all dead) enter build stage
+
+checkEndCombat() {
+  const mobEntries = Array.from(mobStore.mobs.entries());
+  if (mobEntries.length === 0) {
+    // If there are no mobs left, transition to the build phase
+    gamephase.stage = 'build';
+  }
+}
+
+
+// If the mobX state changes start the right stage
+dynamicPhase() {
   if (gamephase.stage === 'build') {
     this.startBuildPhase();
   } else {
+    // starting the combat phase
+
+    // Remove build phase natural end.
+        if (this.buildPhaseEndEv) {
+      this.buildPhaseEndEv.remove(false);
+      this.buildPhaseEvent.remove(false);
+    }
+    // Build timer zero
+    gamephase.buildtime = 0;
     this.startCombatPhase();
   }
 }
@@ -119,29 +162,79 @@ togglePhase() {
   // Build phase!
   startBuildPhase() {
     console.log('Build Phase Started');
+
     // Stop spawning mobs
     if (this.mobSpawnEvent) {
       this.mobSpawnEvent.remove(false);
-    }
+    };
 
-    this.phaseChangeEvent.reset({ delay: 15000 });
+    gamephase.buildtime = 61;
+
+ // Set a timed event to update build time every second
+  this.buildPhaseEvent = this.time.addEvent({
+    delay: 1000, // Delay of 1 second
+    callback: () => {
+      this.updateTimer();
+    },
+    callbackScope: this,
+    loop: true // Set loop to true to repeat the event
+    });
+
+
+
+    const buildTime = 60;
+    this.buildPhaseEndEv = this.time.addEvent({
+      delay: buildTime * 1000, // Convert seconds to milliseconds
+        callback: this.endBuild,
+        callbackScope: this
+    })
+
+    this.time.addEvent({
+      delay: 1000, // Convert seconds to milliseconds
+        callback: this.updateTimer,
+        callbackScope: this
+    })
   };
+
+  endBuild() {
+    console.log('end build stage');
+    gamephase.toggleStage();
+  }
+  
+  
+  updateTimer() {
+    // increment by 1
+    gamephase.updateTimerAction();
+
+  }
 
 
   // Combat phase start no way to auto end right
   startCombatPhase() {
     console.log('Combat Phase started');
     // Start mob spawning
-    const spawnInterval = 2000;
-    this.mobSpawnEvent = this.time.addEvent({
-      delay: spawnInterval,
-      loop: true,
-      callback: this.createMobRandom,
-      callbackScope: this
-    });
+    const numberOfMobsToSpawn = 30; // Adjust this number as needed
+    const spawnDelay = 1000; // Adjust this delay (in milliseconds) as needed
 
-    this.phaseChangeEvent.reset({ delay: 15000 });
+    // Function to spawn mobs with a delay
+    const spawnMobsWithDelay = (count : number) => {
+        if (count > 0) {
+            // Spawn a mob
+            this.createMobRandom();
+            // Call the function recursively after the delay
+            this.time.delayedCall(spawnDelay, spawnMobsWithDelay, [count - 1]);
+        }
+    };
+
+    // Start spawning mobs with delay
+    spawnMobsWithDelay(numberOfMobsToSpawn);
+
+
+
+    // this.phaseChangeEvent.reset({ delay: 15000 });
   }
+
+  
 
  // Move these out somehow? 
   createMobRandom() {
@@ -150,11 +243,11 @@ togglePhase() {
   
     if (randomMobType === 1) {
       this.createMobTier1();
-      console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
+      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     } else {
       // console.log('made a mob2');
       this.createMobTier2();
-      console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
+      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     }
   }
   
