@@ -48,9 +48,9 @@ export class UI extends Phaser.Scene {
         mobs.forEach((entry) => {
           const mob = entry[1];
           this.mobGroup.add(mob);
-        })
+        });
       },
-    )
+    );
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
@@ -71,6 +71,7 @@ export class UI extends Phaser.Scene {
           tower.setAlpha(0.5);
           const towerID = Phaser.Math.RND.uuid();
           towerState.addTower(towerID, tower);
+          tower.placed = false;
 
           tower.setInteractive();
 
@@ -99,6 +100,7 @@ export class UI extends Phaser.Scene {
 
             //Remove pointermove listener
             this.input.off('pointermove');
+            tower.placed = true;
             isPlaced = true;
 
             // Attach tower selection handler
@@ -117,17 +119,35 @@ export class UI extends Phaser.Scene {
     // Delete tower button
     const deleteTower = this.add.text(0, 0, 'Delete Tower', textStyle).setInteractive();
     deleteTower.on('pointerdown', () => {
-      // if (this.selectedTower) {
-      //   // find index in tower state
-      // }
+      if (selectedTowerState.selectedTower) {
+        const towerToRemove = selectedTowerState.selectedTower;
+        const id = this.findSelectedTower(towerToRemove);
+
+        if (id !== null) {
+          const towerObj = towerState.getTower(id);
+
+          // Remove all projectiles currently active by the tower
+          if (towerObj) {
+            // Cease the firing of the tower
+            towerObj.stopFiring();
+
+            towerObj.placed = false;
+            // Remove tower sprite from game
+            towerToRemove.destroy();
+
+            // Remove tower from active towers state 
+            towerState.removeTower(id);
+          }
+
+        } else {
+          console.log('Selected tower not found in tower state');
+        }
+        selectedTowerState.deselectTower();
+      } else {
+        console.log('No tower selected for deletion');
+      }
     });
-
-
   }
-
-  // createTower(x: number, y: number, texture: string, width: number, height: number) {
-  //   const tower = this.add.
-  // }
 
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
     tower.on('pointerdown', () => {
@@ -160,7 +180,12 @@ export class UI extends Phaser.Scene {
     console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
   }
 
+  private findSelectedTower(selectedTower: Phaser.GameObjects.Sprite): string | null {
+    for (const [towerID, tower] of towerState.activeTowers.entries()) {
+      if (tower === selectedTower) {
+        return towerID;
+      }
+    }
+    return null;
+  }
 }
-
-// Change towerstore to Map,
-// create tower group and match createSpider(); 
