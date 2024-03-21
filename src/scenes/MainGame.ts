@@ -23,6 +23,7 @@ import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
 import MobTier1 from "../enemies/MobTier1";
+import { towerState } from "../states/TowerStore";
 
 
 export class MainGame extends Phaser.Scene {
@@ -107,11 +108,33 @@ export class MainGame extends Phaser.Scene {
       () => Array.from(mobStore.mobs.entries()),
       () => this.checkEndCombat()
     );
+
+    // check if player is still alive
+    this.checkPlayerHealth();
   };
 
+checkPlayerHealth() {
+  this.time.addEvent({
+    delay: 100,
+    callback: () => {
+      if (playerState.playerHealth <= 0) {
+        this.restartGame();
+        this.scene.stop('ui');
+        this.scene.start('game_over');
+      }
+    },
+    loop: true,
+  });
+}
+
+restartGame() {
+  this.time.removeAllEvents(); // stops all timer events
+  playerState.reset();
+  towerState.reset();
+  mobStore.reset();
+}
 
 // if mobx state has no mobs (all dead) enter build stage
-
 checkEndCombat() {
   const mobEntries = Array.from(mobStore.mobs.entries());
   if (mobEntries.length === 0) {
@@ -280,12 +303,13 @@ checkEndCombat() {
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
+      console.log('mob x&y:', mob.x, mob.y);
 
       this.calculateAndMoveMob(mob);
       mob.update();
 
-      const endPointX = 1168; // change to endpoint when ready
-      const endPointY = 200; // change to endpoint when ready
+      const endPointX = 1068; // change to endpoint when ready
+      const endPointY = 910; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);

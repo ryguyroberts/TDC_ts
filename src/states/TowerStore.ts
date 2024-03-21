@@ -19,6 +19,11 @@ class TowerState {
   getTower(id: string) {
     return this.activeTowers.get(id);
   }
+  
+  reset(): void {
+    this.activeTowers.clear();
+  }
+
 };
 
 export const towerState = new TowerState();

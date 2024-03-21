@@ -20,14 +20,20 @@ class PlayerState {
     this.currency += amount;
   }
 
-  takeDamage(damage: number) {
+  takeDamage(damage: number): boolean {
     if (this.playerHealth > 0) {
       this.playerHealth -= damage;
-    } else {
-      return false; // game over
+      if (this.playerHealth <= 0) {
+        return true; // game over
+      }
     }
+    return false; // player still alive
   }
 
+  reset() {
+    this.playerHealth = 100;
+    this.currency = 1000;
+  }
 }
 
 export const playerState = new PlayerState();

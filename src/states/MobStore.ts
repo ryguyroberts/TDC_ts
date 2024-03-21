@@ -36,6 +36,10 @@ class MobStore {
     return Array.from(this.mobs.values());
   }
 
+  reset(): void {
+    this.mobs.clear();
+  }
+
 };
 
 export const mobStore = new MobStore();
