@@ -15,12 +15,16 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
   accessor health: number = 100;
-  private speed: number = 200;
+  //private speed: number = 200;
   
   // for currency state
   value: number = 100;
 
   private hasEnteredEndpoint: boolean = false;
+
+  // For path state
+  private movePath: Phaser.Math.Vector2[] = []
+  private moveToTarget?: Phaser.Math.Vector2
  
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
@@ -32,11 +36,85 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
    
   };
 
+  moveAlong(path: Phaser.Math.Vector2[]) {
+    if (!path || path.length <= 0) {
+        return
+    }
 
-  protected preUpdate(t: number, dt: number){
-    super.preUpdate(t, dt);
-    this.setVelocityX(this.speed);
-  }
+    this.movePath = path
+    this.moveTo(this.movePath.shift()!);
+}
+
+moveTo(target: Phaser.Math.Vector2) {
+    this.moveToTarget = target
+}
+
+update() {
+  
+    let dx = -1
+    let dy = 0
+
+    if (this.moveToTarget) {
+       dx = this.moveToTarget.x - this.x
+       dy = this.moveToTarget.y - this.y
+
+       if (Math.abs(dx) < 5) {
+           dx = 0
+       }
+       if (Math.abs(dy) < 5) {
+           dy = 0
+       }
+
+       if (dx === 0 && dy === 0) {
+           if (this.movePath.length > 0) {
+               this.moveTo(this.movePath.shift()!)
+               return
+           }
+
+           this.moveToTarget = undefined
+       }
+    }
+
+    const leftDown = dx < 0
+    const rightDown = dx > 0
+    const upDown = dy < 0
+    const downDown = dy > 0
+
+    const speed = 50
+
+    if (!this.anims.currentAnim){
+      throw new Error('No anims!')
+    }
+
+    if (leftDown) {
+        this.anims.play('mob_t1_run', true)
+        this.setVelocity(-speed, 0)
+
+        this.flipX = true
+    } else if (rightDown) {
+        this.anims.play('mob_t1_run', true)
+        this.setVelocity(speed, 0)
+
+        this.flipX = false
+    } else if (upDown) {
+        this.anims.play('mob_t1_run', true)
+        this.setVelocity(0, -speed)
+    } else if (downDown) {
+        this.anims.play('mob_t1_run', true)
+        this.setVelocity(0, speed)
+    } else {
+        const parts = this.anims.currentAnim.key.split('-')
+        parts[1] = 'idle'
+        this.anims.play(parts.join('-'))
+        this.setVelocity(0, 0)
+    }
+}
+
+
+  // protected preUpdate(t: number, dt: number){
+  //   super.preUpdate(t, dt);
+  //   this.setVelocityY(this.speed);
+  // }
 
   decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {
     if (this.health <= 0) {
@@ -55,7 +133,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
     // Remove mob object if health is zero
     if (this.health <= 0) {
-      // this.speed = 0;
+      // this.setVelocity(0, 0);
       // this.setTint(0xff0000);
       if (!this.body){
         throw new Error('No body to remove health');
