@@ -15,7 +15,7 @@ import '../enemies/MobTier2';
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { checkEndCombat} from '../utils/mobUtils';
+import { createMobTier1, createMobTier2, checkEndCombat} from '../utils/mobUtils';
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -112,17 +112,6 @@ export class MainGame extends Phaser.Scene {
     );
   };
 
-
-// if mobx state has no mobs (all dead) enter build stage
-
-checkEndCombat() {
-  const mobEntries = Array.from(mobStore.mobs.entries());
-  if (mobEntries.length === 0) {
-    // If there are no mobs left, transition to the build phase
-    gamephase.stage = 'build';
-  }
-
-}
 
   // If the mobX state changes start the right stage
   dynamicPhase() {
@@ -225,47 +214,17 @@ checkEndCombat() {
     const randomMobType = Phaser.Math.RND.between(1, 2);
 
     if (randomMobType === 1) {
-      this.createMobTier1();
+      createMobTier1(this, this.mobGroup);
       // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     } else {
       // console.log('made a mob2');
-      this.createMobTier2();
+      createMobTier2(this, this.mobGroup);
       // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     }
   }
 
 
-  // Make it dryer somehow?
-  createMobTier1() {
-    const mob_t1 = this.add.mob_t1(448, 0, 'mob_t1');
-    // Add properties
-    const mobID = Phaser.Math.RND.uuid();
-    mob_t1.setData('id', mobID);
 
-    // Add to physics system and collider
-    // this.physics.add.existing(mob_t1);
-    //this.physics.add.collider(mob_t1, this.wallsLayer); 
-  
-    // Add to mob group and MobStore why both Ryan?
-    this.mobGroup.add(mob_t1);
-    mobStore.addMob(mobID, mob_t1);
-  }
-
-  createMobTier2() {
-    const mob_t2 = this.add.mob_t2(448, 0, 'mob_t1');
-    // Add properties
-    const mobID = Phaser.Math.RND.uuid();
-    mob_t2.setData('id', mobID);
-
-    // Add to physics system and collider
-    // this.physics.add.existing(mob_t2);
-    //this.physics.add.collider(mob_t2, this.wallsLayer); 
-  
-    // Add to mob group and MobStore
-    this.mobGroup.add(mob_t2);
-    mobStore.addMob(mobID, mob_t2);
-  // }
-  }
   calculateAndMoveMob(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
