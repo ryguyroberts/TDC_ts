@@ -303,7 +303,6 @@ checkEndCombat() {
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      console.log('mob x&y:', mob.x, mob.y);
 
       this.calculateAndMoveMob(mob);
       mob.update();
