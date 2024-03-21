@@ -1,16 +1,17 @@
 import Phaser, { Tilemaps } from "phaser";
 
 // Mobx State
+import { autorun } from "mobx";
 import { reaction } from "mobx";
 import { towerState } from "../states/TowerStore";
 import selectedTowerState from "../states/selected_tower";
 import { mobStore } from "../states/MobStore";
-
-
+import { playerState } from "../states/PlayerState";
 
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
+  
 
   init(data: any) {
     this.mobGroup = data.mobGroup;
@@ -51,7 +52,7 @@ export class UI extends Phaser.Scene {
         });
       },
     );
-
+    // RIGHT PANEL UI: TOWER CREATION
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined
@@ -109,6 +110,17 @@ export class UI extends Phaser.Scene {
         });
       }
     });
+
+    // LEFT PANEL UI: PLAYER & GAME STATE
+    const currencyText = this.add.text(10, 10, `Currency: 1000`);
+    const playerHp = this.add.text(20, 10, "HP: 100"); 
+
+    autorun(() => {
+      currencyText.text = `Currency: ${playerState.currency}`;
+      playerHp.text = `HP: ${playerState.playerHealth}`;
+    })
+
+    // playerState.
 
     // Text Properties
     const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
