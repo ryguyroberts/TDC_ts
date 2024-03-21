@@ -121,23 +121,21 @@ export class MainGame extends Phaser.Scene {
     // add fauna
   this.fauna = this.add.fauna(448, 192, 'fauna')
     
-  this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
-      const { worldX, worldY } = pointer
+  
+      const worldX = 1075.9018759018759;
+      const worldY = 935.0719627221824;
 
       const startVec = this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y)
-      console.log("fauna x:",this.fauna.x)
-      console.log("fauna y:", this.fauna.y)
-      console.log("startVec:", this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y))
+      
       const targetVec = this.groundLayer.worldToTileXY(worldX, worldY)
-      console.log("Target x:",worldX)
-      console.log("Target y:", worldY)
-      console.log("TargetVec:", this.groundLayer.worldToTileXY(worldX, worldY))
+
+      console.log(targetVec)
 
       const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer) // Use findPath function
 
       // Move the player along the path
       this.fauna.moveAlong(path)
-  })
+  
 
   // // Create Fauna - Testing
   //   this.fauna = this.add.fauna(448, 192, 'fauna')
@@ -163,7 +161,7 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup = this.physics.add.group();
    
     // Spawn mobs for testing
-    const spawnInterval = 1000; // milliseconds (e.g., spawn a spider every 5 seconds)
+    const spawnInterval = 5000; // milliseconds (e.g., spawn a spider every 5 seconds)
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
@@ -188,7 +186,7 @@ export class MainGame extends Phaser.Scene {
   }
   
   createMobTier1() {
-    const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1');
+    const mob_t1 = this.add.mob_t1(448, 0, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t1.setData('id', mobID);
@@ -200,10 +198,13 @@ export class MainGame extends Phaser.Scene {
     // Add to mob group and MobStore why both Ryan?
     this.mobGroup.add(mob_t1);
     mobStore.addMob(mobID, mob_t1);
+
+    // Calculate and move this mob
+    this.calculateAndMoveMob(mob_t1);
   }
   
   createMobTier2() {
-    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t1');
+    const mob_t2 = this.add.mob_t2(448, 0, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);
@@ -215,7 +216,23 @@ export class MainGame extends Phaser.Scene {
     // Add to mob group and MobStore
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
+
+    // Calculate and move this mob
+    this.calculateAndMoveMob(mob_t2);
   }
+
+  calculateAndMoveMob(mob) {
+    const worldX = 1075.9018759018759; // Target X position
+    const worldY = 935.0719627221824; // Target Y position
+
+    const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
+    const targetVec = this.groundLayer.worldToTileXY(worldX, worldY);
+
+    const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer); // Use findPath function
+
+    // Move the mob along the path
+    mob.moveAlong(path);
+}
 
   update() {
     if (this.fauna) {

@@ -15,20 +15,20 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
   const queue = [];
   const parentForKey: ParentForKey = {};
 
-  console.log("startVec in findPath:", start);
-  console.log("targetVec in findPath:", target);
+  // console.log("startVec in findPath:", start);
+  // console.log("targetVec in findPath:", target);
 
   const startKey = toKey(start.x, start.y);
-  console.log("startKey:", startKey)
+  //console.log("startKey:", startKey)
 
-  const targetKey = toKey(target.x, target.y);
-  console.log("targetKey:", targetKey)
+  let targetKey = toKey(target.x, target.y);
+  targetKey = "33x29";
 
   parentForKey[startKey] = {
       key: '',
       position: { x: -1, y: -1 }
   };
-  console.log("Adding target position to parentForKey:", parentForKey[startKey]);
+  //console.log("Adding target position to parentForKey:", parentForKey[startKey]);
 
   queue.push(start);
 
@@ -36,8 +36,8 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
       const { x, y } = queue.shift() as Point;
       const currentKey = toKey(x, y);
 
-      console.log("Checking current position:", x, y);
-      console.log("Target position:", target.x, target.y);
+      //console.log("Checking current position:", x, y);
+      //console.log("Target position:", target.x, target.y);
 
       if (currentKey === targetKey) {
           break;
@@ -52,7 +52,7 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
 
       for (let i = 0; i < neighbors.length; ++i) {
         const neighbor = neighbors[i];
-        console.log("Neighbor:", neighbor);
+        //console.log("Neighbor:", neighbor);
         const tile = groundLayer.getTileAt(neighbor.x, neighbor.y);
     
         if (!tile) {
@@ -64,7 +64,7 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
         }
     
         const key = toKey(neighbor.x, neighbor.y);
-        console.log("Key:", key);
+        //console.log("Key:", key);
     
         if (key in parentForKey) {
             continue;
@@ -79,9 +79,9 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
     }
   }
 
-  console.log("parentForKey:", parentForKey);
-  console.log("targetKey:", targetKey);
-  console.log("parentForKey[targetKey]:", parentForKey[targetKey]);
+  //console.log("parentForKey:", parentForKey);
+  //console.log("targetKey:", targetKey);
+  //console.log("parentForKey[targetKey]:", parentForKey[targetKey]);
 
 
   const path = [];
