@@ -77,6 +77,7 @@ export class MainGame extends Phaser.Scene {
 
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
+    this.wallsLayer.setDepth(100);
     map.createLayer('effect', allLayers);
     map.createLayer('props', allLayers);
 
