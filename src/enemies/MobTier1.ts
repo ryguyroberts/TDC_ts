@@ -15,7 +15,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
   accessor health: number = 100;
-  //private speed: number = 200;
+  // private speed: number = 200;
   
   // for currency state
   value: number = 100;
@@ -111,10 +111,9 @@ update() {
 }
 
 
-  // protected preUpdate(t: number, dt: number){
-  //   super.preUpdate(t, dt);
-  //   this.setVelocityY(this.speed);
-  // }
+  protected preUpdate(t: number, dt: number){
+    super.preUpdate(t, dt);
+  }
 
   decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {
     if (this.health <= 0) {
