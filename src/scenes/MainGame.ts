@@ -112,26 +112,6 @@ export class MainGame extends Phaser.Scene {
       () => Array.from(mobStore.mobs.entries()),
       () => this.checkEndCombat()
     );
-
-    this.input.on('pointerdown', (pointer: Phaser.Input.Pointer) => {
-      // Get the tile coordinates from world coordinates (e.g., mouse pointer position)
-      const tileX = map.worldToTileX(pointer.worldX);
-      const tileY = map.worldToTileY(pointer.worldY);
-
-      if (tileX !== null && tileY !== null) {
-        // Convert tile coordinates back to world coordinates (optional)
-        const worldX = map.tileToWorldX(tileX);
-        const worldY = map.tileToWorldY(tileY);
-
-        // Log the tile coordinates and world coordinates
-        console.log(`Tile coordinates: (${tileX}, ${tileY})`); // Left tile (33, 29) | Right tile (34, 29)
-        console.log(`World coordinates: (${worldX}, ${worldY})`); // Left tile (1056, 928) | Right tile (1088, 928)
-      }
-    });
-
-
-
-
   };
 
   // Method to toggle between build and combat phases for machines?

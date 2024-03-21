@@ -14,6 +14,7 @@ import { gamephase } from "../states/GamePhase";
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
+  deleteTower: Phaser.GameObjects.Text;
 
 
   init(data: any) {
@@ -130,15 +131,16 @@ export class UI extends Phaser.Scene {
 
     // playerState.
 
-    // Text Properties
+    // Delete_Text Properties
     const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
       color: '#ffffff',
       fontSize: '16px',
     };
 
     // Delete tower button
-    const deleteTower = this.add.text(0, 0, 'Delete Tower', textStyle).setInteractive();
-    deleteTower.on('pointerdown', () => {
+    this.deleteTower = this.add.text(40, 300, 'Delete Tower', textStyle).setInteractive().setVisible(false);
+    
+    this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
         const towerToRemove = selectedTowerState.selectedTower;
         const id = this.findSelectedTower(towerToRemove);
@@ -157,6 +159,7 @@ export class UI extends Phaser.Scene {
 
             // Remove tower from active towers state 
             towerState.removeTower(id);
+            this.deleteTower.setVisible(false);
           }
 
         } else {
@@ -215,8 +218,10 @@ export class UI extends Phaser.Scene {
       // If selected tower is already selected -> Deselect
       if (selectedTowerState.selectedTower === tower) {
         tower.clearTint();
-        console.log('youve deselected a tower', tower);
         selectedTowerState.deselectTower();
+
+        // Deactiviate Delete button
+        this.deleteTower.setVisible(false);        
         // Remove tower info display here
       } else {
 
@@ -224,7 +229,6 @@ export class UI extends Phaser.Scene {
           selectedTowerState.selectedTower.clearTint();
         }
 
-        console.log('you selected a tower', tower);
         // Highlight tower
         tower.setTint(0xff000);
 
@@ -232,6 +236,8 @@ export class UI extends Phaser.Scene {
         selectedTowerState.selectTower(tower);
 
         // Display tower info
+        this.deleteTower.setVisible(true);
+        this.deleteTower.setColor('#ff0000').setFontSize(30);
         this.displayTowerInfo(tower);
       }
     });
