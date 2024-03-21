@@ -14,7 +14,7 @@ import { gamephase } from "../states/GamePhase";
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
-  deleteTower: Phaser.GameObjects.Text;
+  deleteTower: Phaser.GameObjects.Sprite;
 
 
   init(data: any) {
@@ -57,8 +57,8 @@ export class UI extends Phaser.Scene {
       },
     );
     // RIGHT PANEL UI: TOWER CREATION
-    const towerText = this.add.sprite(1435, 90, 'tower_text');
-    towerText.setScale(1.35);
+    const towerLogo = this.add.sprite(1440, 80, 'tdc_logo');
+    towerLogo.setScale(0.53, 0.65);
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined
@@ -138,7 +138,8 @@ export class UI extends Phaser.Scene {
     };
 
     // Delete tower button
-    this.deleteTower = this.add.text(40, 300, 'Delete Tower', textStyle).setInteractive().setVisible(false);
+    this.deleteTower = this.add.sprite(100, 320, 'destroy_button').setInteractive().setVisible(false);
+    this.deleteTower.setScale(0.25);
     
     this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
@@ -237,7 +238,6 @@ export class UI extends Phaser.Scene {
 
         // Display tower info
         this.deleteTower.setVisible(true);
-        this.deleteTower.setColor('#ff0000').setFontSize(30);
         this.displayTowerInfo(tower);
       }
     });
