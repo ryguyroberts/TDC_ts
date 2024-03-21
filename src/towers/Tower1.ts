@@ -29,6 +29,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     this.anims.play('t1_idle');
 
     this.setScale(2.0)
+    this.setDepth(50);
 
     if (!this.body) {
       throw new Error('no physics body');
