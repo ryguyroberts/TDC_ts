@@ -2,7 +2,7 @@ import Phaser, { Tilemaps } from "phaser";
 // import { debugDraw } from "../utils/debug";
 
 // Import Animations
-import { createFaunaAnims } from "../anims/FainaAnims";
+
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
@@ -10,23 +10,21 @@ import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
 // import '../characters/Fauna'
 // Import Sprites Classes
-import '../characters/Fauna';
 import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 
 // Utitilies
-import findPath from '../utils/findPath'
+// import findPath from '../utils/findPath'
 
 // States from Mobx
-import { reaction } from "mobx";
+// import { reaction } from "mobx";
 import { mobStore } from "../states/MobStore";
-import Fauna from "../characters/Fauna";
-
+import { gamephase } from "../states/GamePhase";
+import { reaction } from "mobx";
 
 export class MainGame extends Phaser.Scene {
   // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  private fauna!: Fauna;
 
   // So many towers
   // private tower1_01!: Phaser.GameObjects.Sprite;
@@ -36,8 +34,9 @@ export class MainGame extends Phaser.Scene {
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
-  private groundLayer!: Phaser.Tilemaps.TilemapLayer;
-
+  private mobSpawnEvent: Phaser.Time.TimerEvent;
+  private buildPhaseEndEv: Phaser.Time.TimerEvent;
+  private buildPhaseEvent: Phaser.Time.TimerEvent;
 
   constructor() {
     super('main_game');
@@ -45,7 +44,7 @@ export class MainGame extends Phaser.Scene {
 
 
   preload() {
-    // // Cursors here
+    // Cursors here
     //   if (this.input.keyboard) {
     //     this.cursors = this.input.keyboard.createCursorKeys();
     //   } else {
@@ -59,37 +58,13 @@ export class MainGame extends Phaser.Scene {
   this.scene.launch('ui', { mobGroup: this.mobGroup });
 
   // Animations
-  createFaunaAnims(this.anims);
+
   createTowerTier1Anims(this.anims);
   createMobTier1Anims(this.anims);
   createMobTier2Anims(this.anims);
   createGreenProjectAnims(this.anims);
 
-  // Test text Displays mobstate
-  const spiderTexts: Phaser.GameObjects.Text[] = [];
 
-  // Function to update the text
-  const updateSpiderTexts = () => {
-    spiderTexts.forEach((text) => text.destroy());
-    let index = 0;
-    mobStore.mobs.forEach((spiderbot, id) => {
-      const text = this.add.text(20, 40 + index * 20, `ID: ${id}, HP: ${spiderbot.health}`, {
-        fontSize: "16px",
-        color: "#ffffff",
-      });
-      spiderTexts.push(text);
-      index++;
-    });
-  };
-  // Initial update
-  updateSpiderTexts();
-
-  // Watch for change
-  reaction(
-    () => Array.from(mobStore.mobs.entries()),
-    () => updateSpiderTexts()
-  );
-    
   // Tileset
     const map = this.make.tilemap({ key: 'tilemap' });
 
@@ -105,90 +80,182 @@ export class MainGame extends Phaser.Scene {
 
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
-    this.groundLayer = map.createLayer('Tile Layer 1', allLayers) as Phaser.Tilemaps.TilemapLayer;
+    map.createLayer('Tile Layer 1', allLayers)
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     map.createLayer('effect', allLayers)
     map.createLayer('props', allLayers)
 
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true})
-    this.groundLayer.setCollisionByProperty({ collides: false})
 
     // Collision Debugging
     // debugDraw(wallsLayer, this)
 
-
-    // add fauna
-  this.fauna = this.add.fauna(448, 192, 'fauna')
     
-  this.input.on(Phaser.Input.Events.POINTER_UP, (pointer: Phaser.Input.Pointer) => {
-      const { worldX, worldY } = pointer
-
-      const startVec = this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y)
-      console.log("fauna x:",this.fauna.x)
-      console.log("fauna y:", this.fauna.y)
-      console.log("startVec:", this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y))
-      const targetVec = this.groundLayer.worldToTileXY(worldX, worldY)
-      console.log("Target x:",worldX)
-      console.log("Target y:", worldY)
-      console.log("TargetVec:", this.groundLayer.worldToTileXY(worldX, worldY))
-
-      const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer) // Use findPath function
-
-      // Move the player along the path
-      this.fauna.moveAlong(path)
-  })
-
-  // // Create Fauna - Testing
-  //   this.fauna = this.add.fauna(448, 192, 'fauna')
-
-    // Colliders
-    this.physics.add.collider(this.fauna, this.wallsLayer);
-
-    // Test Towers
-
-    // this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
-    // this.physics.add.existing(this.tower1_01);
-
-    // this.tower1_02 = this.add.tower1(176, 674, 'tower1');
-    // this.physics.add.existing(this.tower1_02);
-
-    // this.tower1_03 = this.add.tower1(176, 770, 'tower1');
-    // this.physics.add.existing(this.tower1_03);
-   
-    // this.tower1_04 = this.add.tower1(176, 862, 'tower1');
-    // this.physics.add.existing(this.tower1_04);
-
+  
     // Test mobs
     this.mobGroup = this.physics.add.group();
-   
-    // Spawn mobs for testing
-    const spawnInterval = 1000; // milliseconds (e.g., spawn a spider every 5 seconds)
-    this.time.addEvent({
-      delay: spawnInterval,
-      loop: true,
-      callback: this.createMobRandom,
-      callbackScope: this
-    });
+
+    // Start in build Phase!
+    this.startBuildPhase()
+    
+    // this.time.addEvent({
+    //   delay: 15000, // Our Time Delay
+    //   loop: true,
+    //   callback: this.togglePhase,
+    //   callbackScope: this
+    // });
+
+    // if gamephase changes react appropriately
+    reaction(
+      () => gamephase.stage,
+      () => this.dynamicPhase()
+    );
+      
+    // if mob enters array run my check if no more mobs end combat
+    reaction(
+      () => Array.from(mobStore.mobs.entries()),
+      () => this.checkEndCombat()
+    )
 
   };
 
+// Method to toggle between build and combat phases for machines?
+// togglePhase() {
+//   gamephase.toggleStage();
+//   if (gamephase.stage === 'build') {
+//     this.startBuildPhase();
+//   } else {
+//     this.startCombatPhase();
+//   }
+// }
+
+// if mobx state has no mobs (all dead) enter build stage
+
+checkEndCombat() {
+  const mobEntries = Array.from(mobStore.mobs.entries());
+  if (mobEntries.length === 0) {
+    // If there are no mobs left, transition to the build phase
+    gamephase.stage = 'build';
+  }
+}
+
+
+// If the mobX state changes start the right stage
+dynamicPhase() {
+  if (gamephase.stage === 'build') {
+    this.startBuildPhase();
+  } else {
+    // starting the combat phase
+
+    // Remove build phase natural end.
+        if (this.buildPhaseEndEv) {
+      this.buildPhaseEndEv.remove(false);
+      this.buildPhaseEvent.remove(false);
+    }
+    // Build timer zero
+    gamephase.buildtime = 0;
+    this.startCombatPhase();
+  }
+}
+
+
+  // Build phase!
+  startBuildPhase() {
+    console.log('Build Phase Started');
+
+    // Stop spawning mobs
+    if (this.mobSpawnEvent) {
+      this.mobSpawnEvent.remove(false);
+    };
+
+    gamephase.buildtime = 61;
+
+ // Set a timed event to update build time every second
+  this.buildPhaseEvent = this.time.addEvent({
+    delay: 1000, // Delay of 1 second
+    callback: () => {
+      this.updateTimer();
+    },
+    callbackScope: this,
+    loop: true // Set loop to true to repeat the event
+    });
+
+
+
+    const buildTime = 60;
+    this.buildPhaseEndEv = this.time.addEvent({
+      delay: buildTime * 1000, // Convert seconds to milliseconds
+        callback: this.endBuild,
+        callbackScope: this
+    })
+
+    this.time.addEvent({
+      delay: 1000, // Convert seconds to milliseconds
+        callback: this.updateTimer,
+        callbackScope: this
+    })
+  };
+
+  endBuild() {
+    console.log('end build stage');
+    gamephase.toggleStage();
+  }
+  
+  
+  updateTimer() {
+    // increment by 1
+    gamephase.updateTimerAction();
+
+  }
+
+
+  // Combat phase start no way to auto end right
+  startCombatPhase() {
+    console.log('Combat Phase started');
+    // Start mob spawning
+    const numberOfMobsToSpawn = 30; // Adjust this number as needed
+    const spawnDelay = 1000; // Adjust this delay (in milliseconds) as needed
+
+    // Function to spawn mobs with a delay
+    const spawnMobsWithDelay = (count : number) => {
+        if (count > 0) {
+            // Spawn a mob
+            this.createMobRandom();
+            // Call the function recursively after the delay
+            this.time.delayedCall(spawnDelay, spawnMobsWithDelay, [count - 1]);
+        }
+    };
+
+    // Start spawning mobs with delay
+    spawnMobsWithDelay(numberOfMobsToSpawn);
+
+
+
+    // this.phaseChangeEvent.reset({ delay: 15000 });
+  }
+
+  
+
+ // Move these out somehow? 
   createMobRandom() {
     // Randomly decide whether to create MobTier1 or MobTier2
     const randomMobType = Phaser.Math.RND.between(1, 2);
   
     if (randomMobType === 1) {
       this.createMobTier1();
-      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
+      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     } else {
       // console.log('made a mob2');
       this.createMobTier2();
-      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
+      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     }
   }
   
+
+  // Make it dryer somehow?
   createMobTier1() {
-    const mob_t1 = this.add.mob_t1(125, 450, 'mob_t1');
+    const mob_t1 = this.add.mob_t1(400, 200, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t1.setData('id', mobID);
@@ -203,7 +270,7 @@ export class MainGame extends Phaser.Scene {
   }
   
   createMobTier2() {
-    const mob_t2 = this.add.mob_t2(125, 450, 'mob_t1');
+    const mob_t2 = this.add.mob_t2(400, 200, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);
@@ -218,8 +285,5 @@ export class MainGame extends Phaser.Scene {
   }
 
   update() {
-    if (this.fauna) {
-      this.fauna.update();
-    };
   }
 };

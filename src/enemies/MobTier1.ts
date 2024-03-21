@@ -29,7 +29,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   protected preUpdate(t: number, dt: number){
     super.preUpdate(t, dt);
-    this.setVelocityY(this.speed);
+    this.setVelocityX(this.speed);
   }
 
   decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {

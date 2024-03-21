@@ -7,6 +7,9 @@ import { towerState } from "../states/TowerStore";
 import selectedTowerState from "../states/selected_tower";
 import { mobStore } from "../states/MobStore";
 import { playerState } from "../states/PlayerState";
+import { gamephase } from "../states/GamePhase";
+
+
 
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
@@ -159,6 +162,47 @@ export class UI extends Phaser.Scene {
         console.log('No tower selected for deletion');
       }
     });
+
+    // Current phase Display for testing
+    const gamePhaseText = this.add.text(10,875, 'Current Phase: Placeholder', textStyle);
+ 
+    const updategPT = () => {
+      gamePhaseText.setText(`Current Phase: ${gamephase.stage}`);
+    }
+    // run once
+    updategPT();
+
+    // update text whenever the phase changes
+    reaction(
+      () => gamephase.stage,
+      () => updategPT()
+    );
+
+      // Build phase timer
+    const buildTime = this.add.text(10,842, 'Placeholder', textStyle);
+    const updateBT = () => {
+      buildTime .setText(`Build Time: ${gamephase.buildtime}`);
+    }
+    updateBT();
+
+    reaction(
+      () => gamephase.buildtime,
+      () => updateBT()
+    );
+
+
+
+      
+    const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
+      NextPhase.on('pointerdown', () => {
+        // if combat stage don't advance change button text?
+        if (gamephase.stage === 'combat') {
+          return;
+        }
+        gamephase.toggleStage();
+    });
+     
+
   }
 
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
