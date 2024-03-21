@@ -74,6 +74,8 @@ export class MainGame extends Phaser.Scene {
 
     const allLayers: Tilemaps.Tileset[] = [tilemap_base_props1, tilemap_base_props2, tilemap_npcs, tilemap_items];
 
+    this.groundLayer = map.createLayer('Tile Layer 1', allLayers) as Phaser.Tilemaps.TilemapLayer;
+
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     this.wallsLayer.setDepth(100);
@@ -82,9 +84,10 @@ export class MainGame extends Phaser.Scene {
 
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true });
+    this.groundLayer.setCollisionByProperty({ collides: false})
 
     // Collision Debugging
-    // debugDraw(wallsLayer, this)
+    // debugDraw(this.wallsLayer, this)
 
 
     // Test mobs
@@ -131,6 +134,7 @@ checkEndCombat() {
         this.buildPhaseEvent.remove(false);
       }
       // Build timer zero
+ 
       gamephase.buildtime = 0;
       this.startCombatPhase();
     }
@@ -236,7 +240,7 @@ checkEndCombat() {
     mob_t1.setData('id', mobID);
 
     // Add to physics system and collider
-    this.physics.add.existing(mob_t1);
+    // this.physics.add.existing(mob_t1);
     //this.physics.add.collider(mob_t1, this.wallsLayer); 
   
     // Add to mob group and MobStore why both Ryan?
@@ -251,23 +255,25 @@ checkEndCombat() {
     mob_t2.setData('id', mobID);
 
     // Add to physics system and collider
-    this.physics.add.existing(mob_t2);
+    // this.physics.add.existing(mob_t2);
     //this.physics.add.collider(mob_t2, this.wallsLayer); 
   
     // Add to mob group and MobStore
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
+  // }
   }
-  
   calculateAndMoveMob(mob: MobTier1) {
 
-
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
+    // console.log(startVec);
     const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
-    console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
+    // console.log(path);
+    // console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
 
-    // Move the mob along the path
     mob.moveAlong(path);
+    // Move the mob along the path
+    // mob.moveAlong(path);
   }
 
   update() {

@@ -99,7 +99,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
         }
         // another if here? for mobtier
       } else {
-        this.scene.physics.moveToObject(projectile, target, 500);
+        this.scene.physics.moveToObject(projectile, target, 200);
         this.scene.time.delayedCall(100, checkDistance);
       }
     };
