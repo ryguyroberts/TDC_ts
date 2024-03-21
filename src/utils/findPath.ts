@@ -1,4 +1,4 @@
-const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , groundLayer: Phaser.Tilemaps.TilemapLayer, wallsLayer: Phaser.Tilemaps.TilemapLayer) => {
+const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.TilemapLayer, wallsLayer: Phaser.Tilemaps.TilemapLayer) => {
   
   type ParentForKey = {
     [key: string]: {
@@ -21,8 +21,7 @@ const findPath = (start: Phaser.Math.Vector2, target: Phaser.Math.Vector2 , grou
   const startKey = toKey(start.x, start.y);
   //console.log("startKey:", startKey)
 
-  let targetKey = toKey(target.x, target.y);
-  targetKey = "33x29";
+  const targetKey = "33x29";
 
   parentForKey[startKey] = {
       key: '',

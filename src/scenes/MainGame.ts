@@ -2,15 +2,13 @@ import Phaser, { Tilemaps } from "phaser";
 // import { debugDraw } from "../utils/debug";
 
 // Import Animations
-import { createFaunaAnims } from "../anims/FainaAnims";
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
 import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
-// import '../characters/Fauna'
+
 // Import Sprites Classes
-import '../characters/Fauna';
 import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
@@ -21,12 +19,10 @@ import findPath from '../utils/findPath'
 // States from Mobx
 import { reaction } from "mobx";
 import { mobStore } from "../states/MobStore";
-import Fauna from "../characters/Fauna";
+import MobTier1 from "../enemies/MobTier1";
 
 
 export class MainGame extends Phaser.Scene {
-  // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  private fauna!: Fauna;
 
   // So many towers
   // private tower1_01!: Phaser.GameObjects.Sprite;
@@ -45,12 +41,6 @@ export class MainGame extends Phaser.Scene {
 
 
   preload() {
-    // // Cursors here
-    //   if (this.input.keyboard) {
-    //     this.cursors = this.input.keyboard.createCursorKeys();
-    //   } else {
-    //     throw new Error("Keyboard input is not available.");
-    // };
   };
 
   create() {
@@ -59,7 +49,6 @@ export class MainGame extends Phaser.Scene {
   this.scene.launch('ui', { mobGroup: this.mobGroup });
 
   // Animations
-  createFaunaAnims(this.anims);
   createTowerTier1Anims(this.anims);
   createMobTier1Anims(this.anims);
   createMobTier2Anims(this.anims);
@@ -118,31 +107,6 @@ export class MainGame extends Phaser.Scene {
     // debugDraw(wallsLayer, this)
 
 
-    // add fauna
-  this.fauna = this.add.fauna(448, 192, 'fauna')
-    
-  
-      const worldX = 1075.9018759018759;
-      const worldY = 935.0719627221824;
-
-      const startVec = this.groundLayer.worldToTileXY(this.fauna.x, this.fauna.y)
-      
-      const targetVec = this.groundLayer.worldToTileXY(worldX, worldY)
-
-      console.log(targetVec)
-
-      const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer) // Use findPath function
-
-      // Move the player along the path
-      this.fauna.moveAlong(path)
-  
-
-  // // Create Fauna - Testing
-  //   this.fauna = this.add.fauna(448, 192, 'fauna')
-
-    // Colliders
-    this.physics.add.collider(this.fauna, this.wallsLayer);
-
     // Test Towers
 
     // this.tower1_01 = this.add.tower1(176, 578, 'tower1',);
@@ -161,10 +125,18 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup = this.physics.add.group();
    
     // Spawn mobs for testing
-    const spawnInterval = 5000; // milliseconds (e.g., spawn a spider every 5 seconds)
+    const spawnInterval = 1000; // milliseconds (e.g., spawn a spider every 5 seconds)
+
     this.time.addEvent({
       delay: spawnInterval,
       loop: true,
+      callback: this.createMobRandom,
+      callbackScope: this
+    });
+
+    this.time.addEvent({
+      delay: 0,
+      loop: false,
       callback: this.createMobRandom,
       callbackScope: this
     });
@@ -177,11 +149,11 @@ export class MainGame extends Phaser.Scene {
   
     if (randomMobType === 1) {
       this.createMobTier1();
-      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
+      console.log('num of spiders in the spiderGroup', this.mobGroup);
     } else {
       // console.log('made a mob2');
       this.createMobTier2();
-      console.log('num of spiders in the spiderGroup', this.mobGroup.getLength());
+      console.log('num of spiders in the spiderGroup', this.mobGroup);
     }
   }
   
@@ -193,14 +165,11 @@ export class MainGame extends Phaser.Scene {
   
     // Add to physics system and collider
     this.physics.add.existing(mob_t1);
-    this.physics.add.collider(mob_t1, this.wallsLayer); 
+    //this.physics.add.collider(mob_t1, this.wallsLayer); 
   
     // Add to mob group and MobStore why both Ryan?
     this.mobGroup.add(mob_t1);
     mobStore.addMob(mobID, mob_t1);
-
-    // Calculate and move this mob
-    this.calculateAndMoveMob(mob_t1);
   }
   
   createMobTier2() {
@@ -211,32 +180,34 @@ export class MainGame extends Phaser.Scene {
   
     // Add to physics system and collider
     this.physics.add.existing(mob_t2);
-    this.physics.add.collider(mob_t2, this.wallsLayer); 
+    //this.physics.add.collider(mob_t2, this.wallsLayer); 
   
     // Add to mob group and MobStore
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
-
-    // Calculate and move this mob
-    this.calculateAndMoveMob(mob_t2);
   }
 
-  calculateAndMoveMob(mob) {
-    const worldX = 1075.9018759018759; // Target X position
-    const worldY = 935.0719627221824; // Target Y position
+
+  
+
+  calculateAndMoveMob(mob: MobTier1) {
+
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
-    const targetVec = this.groundLayer.worldToTileXY(worldX, worldY);
-
-    const path = findPath(startVec, targetVec, this.groundLayer, this.wallsLayer); // Use findPath function
+    const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
+    console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
 
     // Move the mob along the path
     mob.moveAlong(path);
-}
+  }
 
   update() {
-    if (this.fauna) {
-      this.fauna.update();
-    };
+    const mobEntries = Array.from(mobStore.mobs.entries());
+  mobEntries.forEach(entry => {
+    const mob = entry[1];
+
+    this.calculateAndMoveMob(mob);
+    mob.update();
+  })
   }
 };

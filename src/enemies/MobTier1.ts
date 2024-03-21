@@ -14,7 +14,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
   accessor health: number = 100;
-  private speed: number = 50;
+  //private speed: number = 50;
 
   // For path state
   private movePath: Phaser.Math.Vector2[] = []
@@ -36,7 +36,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
     }
 
     this.movePath = path
-    this.moveTo(this.movePath.shift()!)
+    this.moveTo(this.movePath.shift()!);
 }
 
 moveTo(target: Phaser.Math.Vector2) {
@@ -45,28 +45,28 @@ moveTo(target: Phaser.Math.Vector2) {
 
 update() {
   
-    let dx = 0
+    let dx = -1
     let dy = 0
 
     if (this.moveToTarget) {
-        dx = this.moveToTarget.x - this.x
-        dy = this.moveToTarget.y - this.y
+       dx = this.moveToTarget.x - this.x
+       dy = this.moveToTarget.y - this.y
 
-        if (Math.abs(dx) < 5) {
-            dx = 0
-        }
-        if (Math.abs(dy) < 5) {
-            dy = 0
-        }
+       if (Math.abs(dx) < 5) {
+           dx = 0
+       }
+       if (Math.abs(dy) < 5) {
+           dy = 0
+       }
 
-        if (dx === 0 && dy === 0) {
-            if (this.movePath.length > 0) {
-                this.moveTo(this.movePath.shift()!)
-                return
-            }
+       if (dx === 0 && dy === 0) {
+           if (this.movePath.length > 0) {
+               this.moveTo(this.movePath.shift()!)
+               return
+           }
 
-            this.moveToTarget = undefined
-        }
+           this.moveToTarget = undefined
+       }
     }
 
     const leftDown = dx < 0
@@ -105,10 +105,10 @@ update() {
 }
 
 
-  protected preUpdate(t: number, dt: number){
-    super.preUpdate(t, dt);
-    this.setVelocityY(this.speed);
-  }
+  // protected preUpdate(t: number, dt: number){
+  //   super.preUpdate(t, dt);
+  //   this.setVelocityY(this.speed);
+  // }
 
   decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {
     if (this.health <= 0) {
@@ -127,7 +127,7 @@ update() {
 
     // Remove spider object if health is zero
     if (this.health <= 0) {
-      this.speed = 0;
+      this.setVelocity(0, 0);
       this.setTint(0xff0000);
       this.anims.play('mob_t1_death');
 
