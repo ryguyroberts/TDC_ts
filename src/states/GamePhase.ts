@@ -16,7 +16,7 @@ class GamePhase {
   @action
   updateTimerAction() {
     this.buildtime--;
-    console.log(this.buildtime);
+    // console.log(this.buildtime);
   }
 
 };

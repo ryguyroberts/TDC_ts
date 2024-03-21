@@ -268,6 +268,8 @@ checkEndCombat() {
   }
 
 
+
+  
   update() {
 
     const mobEntries = Array.from(mobStore.mobs.entries());
@@ -278,7 +280,7 @@ checkEndCombat() {
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(1);
+        playerState.takeDamage(5);
       }    
     })
   }

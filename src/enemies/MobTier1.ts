@@ -53,10 +53,16 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
       });
     } 
 
-    // Remove spider object if health is zero
+    // Remove mob object if health is zero
     if (this.health <= 0) {
-      this.speed = 0;
-      this.setTint(0xff0000);
+      // this.speed = 0;
+      // this.setTint(0xff0000);
+      if (!this.body){
+        throw new Error('No body to remove health');
+      }
+
+      this.body.enable = false; 
+      this.anims.stop();
       this.anims.play('mob_t1_death');
 
       // Allow time to play animation before destroy
@@ -70,7 +76,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   checkEndPoint(endPointX: number, endPointY: number): boolean {
     // Check if mob crosses the end point
-    const tolerance = 1; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
+    const tolerance = 0.5; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
     if ((Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) && !this.hasEnteredEndpoint)  {
       this.hasEnteredEndpoint= true;
       console.log(this.hasEnteredEndpoint);
