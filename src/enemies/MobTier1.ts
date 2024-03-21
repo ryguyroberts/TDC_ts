@@ -65,8 +65,17 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
       });
     }
   }
-};
 
+  checkEndPoint(endPointX: number, endPointY: number): boolean {
+    // Check if mob crosses the end point
+    const tolerance = 1; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
+    if (Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) {
+      return true; // Mob has reached the end
+    } else {
+      return false; 
+    }
+  }
+};
 
 // Add Mob t1 to game object Factory
 Phaser.GameObjects.GameObjectFactory.register('mob_t1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {

@@ -56,6 +56,8 @@ export class UI extends Phaser.Scene {
       },
     );
     // RIGHT PANEL UI: TOWER CREATION
+    const towerText = this.add.sprite(1435, 90, 'tower_text');
+    towerText.setScale(1.35);
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined

@@ -29,6 +29,7 @@ export class Preloader extends Phaser.Scene {
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
+    this.load.image('tower_text', 'ui/tower.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
 
   }
