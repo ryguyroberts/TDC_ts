@@ -14,7 +14,8 @@ import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 
 // Utitilies
-import findPath from '../utils/findPath'
+import findPath from '../utils/findPath';
+import { checkEndCombat} from '../utils/mobUtils';
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -23,6 +24,7 @@ import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
 import MobTier1 from "../enemies/MobTier1";
+
 
 
 export class MainGame extends Phaser.Scene {
@@ -102,10 +104,11 @@ export class MainGame extends Phaser.Scene {
       () => this.dynamicPhase()
     );
 
+
     // if mob enters array run my check if no more mobs end combat
     reaction(
       () => Array.from(mobStore.mobs.entries()),
-      () => this.checkEndCombat()
+      () => checkEndCombat()
     );
   };
 
