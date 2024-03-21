@@ -2,20 +2,19 @@ import Phaser, { Tilemaps } from "phaser";
 // import { debugDraw } from "../utils/debug";
 
 // Import Animations
-
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
 import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
-// import '../characters/Fauna'
+
 // Import Sprites Classes
 import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 
 // Utitilies
-// import findPath from '../utils/findPath'
+import findPath from '../utils/findPath'
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -23,15 +22,21 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
+import MobTier1 from "../enemies/MobTier1";
+
 
 export class MainGame extends Phaser.Scene {
   // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
+  // R.I.P
+  // private fauna!: Fauna;
+
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private mobSpawnEvent: Phaser.Time.TimerEvent;
   private buildPhaseEndEv: Phaser.Time.TimerEvent;
   private buildPhaseEvent: Phaser.Time.TimerEvent;
+  private groundLayer!: Phaser.Tilemaps.TilemapLayer;
 
   constructor() {
     super('main_game');
@@ -39,12 +44,6 @@ export class MainGame extends Phaser.Scene {
 
 
   preload() {
-    // Cursors here
-    //   if (this.input.keyboard) {
-    //     this.cursors = this.input.keyboard.createCursorKeys();
-    //   } else {
-    //     throw new Error("Keyboard input is not available.");
-    // };
   };
 
   create() {
@@ -77,6 +76,7 @@ export class MainGame extends Phaser.Scene {
 
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
+    this.wallsLayer.setDepth(100);
     map.createLayer('effect', allLayers);
     map.createLayer('props', allLayers);
 
@@ -87,19 +87,11 @@ export class MainGame extends Phaser.Scene {
     // debugDraw(wallsLayer, this)
 
 
-
     // Test mobs
     this.mobGroup = this.physics.add.group();
 
     // Start in build Phase!
     this.startBuildPhase();
-
-    // this.time.addEvent({
-    //   delay: 15000, // Our Time Delay
-    //   loop: true,
-    //   callback: this.togglePhase,
-    //   callbackScope: this
-    // });
 
     // if gamephase changes react appropriately
     reaction(
@@ -114,26 +106,17 @@ export class MainGame extends Phaser.Scene {
     );
   };
 
-  // Method to toggle between build and combat phases for machines?
-  // togglePhase() {
-  //   gamephase.toggleStage();
-  //   if (gamephase.stage === 'build') {
-  //     this.startBuildPhase();
-  //   } else {
-  //     this.startCombatPhase();
-  //   }
-  // }
 
-  // if mobx state has no mobs (all dead) enter build stage
+// if mobx state has no mobs (all dead) enter build stage
 
-  checkEndCombat() {
-    const mobEntries = Array.from(mobStore.mobs.entries());
-    if (mobEntries.length === 0) {
-      // If there are no mobs left, transition to the build phase
-      gamephase.stage = 'build';
-    }
+checkEndCombat() {
+  const mobEntries = Array.from(mobStore.mobs.entries());
+  if (mobEntries.length === 0) {
+    // If there are no mobs left, transition to the build phase
+    gamephase.stage = 'build';
   }
 
+}
 
   // If the mobX state changes start the right stage
   dynamicPhase() {
@@ -163,7 +146,7 @@ export class MainGame extends Phaser.Scene {
       this.mobSpawnEvent.remove(false);
     };
 
-    gamephase.buildtime = 61;
+    gamephase.buildtime = 60;
 
     // Set a timed event to update build time every second
     this.buildPhaseEvent = this.time.addEvent({
@@ -183,6 +166,7 @@ export class MainGame extends Phaser.Scene {
       callback: this.endBuild,
       callbackScope: this
     });
+
 
     this.time.addEvent({
       delay: 1000, // Convert seconds to milliseconds
@@ -223,9 +207,6 @@ export class MainGame extends Phaser.Scene {
 
     // Start spawning mobs with delay
     spawnMobsWithDelay(numberOfMobsToSpawn);
-
-
-
     // this.phaseChangeEvent.reset({ delay: 15000 });
   }
 
@@ -249,47 +230,62 @@ export class MainGame extends Phaser.Scene {
 
   // Make it dryer somehow?
   createMobTier1() {
-    const mob_t1 = this.add.mob_t1(400, 200, 'mob_t1');
+    const mob_t1 = this.add.mob_t1(448, 0, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t1.setData('id', mobID);
 
     // Add to physics system and collider
     this.physics.add.existing(mob_t1);
-    this.physics.add.collider(mob_t1, this.wallsLayer);
-
+    //this.physics.add.collider(mob_t1, this.wallsLayer); 
+  
     // Add to mob group and MobStore why both Ryan?
     this.mobGroup.add(mob_t1);
     mobStore.addMob(mobID, mob_t1);
   }
 
   createMobTier2() {
-    const mob_t2 = this.add.mob_t2(400, 200, 'mob_t1');
+    const mob_t2 = this.add.mob_t2(448, 0, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);
 
     // Add to physics system and collider
     this.physics.add.existing(mob_t2);
-    this.physics.add.collider(mob_t2, this.wallsLayer);
-
+    //this.physics.add.collider(mob_t2, this.wallsLayer); 
+  
     // Add to mob group and MobStore
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
+  }
+  
+  calculateAndMoveMob(mob: MobTier1) {
+
+
+    const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
+    const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
+    console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
+
+    // Move the mob along the path
+    mob.moveAlong(path);
   }
 
   update() {
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
+
+      this.calculateAndMoveMob(mob);
+      mob.update();
+
       const endPointX = 1168; // change to endpoint when ready
       const endPointY = 200; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
-        playerState.takeDamage(10);
-      }    
-    })
+        mob.decreaseHealth(mob.health, mob.getData('id'), this);
+        playerState.takeDamage(5);
+      }   
+
+    });
   }
-
-
 };

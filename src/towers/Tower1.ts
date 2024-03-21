@@ -29,6 +29,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     this.anims.play('t1_idle');
 
     this.setScale(2.0)
+    this.setDepth(50);
 
     if (!this.body) {
       throw new Error('no physics body');
@@ -98,7 +99,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
         }
         // another if here? for mobtier
       } else {
-        this.scene.physics.moveToObject(projectile, target, 200);
+        this.scene.physics.moveToObject(projectile, target, 500);
         this.scene.time.delayedCall(100, checkDistance);
       }
     };
