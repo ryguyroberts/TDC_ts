@@ -14,6 +14,10 @@ class SelectedTowerState {
   deselectTower() {
     this.selectedTower = null;
   }
+
+  displayInfo() {
+    
+  }
 }
 
 const selectedTowerState = new SelectedTowerState();

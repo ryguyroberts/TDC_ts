@@ -15,21 +15,17 @@ import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 
 // Utitilies
+// import findPath from '../utils/findPath'
 
 // States from Mobx
 // import { reaction } from "mobx";
 import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
+import { playerState } from "../states/PlayerState";
 
 export class MainGame extends Phaser.Scene {
   // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-
-  // So many towers
-  // private tower1_01!: Phaser.GameObjects.Sprite;
-  // private tower1_02!: Phaser.GameObjects.Sprite;
-  // private tower1_03!: Phaser.GameObjects.Sprite;
-  // private tower1_04!: Phaser.GameObjects.Sprite;
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -53,18 +49,18 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
-  // Launch UI scene
-  this.scene.launch('ui', { mobGroup: this.mobGroup });
+    // Launch UI scene
+    this.scene.launch('ui', { mobGroup: this.mobGroup });
 
-  // Animations
+    // Animations
 
-  createTowerTier1Anims(this.anims);
-  createMobTier1Anims(this.anims);
-  createMobTier2Anims(this.anims);
-  createGreenProjectAnims(this.anims);
+    createTowerTier1Anims(this.anims);
+    createMobTier1Anims(this.anims);
+    createMobTier2Anims(this.anims);
+    createGreenProjectAnims(this.anims);
 
 
-  // Tileset
+    // Tileset
     const map = this.make.tilemap({ key: 'tilemap' });
 
     const tilemap_base_props1 = map.addTilesetImage('Tech_TD_Ced', 'tilemap_base_props1');
@@ -81,23 +77,23 @@ export class MainGame extends Phaser.Scene {
 
     map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
-    map.createLayer('effect', allLayers)
-    map.createLayer('props', allLayers)
+    map.createLayer('effect', allLayers);
+    map.createLayer('props', allLayers);
 
     // turn on collision based on tiled property
-    this.wallsLayer.setCollisionByProperty({ collides: true})
+    this.wallsLayer.setCollisionByProperty({ collides: true });
 
     // Collision Debugging
     // debugDraw(wallsLayer, this)
 
-    
-  
+
+
     // Test mobs
     this.mobGroup = this.physics.add.group();
 
     // Start in build Phase!
-    this.startBuildPhase()
-    
+    this.startBuildPhase();
+
     // this.time.addEvent({
     //   delay: 15000, // Our Time Delay
     //   loop: true,
@@ -110,13 +106,12 @@ export class MainGame extends Phaser.Scene {
       () => gamephase.stage,
       () => this.dynamicPhase()
     );
-      
+
     // if mob enters array run my check if no more mobs end combat
     reaction(
       () => Array.from(mobStore.mobs.entries()),
       () => this.checkEndCombat()
-    )
-
+    );
   };
 
 
@@ -128,26 +123,26 @@ checkEndCombat() {
     // If there are no mobs left, transition to the build phase
     gamephase.stage = 'build';
   }
+
 }
 
+  // If the mobX state changes start the right stage
+  dynamicPhase() {
+    if (gamephase.stage === 'build') {
+      this.startBuildPhase();
+    } else {
+      // starting the combat phase
 
-// If the mobX state changes start the right stage
-dynamicPhase() {
-  if (gamephase.stage === 'build') {
-    this.startBuildPhase();
-  } else {
-    // starting the combat phase
-
-    // Remove build phase natural end.
-        if (this.buildPhaseEndEv) {
-      this.buildPhaseEndEv.remove(false);
-      this.buildPhaseEvent.remove(false);
+      // Remove build phase natural end.
+      if (this.buildPhaseEndEv) {
+        this.buildPhaseEndEv.remove(false);
+        this.buildPhaseEvent.remove(false);
+      }
+      // Build timer zero
+      gamephase.buildtime = 0;
+      this.startCombatPhase();
     }
-    // Build timer zero
-    gamephase.buildtime = 0;
-    this.startCombatPhase();
   }
-}
 
 
   // Build phase!
@@ -161,14 +156,14 @@ dynamicPhase() {
 
     gamephase.buildtime = 60;
 
- // Set a timed event to update build time every second
-  this.buildPhaseEvent = this.time.addEvent({
-    delay: 1000, // Delay of 1 second
-    callback: () => {
-      this.updateTimer();
-    },
-    callbackScope: this,
-    loop: true // Set loop to true to repeat the event
+    // Set a timed event to update build time every second
+    this.buildPhaseEvent = this.time.addEvent({
+      delay: 1000, // Delay of 1 second
+      callback: () => {
+        this.updateTimer();
+      },
+      callbackScope: this,
+      loop: true // Set loop to true to repeat the event
     });
 
 
@@ -176,23 +171,23 @@ dynamicPhase() {
     const buildTime = 60;
     this.buildPhaseEndEv = this.time.addEvent({
       delay: buildTime * 1000, // Convert seconds to milliseconds
-        callback: this.endBuild,
-        callbackScope: this
-    })
+      callback: this.endBuild,
+      callbackScope: this
+    });
 
     this.time.addEvent({
       delay: 1000, // Convert seconds to milliseconds
-        callback: this.updateTimer,
-        callbackScope: this
-    })
+      callback: this.updateTimer,
+      callbackScope: this
+    });
   };
 
   endBuild() {
     console.log('end build stage');
     gamephase.toggleStage();
   }
-  
-  
+
+
   updateTimer() {
     // increment by 1
     gamephase.updateTimerAction();
@@ -208,13 +203,13 @@ dynamicPhase() {
     const spawnDelay = 1000; // Adjust this delay (in milliseconds) as needed
 
     // Function to spawn mobs with a delay
-    const spawnMobsWithDelay = (count : number) => {
-        if (count > 0) {
-            // Spawn a mob
-            this.createMobRandom();
-            // Call the function recursively after the delay
-            this.time.delayedCall(spawnDelay, spawnMobsWithDelay, [count - 1]);
-        }
+    const spawnMobsWithDelay = (count: number) => {
+      if (count > 0) {
+        // Spawn a mob
+        this.createMobRandom();
+        // Call the function recursively after the delay
+        this.time.delayedCall(spawnDelay, spawnMobsWithDelay, [count - 1]);
+      }
     };
 
     // Start spawning mobs with delay
@@ -222,13 +217,13 @@ dynamicPhase() {
     // this.phaseChangeEvent.reset({ delay: 15000 });
   }
 
-  
 
- // Move these out somehow? 
+
+  // Move these out somehow? 
   createMobRandom() {
     // Randomly decide whether to create MobTier1 or MobTier2
     const randomMobType = Phaser.Math.RND.between(1, 2);
-  
+
     if (randomMobType === 1) {
       this.createMobTier1();
       // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
@@ -238,7 +233,7 @@ dynamicPhase() {
       // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
     }
   }
-  
+
 
   // Make it dryer somehow?
   createMobTier1() {
@@ -246,32 +241,43 @@ dynamicPhase() {
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t1.setData('id', mobID);
-  
+
     // Add to physics system and collider
     this.physics.add.existing(mob_t1);
-    this.physics.add.collider(mob_t1, this.wallsLayer); 
-  
+    this.physics.add.collider(mob_t1, this.wallsLayer);
+
     // Add to mob group and MobStore why both Ryan?
     this.mobGroup.add(mob_t1);
     mobStore.addMob(mobID, mob_t1);
   }
-  
+
   createMobTier2() {
     const mob_t2 = this.add.mob_t2(400, 200, 'mob_t1');
     // Add properties
     const mobID = Phaser.Math.RND.uuid();
     mob_t2.setData('id', mobID);
-  
+
     // Add to physics system and collider
     this.physics.add.existing(mob_t2);
-    this.physics.add.collider(mob_t2, this.wallsLayer); 
-  
+    this.physics.add.collider(mob_t2, this.wallsLayer);
+
     // Add to mob group and MobStore
     this.mobGroup.add(mob_t2);
     mobStore.addMob(mobID, mob_t2);
   }
 
   update() {
-
+    const mobEntries = Array.from(mobStore.mobs.entries());
+    mobEntries.forEach(entry => {
+      const mob = entry[1];
+      const endPointX = 1168; // change to endpoint when ready
+      const endPointY = 200; // change to endpoint when ready
+      if (mob.checkEndPoint(endPointX, endPointY)) {
+        // Code the deletion of mob here 
+        playerState.takeDamage(10);
+      }    
+    })
   }
+
+
 };

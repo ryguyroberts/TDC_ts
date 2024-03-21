@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { playerState } from "../states/PlayerState";
 import { mobStore} from "../states/MobStore";
 
 // For typescript
@@ -15,6 +16,9 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
   // For health state
   accessor health: number = 100;
   private speed: number = 50;
+  
+  // for currency state
+  value: number = 100;
  
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
@@ -55,13 +59,23 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
       // Allow time to play animation before destroy
       scene.time.delayedCall(1000, () => {
+        playerState.addFunds(this.value);
         this.destroy();
         mobStore.removeMob(id);
       });
     }
   }
-};
 
+  checkEndPoint(endPointX: number, endPointY: number): boolean {
+    // Check if mob crosses the end point
+    const tolerance = 1; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
+    if (Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) {
+      return true; // Mob has reached the end
+    } else {
+      return false; 
+    }
+  }
+};
 
 // Add Mob t1 to game object Factory
 Phaser.GameObjects.GameObjectFactory.register('mob_t1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {

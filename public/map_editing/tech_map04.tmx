@@ -840,7 +840,7 @@
  <tileset firstgid="4784" name="npc x1" tilewidth="32" tileheight="32" tilecount="18" columns="6">
   <image source="npc x1.png" width="192" height="96"/>
  </tileset>
- <layer id="1" name="Tile Layer 1" width="50" height="30">
+ <layer id="1" name="Tile Layer 1" width="50" height="30" visible="0">
   <data encoding="csv">
 72,72,72,72,72,72,72,72,72,72,107,107,71,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,
 72,72,72,72,72,72,72,72,72,72,72,71,70,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,
@@ -874,7 +874,7 @@
 72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,72,74,74,74,74,72,72,72,72,72,72,72,72,72,72,72,72,72,72
 </data>
  </layer>
- <layer id="2" name="Wall Layer" width="50" height="30">
+ <layer id="2" name="Wall Layer" width="50" height="30" visible="0">
   <properties>
    <property name="collides" type="bool" value="true"/>
   </properties>

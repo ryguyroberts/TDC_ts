@@ -19,6 +19,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private attackDmg: number;
   private projectiles: Phaser.GameObjects.Sprite[] = [];
   placed: boolean = false;
+  price: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -34,6 +35,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     }
     this.body.setSize(16, 16);
 
+    // price of tower
+    this.price = 100;
 
     // properties for projectiles
     this.shootRange = 1000;

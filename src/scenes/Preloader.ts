@@ -13,7 +13,7 @@ export class Preloader extends Phaser.Scene {
     this.load.image('tilemap_items', 'tech_map/props and items x1.png');
 
     // The actual Map
-    this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map03.json');
+    this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map04.json');
 
     // Sprites
     this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
@@ -29,6 +29,7 @@ export class Preloader extends Phaser.Scene {
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
+    this.load.image('tower_text', 'ui/tower.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
 
   }
