@@ -32,12 +32,21 @@ export class Preloader extends Phaser.Scene {
     this.load.image('tower_text', 'ui/tower.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
 
+    // Main Menu
+    this.load.image('main_menu_scene', "ui/TDC Title Scene.png");
+    this.load.image('play_button', 'ui/play button.png')
+
+    // Game Over
+    this.load.image('game_over_scene', 'ui/GameOver Scene.png');
+    this.load.image('try_again', 'ui/try again button.png');
+    this.load.image('exit', 'ui/exit button.png');
+
   }
 
   // Once asset all preloaded start our game! (Our main menu here)
 
   create() {
-    this.scene.start('main_game');
+    this.scene.start('main_menu');
   };
 
 };
