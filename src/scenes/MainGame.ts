@@ -267,7 +267,9 @@ checkEndCombat() {
     mobStore.addMob(mobID, mob_t2);
   }
 
+
   update() {
+
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
@@ -275,7 +277,8 @@ checkEndCombat() {
       const endPointY = 200; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
-        playerState.takeDamage(10);
+        mob.decreaseHealth(mob.health, mob.getData('id'), this);
+        playerState.takeDamage(1);
       }    
     })
   }

@@ -15,10 +15,12 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   // For health state
   accessor health: number = 100;
-  private speed: number = 50;
+  private speed: number = 200;
   
   // for currency state
   value: number = 100;
+
+  private hasEnteredEndpoint: boolean = false;
  
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
@@ -69,7 +71,10 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
   checkEndPoint(endPointX: number, endPointY: number): boolean {
     // Check if mob crosses the end point
     const tolerance = 1; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
-    if (Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) {
+    if ((Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) && !this.hasEnteredEndpoint)  {
+      this.hasEnteredEndpoint= true;
+      console.log(this.hasEnteredEndpoint);
+      console.log('set end point true');
       return true; // Mob has reached the end
     } else {
       return false; 
