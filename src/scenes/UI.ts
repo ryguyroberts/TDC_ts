@@ -14,7 +14,7 @@ import { gamephase } from "../states/GamePhase";
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   tileSize: number;
-  
+
 
   init(data: any) {
     this.mobGroup = data.mobGroup;
@@ -72,56 +72,59 @@ export class UI extends Phaser.Scene {
         // Tower Sprite Creation
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
           const tower = this.add.tower1(localX, localY, 'tower1');
-          tower.setAlpha(0.5);
-          const towerID = Phaser.Math.RND.uuid();
-          towerState.addTower(towerID, tower);
-          tower.placed = false;
+          if (playerState.buyTower(tower.price)) {
+            tower.setAlpha(0.5);
+            const towerID = Phaser.Math.RND.uuid();
+            towerState.addTower(towerID, tower);
+            tower.placed = false;
 
-          tower.setInteractive();
+            tower.setInteractive();
 
-          let isPlaced = false;
+            let isPlaced = false;
 
-          this.input.on('pointermove', (pointer: any) => {
-            if (isPlaced) return; // Ignore listener if placed 
-            tower.x = pointer.x;
-            tower.y = pointer.y;
-          });
+            this.input.on('pointermove', (pointer: any) => {
+              if (isPlaced) return; // Ignore listener if placed 
+              tower.x = pointer.x;
+              tower.y = pointer.y;
+            });
 
-          // Tower Placement
-          this.input.on('pointerup', () => {
-            if (isPlaced) return; // Ignore listener if placed 
+            // Tower Placement
+            this.input.on('pointerup', () => {
+              if (isPlaced) return; // Ignore listener if placed 
 
-            // Calc nearest grid position where the pointer is
-            const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
-            const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
+              // Calc nearest grid position where the pointer is
+              const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
+              const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
 
-            // Move tower to nearest grid position
-            tower.x = gridX;
-            tower.y = gridY;
+              // Move tower to nearest grid position
+              tower.x = gridX;
+              tower.y = gridY;
 
-            // Restore opacity
-            tower.setAlpha(1);
+              // Restore opacity
+              tower.setAlpha(1);
 
-            //Remove pointermove listener
-            this.input.off('pointermove');
-            tower.placed = true;
-            isPlaced = true;
+              //Remove pointermove listener
+              this.input.off('pointermove');
+              tower.placed = true;
+              isPlaced = true;
 
-            // Attach tower selection handler
-            this.attachTowerSelection(tower);
-          });
+              // Attach tower selection handler
+              this.attachTowerSelection(tower);
+            });
+          }
+
         });
       }
     });
 
     // LEFT PANEL UI: PLAYER & GAME STATE
-    const currencyText = this.add.text(10, 10, `Currency: 1000`);
-    const playerHp = this.add.text(20, 10, "HP: 100"); 
+    const currencyText = this.add.text(50, 170, `Currency: 1000`);
+    const playerHp = this.add.text(50, 200, "HP: 100");
 
     autorun(() => {
       currencyText.text = `Currency: ${playerState.currency}`;
       playerHp.text = `HP: ${playerState.playerHealth}`;
-    })
+    });
 
     // playerState.
 
@@ -164,11 +167,11 @@ export class UI extends Phaser.Scene {
     });
 
     // Current phase Display for testing
-    const gamePhaseText = this.add.text(10,875, 'Current Phase: Placeholder', textStyle);
- 
+    const gamePhaseText = this.add.text(10, 875, 'Current Phase: Placeholder', textStyle);
+
     const updategPT = () => {
       gamePhaseText.setText(`Current Phase: ${gamephase.stage}`);
-    }
+    };
     // run once
     updategPT();
 
@@ -178,11 +181,11 @@ export class UI extends Phaser.Scene {
       () => updategPT()
     );
 
-      // Build phase timer
-    const buildTime = this.add.text(10,842, 'Placeholder', textStyle);
+    // Build phase timer
+    const buildTime = this.add.text(10, 842, 'Placeholder', textStyle);
     const updateBT = () => {
-      buildTime .setText(`Build Time: ${gamephase.buildtime}`);
-    }
+      buildTime.setText(`Build Time: ${gamephase.buildtime}`);
+    };
     updateBT();
 
     reaction(
@@ -192,16 +195,16 @@ export class UI extends Phaser.Scene {
 
 
 
-      
+
     const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
-      NextPhase.on('pointerdown', () => {
-        // if combat stage don't advance change button text?
-        if (gamephase.stage === 'combat') {
-          return;
-        }
-        gamephase.toggleStage();
+    NextPhase.on('pointerdown', () => {
+      // if combat stage don't advance change button text?
+      if (gamephase.stage === 'combat') {
+        return;
+      }
+      gamephase.toggleStage();
     });
-     
+
 
   }
 

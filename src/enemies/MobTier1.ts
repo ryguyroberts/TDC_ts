@@ -1,4 +1,5 @@
 import Phaser from "phaser";
+import { playerState } from "../states/PlayerState";
 import { mobStore} from "../states/MobStore";
 
 // For typescript
@@ -15,6 +16,9 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
   // For health state
   accessor health: number = 100;
   private speed: number = 50;
+  
+  // for currency state
+  value: number = 100;
  
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
@@ -55,6 +59,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
       // Allow time to play animation before destroy
       scene.time.delayedCall(1000, () => {
+        playerState.addFunds(this.value);
         this.destroy();
         mobStore.removeMob(id);
       });

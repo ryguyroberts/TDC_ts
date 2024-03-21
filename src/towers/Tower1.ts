@@ -36,7 +36,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     this.body.setSize(16, 16);
 
     // price of tower
-    this.price = 200;
+    this.price = 100;
 
     // properties for projectiles
     this.shootRange = 1000;
