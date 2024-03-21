@@ -119,15 +119,6 @@ export class MainGame extends Phaser.Scene {
 
   };
 
-// Method to toggle between build and combat phases for machines?
-// togglePhase() {
-//   gamephase.toggleStage();
-//   if (gamephase.stage === 'build') {
-//     this.startBuildPhase();
-//   } else {
-//     this.startCombatPhase();
-//   }
-// }
 
 // if mobx state has no mobs (all dead) enter build stage
 
@@ -168,7 +159,7 @@ dynamicPhase() {
       this.mobSpawnEvent.remove(false);
     };
 
-    gamephase.buildtime = 61;
+    gamephase.buildtime = 60;
 
  // Set a timed event to update build time every second
   this.buildPhaseEvent = this.time.addEvent({
@@ -228,9 +219,6 @@ dynamicPhase() {
 
     // Start spawning mobs with delay
     spawnMobsWithDelay(numberOfMobsToSpawn);
-
-
-
     // this.phaseChangeEvent.reset({ delay: 15000 });
   }
 
