@@ -99,6 +99,8 @@ const waveConfigurations: { tier1: number, tier2: number }[] = [
   { tier1: 10, tier2: 10 }, // Wave 1
   { tier1: 20, tier2: 20 }, // Wave 2
   { tier1: 40, tier2: 40 }, // Wave 3
+  // Wave -> Game Win scene
+  // Win state?
   // Add waves
 ];
 
@@ -126,6 +128,8 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
     for (let i = 0; i < waveConfig.tier2; i++) {
     mobsToSpawn.push(2); // Tier 1 mob
   };
+
+  
 
   // Dryer but its QUADRATIC
   // for (const tier in waveConfig) {

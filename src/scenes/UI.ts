@@ -30,7 +30,7 @@ export class UI extends Phaser.Scene {
     // Init mobgroup
     this.mobGroup = this.physics.add.group();
 
-    // UI Tilemap Creation
+      // UI Tilemap Creation
     const uiMap = this.make.tilemap({ key: 'ui_tilemap' });
     const tileset_ui = uiMap.addTilesetImage('ui x2', 'ui_tilemap_left_ui');
     const tilemap_tower_ui = uiMap.addTilesetImage('enemies x2', 'ui_tilemap_towers');
@@ -56,6 +56,7 @@ export class UI extends Phaser.Scene {
         });
       },
     );
+
     // RIGHT PANEL UI: TOWER CREATION
     const towerText = this.add.sprite(1435, 90, 'tower_text');
     towerText.setScale(1.35);

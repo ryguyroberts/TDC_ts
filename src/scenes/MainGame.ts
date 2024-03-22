@@ -16,6 +16,7 @@ import '../enemies/MobTier2';
 // Utitilies
 import findPath from '../utils/findPath';
 import { startBuildPhase, dynamicPhase, checkEndCombat} from '../utils/mobUtils';
+// import { preprocessMapData } from "../utils/processMap";
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -41,6 +42,7 @@ export class MainGame extends Phaser.Scene {
   public buildPhaseEndEv: Phaser.Time.TimerEvent;
   public buildPhaseEvent: Phaser.Time.TimerEvent;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
 
   constructor() {
     super('main_game');
@@ -53,7 +55,7 @@ export class MainGame extends Phaser.Scene {
   create() {
 
     // Launch UI scene
-    this.scene.launch('ui', { mobGroup: this.mobGroup });
+    this.scene.launch('ui', { mobGroup: this.mobGroup});
 
     // Animations
     createTowerTier1Anims(this.anims);
@@ -79,16 +81,21 @@ export class MainGame extends Phaser.Scene {
 
     this.groundLayer = map.createLayer('Tile Layer 1', allLayers) as Phaser.Tilemaps.TilemapLayer;
 
+    this.notGroundLayer = map.createLayer('notGround', allLayers) as Phaser.Tilemaps.TilemapLayer;
+    this.notGroundLayer.setTint();
+   
     // map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     // this.wallsLayer.setDepth(100);
     map.createLayer('effect', allLayers);
     map.createLayer('props', allLayers);
 
+
+
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true });
     this.groundLayer.setCollisionByProperty({ collides: false})
-   
+       
 
     // Collision Debugging // 
     // debugDraw(this.wallsLayer, this)
@@ -99,11 +106,13 @@ export class MainGame extends Phaser.Scene {
     // Start in build Phase!
     startBuildPhase(this);
 
+
     // if gamephase changes react appropriately
     reaction(
       () => gamephase.stage,
       () => dynamicPhase(this, this.mobGroup)
     );
+
 
     // if mob enters array run my check if no more mobs end combat
     reaction(

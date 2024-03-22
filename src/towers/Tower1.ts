@@ -41,7 +41,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     // properties for projectiles
     this.shootRange = 1000;
-    this.shootTime = 2;
+    // No idea shoot time?
+    this.shootTime = 2; // Time to reach mob?
     this.shootDelay = 500;
     this.attackDmg = 20;
   };
@@ -99,7 +100,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
         }
         // another if here? for mobtier
       } else {
-        this.scene.physics.moveToObject(projectile, target, 200);
+        this.scene.physics.moveToObject(projectile, target, 200); // Speed of the projectile?
         this.scene.time.delayedCall(100, checkDistance);
       }
     };

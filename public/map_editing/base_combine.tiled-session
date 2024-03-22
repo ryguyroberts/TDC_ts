@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "tech_map02.tmx",
+    "activeFile": "tech_map05_test.tmx",
     "expandedProjectPaths": [
         "."
     ],
@@ -58,8 +58,8 @@
             "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 800,
-                "y": 480
+                "x": 799,
+                "y": 479
             }
         },
         "tech_map02.tmx#Tech_TD_Ced": {
@@ -74,6 +74,26 @@
         "tech_map02.tmx#props and items x1": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "tech_map05_test.tmx": {
+            "scale": 0.928625,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 789.8775070669,
+                "y": 479.2031228967559
+            }
+        },
+        "tech_map05_test.tmx#Tech_TD_Ced": {
+            "scaleInDock": 1
+        },
+        "tech_map05_test.tmx#Tech_TD_Ced_02": {
+            "scaleInDock": 0.75
+        },
+        "tech_map05_test.tmx#npc x1": {
+            "scaleInDock": 1
+        },
+        "tech_map05_test.tmx#props and items x1": {
+            "scaleInDock": 1
         }
     },
     "last.exportedFilePath": "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map",
@@ -83,14 +103,14 @@
     "map.lastUsedFormat": "tmx",
     "map.width": 50,
     "openFiles": [
-        "tech_map02.tmx",
-        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx"
+        "tech_map05_test.tmx"
     ],
     "project": "base_combine.tiled-project",
     "property.type": "bool",
     "recentFiles": [
-        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx",
+        "tech_map05_test.tmx",
         "tech_map02.tmx",
+        "//wsl.localhost/LHL/home/labber/Phaser/projects/TDC_ts/public/tech_map/tech_map.tmx",
         "tech_map.tmx",
         "tech factory.tsx"
     ],
