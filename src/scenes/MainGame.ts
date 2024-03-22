@@ -15,7 +15,7 @@ import '../enemies/MobTier2';
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { createMobTier1, createMobTier2, checkEndCombat} from '../utils/mobUtils';
+import { startBuildPhase, startCombatPhase, checkEndCombat} from '../utils/mobUtils';
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -24,6 +24,8 @@ import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
 import MobTier1 from "../enemies/MobTier1";
+
+// The interfaces are coming
 
 
 
@@ -35,9 +37,9 @@ export class MainGame extends Phaser.Scene {
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
-  private mobSpawnEvent: Phaser.Time.TimerEvent;
-  private buildPhaseEndEv: Phaser.Time.TimerEvent;
-  private buildPhaseEvent: Phaser.Time.TimerEvent;
+  public mobSpawnEvent: Phaser.Time.TimerEvent;
+  public buildPhaseEndEv: Phaser.Time.TimerEvent;
+  public buildPhaseEvent: Phaser.Time.TimerEvent;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
 
   constructor() {
@@ -54,7 +56,6 @@ export class MainGame extends Phaser.Scene {
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
     // Animations
-
     createTowerTier1Anims(this.anims);
     createMobTier1Anims(this.anims);
     createMobTier2Anims(this.anims);
@@ -78,9 +79,9 @@ export class MainGame extends Phaser.Scene {
 
     this.groundLayer = map.createLayer('Tile Layer 1', allLayers) as Phaser.Tilemaps.TilemapLayer;
 
-    map.createLayer('Tile Layer 1', allLayers);
+    // map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
-    this.wallsLayer.setDepth(100);
+    // this.wallsLayer.setDepth(100);
     map.createLayer('effect', allLayers);
     map.createLayer('props', allLayers);
 
@@ -88,22 +89,20 @@ export class MainGame extends Phaser.Scene {
     this.wallsLayer.setCollisionByProperty({ collides: true });
     this.groundLayer.setCollisionByProperty({ collides: false})
 
-    // Collision Debugging
+    // Collision Debugging // 
     // debugDraw(this.wallsLayer, this)
 
-
-    // Test mobs
+    // Test mobs // Physics is w/e
     this.mobGroup = this.physics.add.group();
 
     // Start in build Phase!
-    this.startBuildPhase();
+    startBuildPhase(this);
 
     // if gamephase changes react appropriately
     reaction(
       () => gamephase.stage,
       () => this.dynamicPhase()
     );
-
 
     // if mob enters array run my check if no more mobs end combat
     reaction(
@@ -116,7 +115,7 @@ export class MainGame extends Phaser.Scene {
   // If the mobX state changes start the right stage
   dynamicPhase() {
     if (gamephase.stage === 'build') {
-      this.startBuildPhase();
+      startBuildPhase(this);
     } else {
       // starting the combat phase
 
@@ -128,102 +127,9 @@ export class MainGame extends Phaser.Scene {
       // Build timer zero
  
       gamephase.buildtime = 0;
-      this.startCombatPhase();
+      startCombatPhase(this, this.mobGroup);
     }
   }
-
-
-  // Build phase!
-  startBuildPhase() {
-    console.log('Build Phase Started');
-
-    // Stop spawning mobs
-    if (this.mobSpawnEvent) {
-      this.mobSpawnEvent.remove(false);
-    };
-
-    gamephase.buildtime = 60;
-
-    // Set a timed event to update build time every second
-    this.buildPhaseEvent = this.time.addEvent({
-      delay: 1000, // Delay of 1 second
-      callback: () => {
-        this.updateTimer();
-      },
-      callbackScope: this,
-      loop: true // Set loop to true to repeat the event
-    });
-
-
-
-    const buildTime = 60;
-    this.buildPhaseEndEv = this.time.addEvent({
-      delay: buildTime * 1000, // Convert seconds to milliseconds
-      callback: this.endBuild,
-      callbackScope: this
-    });
-
-
-    this.time.addEvent({
-      delay: 1000, // Convert seconds to milliseconds
-      callback: this.updateTimer,
-      callbackScope: this
-    });
-  };
-
-  endBuild() {
-    console.log('end build stage');
-    gamephase.toggleStage();
-  }
-
-
-  updateTimer() {
-    // increment by 1
-    gamephase.updateTimerAction();
-
-  }
-
-
-  // Combat phase start no way to auto end right
-  startCombatPhase() {
-    console.log('Combat Phase started');
-    // Start mob spawning
-    const numberOfMobsToSpawn = 30; // Adjust this number as needed
-    const spawnDelay = 1000; // Adjust this delay (in milliseconds) as needed
-
-    // Function to spawn mobs with a delay
-    const spawnMobsWithDelay = (count: number) => {
-      if (count > 0) {
-        // Spawn a mob
-        this.createMobRandom();
-        // Call the function recursively after the delay
-        this.time.delayedCall(spawnDelay, spawnMobsWithDelay, [count - 1]);
-      }
-    };
-
-    // Start spawning mobs with delay
-    spawnMobsWithDelay(numberOfMobsToSpawn);
-    // this.phaseChangeEvent.reset({ delay: 15000 });
-  }
-
-
-
-  // Move these out somehow? 
-  createMobRandom() {
-    // Randomly decide whether to create MobTier1 or MobTier2
-    const randomMobType = Phaser.Math.RND.between(1, 2);
-
-    if (randomMobType === 1) {
-      createMobTier1(this, this.mobGroup);
-      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
-    } else {
-      // console.log('made a mob2');
-      createMobTier2(this, this.mobGroup);
-      // console.log('num of mobs in the mobGroup', this.mobGroup.getLength());
-    }
-  }
-
-
 
   calculateAndMoveMob(mob: MobTier1) {
 
