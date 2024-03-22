@@ -10,6 +10,8 @@ class TowerState {
 
   addTower(id: string, tower: Tower1) {
     this.activeTowers.set(id, tower);
+    console.log("active towers", this.activeTowers)
+  
   }
 
   removeTower(id: string) {
@@ -22,4 +24,3 @@ class TowerState {
 };
 
 export const towerState = new TowerState();
-

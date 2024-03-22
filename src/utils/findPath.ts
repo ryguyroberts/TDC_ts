@@ -1,4 +1,11 @@
+//import tower data
+//import { towerState } from "../states/TowerStore";
+
+
+
 const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.TilemapLayer, wallsLayer: Phaser.Tilemaps.TilemapLayer) => {
+
+
   
   type ParentForKey = {
     [key: string]: {
@@ -19,6 +26,7 @@ const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.Tilem
   // console.log("targetVec in findPath:", target);
 
   const startKey = toKey(start.x, start.y);
+  
   //console.log("startKey:", startKey)
 
   const targetKey = "33x29";
@@ -34,6 +42,7 @@ const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.Tilem
   while (queue.length > 0) {
       const { x, y } = queue.shift() as Point;
       const currentKey = toKey(x, y);
+      
 
       //console.log("Checking current position:", x, y);
       //console.log("Target position:", target.x, target.y);
@@ -57,13 +66,23 @@ const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.Tilem
         if (!tile) {
             continue;
         }
-    
+        
+        //for (const [towerId, tower] of towerState.activeTowers.entries()) {
+        //  const towerX = Math.floor(tower.x / 32);
+        //  const towerY = Math.floor(tower.y / 32);
+        //  const towerKey = toKey(towerX, towerY)
+        //  console.log("towerId, towerKey", towerId, towerKey)
+        //
+        //  if (towerKey) {
+        //    continue;
+        //  }
+        //}
+        //
         if (wallsLayer.getTileAt(neighbor.x, neighbor.y)) {
             continue;
         }
-    
+
         const key = toKey(neighbor.x, neighbor.y);
-        //console.log("Key:", key);
     
         if (key in parentForKey) {
             continue;

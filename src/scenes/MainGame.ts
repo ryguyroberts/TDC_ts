@@ -263,6 +263,22 @@ checkEndCombat() {
     mobStore.addMob(mobID, mob_t2);
   // }
   }
+
+  createTowerLayer = () => {
+    const towerLayer = [];
+  
+    for (const [towerId, tower] of towerState.activeTowers.entries()) {
+      const towerX = Math.floor(tower.x / 32);
+      const towerY = Math.floor(tower.y / 32);
+      const towerKey = `${towerX}x${towerY}`;
+  
+      towerLayer.push(towerKey);
+      console.log("towerLayer array", towerLayer, towerId);
+    }
+  
+    return towerLayer;
+  };
+  
   calculateAndMoveMob(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);

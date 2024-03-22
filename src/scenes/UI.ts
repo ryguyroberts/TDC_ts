@@ -99,9 +99,13 @@ export class UI extends Phaser.Scene {
               const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
               const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
 
+              console.log("grid x and y:", gridX, gridY);
+            
               // Move tower to nearest grid position
               tower.x = gridX;
               tower.y = gridY;
+
+              console.log("tower x y", tower.x, tower.y);
 
               // Restore opacity
               tower.setAlpha(1);
@@ -113,6 +117,10 @@ export class UI extends Phaser.Scene {
 
               // Attach tower selection handler
               this.attachTowerSelection(tower);
+              console.log("tower", tower)
+
+              //calls to pathfinding to update data
+              //this.pathfindingTowerData(tower.x, tower.y, tower.placed);
             });
           }
 
@@ -250,7 +258,9 @@ export class UI extends Phaser.Scene {
   private findSelectedTower(selectedTower: Phaser.GameObjects.Sprite): string | null {
     for (const [towerID, tower] of towerState.activeTowers.entries()) {
       if (tower === selectedTower) {
+        console.log("selectedTower:",selectedTower);
         return towerID;
+        
       }
     }
     return null;

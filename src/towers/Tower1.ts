@@ -62,6 +62,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     mobs.forEach((mob: Phaser.Physics.Arcade.Sprite) => {
       const distance = Phaser.Math.Distance.Between(this.x, this.y, mob.x, mob.y);
+    
+
       if (distance < closestDistance) {
         closestMob = mob;
         closestDistance = distance;
@@ -125,6 +127,5 @@ Phaser.GameObjects.GameObjectFactory.register('tower1', function(this: Phaser.Ga
   const sprite = new Tower1(this.scene, x, y, texture, frame);
   this.displayList.add(sprite);
   this.updateList.add(sprite);
-
   return sprite;
 });
