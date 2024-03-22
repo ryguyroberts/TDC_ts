@@ -1,7 +1,7 @@
 import { makeAutoObservable, action } from "mobx";
 
 class GamePhase {
-  wave: Number = 0;
+  wave: number = 1;
   stage: string = 'build'; 
   buildtime: number = 60;
 
