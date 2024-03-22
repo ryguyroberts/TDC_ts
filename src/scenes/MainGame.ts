@@ -88,6 +88,7 @@ export class MainGame extends Phaser.Scene {
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true });
     this.groundLayer.setCollisionByProperty({ collides: false})
+   
 
     // Collision Debugging // 
     // debugDraw(this.wallsLayer, this)

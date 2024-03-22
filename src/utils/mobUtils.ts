@@ -127,6 +127,16 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
     mobsToSpawn.push(2); // Tier 1 mob
   };
 
+  // Dryer but its QUADRATIC
+  // for (const tier in waveConfig) {
+  //   const numMobs = waveConfig[tier];
+  //   // Add mobs of this tier to the array
+  //   for (let i = 0; i < numMobs; i++) {
+  //     mobsToSpawn.push(parseInt(tier)); // Convert tier to number
+  //   }
+  // }
+
+
   // Shuffle Array
   Phaser.Utils.Array.Shuffle(mobsToSpawn);
 

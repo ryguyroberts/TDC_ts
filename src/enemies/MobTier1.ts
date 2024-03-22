@@ -51,6 +51,10 @@ moveTo(target: Phaser.Math.Vector2) {
 
 update() {
   
+  // If dead no updates!
+  if (this.health <= 0) {
+    return;
+  }
     let dx = -1
     let dy = 0
 
