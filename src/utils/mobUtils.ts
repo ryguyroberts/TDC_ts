@@ -6,9 +6,32 @@ import { gamephase } from "../states/GamePhase";
 
 interface MainGame extends Phaser.Scene {
   mobSpawnEvent?: Phaser.Time.TimerEvent;
-  buildPhaseEvent?: Phaser.Time.TimerEvent;
-  buildPhaseEndEv?: Phaser.Time.TimerEvent;
+  buildPhaseEvent: Phaser.Time.TimerEvent;
+  buildPhaseEndEv: Phaser.Time.TimerEvent;
 }
+
+//->> The Phase Controller <<-//
+const dynamicPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group) => {
+  if (gamephase.stage === 'build') {
+    // Do build phase stuff 
+    startBuildPhase(scene);
+  } else if (gamephase.stage === 'combat') {
+    // Do combat phase stuff
+
+    // remove events if around
+    if (scene.buildPhaseEndEv) {
+      scene.buildPhaseEndEv.remove(false);
+      scene.buildPhaseEvent.remove(false);
+    }
+
+    gamephase.buildtime = 0;
+    startCombatPhase(scene, mobGroup);
+
+  };
+};
+
+
+
 
 //->> Build Phase Logic <<-//
 const startBuildPhase = (scene: MainGame) => {
@@ -140,7 +163,6 @@ const createMobTier2 = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Gro
 
 export {
   checkEndCombat,
-  createMobRandom,
   startBuildPhase,
-  startCombatPhase
+  dynamicPhase,
 };

@@ -15,7 +15,7 @@ import '../enemies/MobTier2';
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { startBuildPhase, startCombatPhase, checkEndCombat} from '../utils/mobUtils';
+import { startBuildPhase, dynamicPhase, checkEndCombat} from '../utils/mobUtils';
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -101,7 +101,7 @@ export class MainGame extends Phaser.Scene {
     // if gamephase changes react appropriately
     reaction(
       () => gamephase.stage,
-      () => this.dynamicPhase()
+      () => dynamicPhase(this, this.mobGroup)
     );
 
     // if mob enters array run my check if no more mobs end combat
@@ -110,26 +110,6 @@ export class MainGame extends Phaser.Scene {
       () => checkEndCombat()
     );
   };
-
-
-  // If the mobX state changes start the right stage
-  dynamicPhase() {
-    if (gamephase.stage === 'build') {
-      startBuildPhase(this);
-    } else {
-      // starting the combat phase
-
-      // Remove build phase natural end.
-      if (this.buildPhaseEndEv) {
-        this.buildPhaseEndEv.remove(false);
-        this.buildPhaseEvent.remove(false);
-      }
-      // Build timer zero
- 
-      gamephase.buildtime = 0;
-      startCombatPhase(this, this.mobGroup);
-    }
-  }
 
   calculateAndMoveMob(mob: MobTier1) {
 
