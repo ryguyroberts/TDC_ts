@@ -42,7 +42,7 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  private initialWavePlaySFX: boolean;
+  // private initialWavePlaySFX: boolean;
 
   constructor() {
     super('main_game');
@@ -60,7 +60,7 @@ export class MainGame extends Phaser.Scene {
     // Audio
     this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.08 });
     this.bgm.play();
-    this.initialWavePlaySFX = true; // For wave_complete sfx, don't want to initialize on game startup
+    // this.initialWavePlaySFX = true; // For wave_complete sfx, don't want to initialize on game startup
 
     // Animations
     createTowerTier1Anims(this.anims);
@@ -172,7 +172,7 @@ export class MainGame extends Phaser.Scene {
       mob.update();
 
       const endPointX = 1068; // change to endpoint when ready
-      const endPointY = 910; // change to endpoint when ready
+      const endPointY = 907; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
