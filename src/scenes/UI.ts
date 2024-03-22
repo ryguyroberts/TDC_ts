@@ -13,9 +13,9 @@ import { gamephase } from "../states/GamePhase";
 
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
-  tileSize: number;
-  deleteTower: Phaser.GameObjects.Sprite;
-
+  private tileSize: number;
+  private deleteTower: Phaser.GameObjects.Sprite;
+  private clickSFX: Phaser.Sound.BaseSound;
 
   init(data: any) {
     this.mobGroup = data.mobGroup;
@@ -89,6 +89,7 @@ export class UI extends Phaser.Scene {
               if (isPlaced) return; // Ignore listener if placed 
               tower.x = pointer.x;
               tower.y = pointer.y;
+
             });
 
             // Tower Placement
@@ -106,10 +107,14 @@ export class UI extends Phaser.Scene {
               // Restore opacity
               tower.setAlpha(1);
 
-              //Remove pointermove listener
+              // Remove pointermove listener
               this.input.off('pointermove');
               tower.placed = true;
               isPlaced = true;
+              
+              // Build Tower SFX
+              const buildSFX = this.sound.add('tower_build');
+              buildSFX.play();
 
               // Attach tower selection handler
               this.attachTowerSelection(tower);
@@ -122,13 +127,17 @@ export class UI extends Phaser.Scene {
 
     // LEFT PANEL UI: PLAYER & GAME STATE
     const hpIcon = this.add.sprite(75, 190, 'hp_icon');
-    hpIcon.setScale(.14);
-    const playerHp = this.add.text(80, 200, ": 100");
-    playerHp.setScale(2);
-    const currencyText = this.add.text(50, 300, `Currency: 1000`);
+    hpIcon.setScale(0.14);
+    const playerHp = this.add.text(120, 168, ": 100");
+    playerHp.setScale(3);
+
+    const currencyIcon = this.add.sprite(75, 280, 'currency');
+    currencyIcon.setScale(0.35);
+    const currencyText = this.add.text(120, 260, `Currency: 1000`);
+    currencyText.setScale(3);
 
     autorun(() => {
-      currencyText.text = `Currency: ${playerState.currency}`;
+      currencyText.text = `: ${playerState.currency}`;
       playerHp.text = `: ${playerState.playerHealth}`;
     });
 
@@ -141,8 +150,8 @@ export class UI extends Phaser.Scene {
     };
 
     // Delete tower button
-    this.deleteTower = this.add.sprite(100, 320, 'destroy_button').setInteractive().setVisible(false);
-    this.deleteTower.setScale(0.25);
+    this.deleteTower = this.add.sprite(120, 380, 'destroy_button').setInteractive().setVisible(false);
+    this.deleteTower.setScale(0.30);
     
     this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
@@ -157,13 +166,22 @@ export class UI extends Phaser.Scene {
             // Cease the firing of the tower
             towerObj.stopFiring();
 
-            towerObj.placed = false;
+            // ClickSFX
+            // this.clickSFX = this.sound.add('click');
+            // this.clickSFX.play();
+
+            // Tower Destroy SFX
+            const destroySFX = this.sound.add('tower_destroy');
+            destroySFX.play();
+
             // Remove tower sprite from game
+            towerObj.placed = false;
             towerToRemove.destroy();
 
             // Remove tower from active towers state 
             towerState.removeTower(id);
             this.deleteTower.setVisible(false);
+
           }
 
         } else {
@@ -238,6 +256,10 @@ export class UI extends Phaser.Scene {
 
         // Update selectedTower state
         selectedTowerState.selectTower(tower);
+
+        // Click SFX
+        this.clickSFX = this.sound.add('click');
+        this.clickSFX.play();
 
         // Display tower info
         this.deleteTower.setVisible(true);

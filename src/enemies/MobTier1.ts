@@ -124,9 +124,11 @@ update() {
 
     // if not dead do the tint or kill it 
     if (this.health > 0) {
+      const hitSFX = this.scene.sound.add('mob_hit');
+      hitSFX.play( { volume: 0.5 });
       this.setTint(0xff0000);
-      scene.time.delayedCall(500, () => {
-        this.clearTint(); // Revert the tint back to its original color after 0.5 seconds
+      scene.time.delayedCall(400, () => {
+        this.clearTint(); // Revert the tint back to its original color after 0.4 seconds
       });
     } 
 
@@ -144,6 +146,8 @@ update() {
 
       // Allow time to play animation before destroy
       scene.time.delayedCall(1000, () => {
+        const mobDeathSFX = this.scene.sound.add('mob_death');
+        mobDeathSFX.play();
         playerState.addFunds(this.value);
         this.destroy();
         mobStore.removeMob(id);

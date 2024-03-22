@@ -38,6 +38,8 @@ export class MainGame extends Phaser.Scene {
   private buildPhaseEndEv: Phaser.Time.TimerEvent;
   private buildPhaseEvent: Phaser.Time.TimerEvent;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
+  private bgm: Phaser.Sound.BaseSound;
+  private initialWavePlaySFX: boolean;
 
   constructor() {
     super('main_game');
@@ -53,8 +55,9 @@ export class MainGame extends Phaser.Scene {
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
     // Audio
-    const bgm = this.sound.add('game_bgm', { loop: true, volume: 0.15 });
-    bgm.play();
+    this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.08 });
+    this.bgm.play();
+    this.initialWavePlaySFX = true; // For wave_complete sfx, don't want to initialize on game startup
 
     // Animations
 
@@ -124,6 +127,9 @@ checkPlayerHealth() {
       if (playerState.playerHealth <= 0) {
         this.restartGame();
         this.scene.stop('ui');
+        this.bgm.stop();
+        const deathSound = this.sound.add('death_sound');
+        deathSound.play();
         this.scene.start('game_over');
       }
     },
@@ -167,10 +173,15 @@ checkEndCombat() {
     }
   }
 
-
+  
   // Build phase!
   startBuildPhase() {
     console.log('Build Phase Started');
+
+    if (!this.initialWavePlaySFX) {
+      const waveCompleteSFX = this.sound.add('wave_complete');
+      waveCompleteSFX.play( { volume: 1 });
+    }
 
     // Stop spawning mobs
     if (this.mobSpawnEvent) {
@@ -238,6 +249,7 @@ checkEndCombat() {
 
     // Start spawning mobs with delay
     spawnMobsWithDelay(numberOfMobsToSpawn);
+    this.initialWavePlaySFX = false;
     // this.phaseChangeEvent.reset({ delay: 15000 });
   }
 

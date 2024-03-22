@@ -34,6 +34,7 @@ export class MainMenu extends Phaser.Scene {
 
     // Button SFX
     const buttonSFX = this.sound.add('play_button_bleep');
+    const clickSFX = this.sound.add('click');
 
     this.playButton.on('pointerover', () => {
       this.playButton.setScale(this.hoverScale);
@@ -51,6 +52,7 @@ export class MainMenu extends Phaser.Scene {
     this.playButton.setInteractive();
     this.playButton.on('pointerdown', () => {
       menuBGM.stop();
+      clickSFX.play();
       this.setCursor('default');
       this.scene.start('main_game');
     });
