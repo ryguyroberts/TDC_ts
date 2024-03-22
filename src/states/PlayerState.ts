@@ -2,7 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class PlayerState {
   currency: number = 1000;
-  playerHealth: number = 100;
+  playerHealth: number = 10;
 
   constructor() {
     makeAutoObservable(this);
@@ -20,14 +20,20 @@ class PlayerState {
     this.currency += amount;
   }
 
-  takeDamage(damage: number) {
+  takeDamage(damage: number): boolean {
     if (this.playerHealth > 0) {
       this.playerHealth -= damage;
-    } else {
-      return false; // game over
+      if (this.playerHealth <= 0) {
+        return true; // game over
+      }
     }
+    return false; // player still alive
   }
 
+  reset() {
+    this.playerHealth = 100;
+    this.currency = 1000;
+  }
 }
 
 export const playerState = new PlayerState();

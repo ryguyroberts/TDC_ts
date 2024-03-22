@@ -29,9 +29,12 @@ export class Preloader extends Phaser.Scene {
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
-    this.load.image('tower_text', 'ui/tower.png');
+    this.load.image('tdc_logo', 'ui/TDC logo.png');
+    this.load.image('destroy_button', 'ui/destroy button.png');
+    this.load.image('hp_icon', 'ui/hp.png');
+    this.load.image('currency', 'ui/coin.png');
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
-
+  
     // Main Menu
     this.load.image('main_menu_scene', "ui/TDC Title Scene.png");
     this.load.image('play_button', 'ui/play button.png')
@@ -41,6 +44,28 @@ export class Preloader extends Phaser.Scene {
     this.load.image('try_again', 'ui/try again button.png');
     this.load.image('exit', 'ui/exit button.png');
 
+    // BGM 
+    this.load.audio('game_bgm', 'audio/Kubbi - Digestive biscuit.mp3');
+    this.load.audio('menu_bgm', 'audio/Kevin MacLeod - 8bit Dungeon Level.mp3');
+    this.load.audio('game_over_bgm', 'audio/gameover_bgm.mp3');
+
+    // Button SFX
+    this.load.audio('play_button_bleep', 'audio/bleep.mp3');
+    this.load.audio('click', 'audio/8bitclick.mp3');
+
+    // Gameplay SFX
+    this.load.audio('wave_complete', 'audio/wave complete.mp3');
+    this.load.audio('death_sound', 'audio/game over.mp3');
+    
+    // Tower SFX
+    this.load.audio('tower_build', 'audio/buildtower.mp3');
+    this.load.audio('tower_laser', 'audio/laser.mp3');
+    this.load.audio('tower_destroy', 'audio/towerdestroy.mp3');
+
+    // Mob SFX
+    this.load.audio('mob_hit', 'audio/mob hit.mp3');
+    this.load.audio('mob_death', 'audio/mobdeath.mp3');
+  
   }
 
   // Once asset all preloaded start our game! (Our main menu here)

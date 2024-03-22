@@ -25,9 +25,7 @@ import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
 import MobTier1 from "../enemies/MobTier1";
-
-// The interfaces are coming
-
+import { towerState } from "../states/TowerStore";
 
 
 export class MainGame extends Phaser.Scene {
@@ -43,6 +41,8 @@ export class MainGame extends Phaser.Scene {
   public buildPhaseEvent: Phaser.Time.TimerEvent;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
+  private bgm: Phaser.Sound.BaseSound;
+  private initialWavePlaySFX: boolean;
 
   constructor() {
     super('main_game');
@@ -55,7 +55,12 @@ export class MainGame extends Phaser.Scene {
   create() {
 
     // Launch UI scene
-    this.scene.launch('ui', { mobGroup: this.mobGroup});
+    this.scene.launch('ui', { mobGroup: this.mobGroup });
+
+    // Audio
+    this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.08 });
+    this.bgm.play();
+    this.initialWavePlaySFX = true; // For wave_complete sfx, don't want to initialize on game startup
 
     // Animations
     createTowerTier1Anims(this.anims);
@@ -119,8 +124,32 @@ export class MainGame extends Phaser.Scene {
       () => Array.from(mobStore.mobs.entries()),
       () => checkEndCombat()
     );
+    this.checkPlayerHealth();
   };
 
+  checkPlayerHealth() {
+    this.time.addEvent({
+      delay: 100,
+      callback: () => {
+        if (playerState.playerHealth <= 0) {
+          this.restartGame();
+          this.scene.stop('ui');
+          this.bgm.stop();
+          const deathSound = this.sound.add('death_sound');
+          deathSound.play();
+          this.scene.start('game_over');
+        }
+      },
+      loop: true,
+    });
+  }
+  
+  restartGame() {
+    this.time.removeAllEvents(); // stops all timer events
+    playerState.reset();
+    towerState.reset();
+    mobStore.reset();
+  }
   calculateAndMoveMob(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
@@ -142,8 +171,8 @@ export class MainGame extends Phaser.Scene {
       this.calculateAndMoveMob(mob);
       mob.update();
 
-      const endPointX = 1168; // change to endpoint when ready
-      const endPointY = 200; // change to endpoint when ready
+      const endPointX = 1068; // change to endpoint when ready
+      const endPointY = 910; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
