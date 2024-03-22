@@ -73,12 +73,14 @@ export class GameOver extends Phaser.Scene {
     this.exitButton.on('pointerdown', () => {
       gameOverBGM.stop();
       clickSFX.play();
+      this.setCursor('default');
       this.scene.start('main_menu');
     });
 
     this.tryAgainButton.on('pointerdown', () => {
       gameOverBGM.stop();
       clickSFX.play();
+      this.setCursor('default');
       this.scene.start('main_game');
     }) 
   }

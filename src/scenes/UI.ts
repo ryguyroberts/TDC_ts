@@ -16,6 +16,7 @@ export class UI extends Phaser.Scene {
   private tileSize: number;
   private deleteTower: Phaser.GameObjects.Sprite;
   private clickSFX: Phaser.Sound.BaseSound;
+  // tower: Class;
 
   init(data: any) {
     this.mobGroup = data.mobGroup;
@@ -220,9 +221,6 @@ export class UI extends Phaser.Scene {
       () => updateBT()
     );
 
-
-
-
     const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
     NextPhase.on('pointerdown', () => {
       // if combat stage don't advance change button text?
@@ -231,8 +229,6 @@ export class UI extends Phaser.Scene {
       }
       gamephase.toggleStage();
     });
-
-
   }
 
   private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
