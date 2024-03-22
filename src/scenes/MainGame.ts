@@ -52,6 +52,10 @@ export class MainGame extends Phaser.Scene {
     // Launch UI scene
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
+    // Audio
+    const bgm = this.sound.add('game_bgm', { loop: true, volume: 0.15 });
+    bgm.play();
+
     // Animations
 
     createTowerTier1Anims(this.anims);

@@ -31,6 +31,7 @@ export class Preloader extends Phaser.Scene {
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
     this.load.image('tdc_logo', 'ui/TDC logo.png');
     this.load.image('destroy_button', 'ui/destroy button.png')
+    this.load.image('hp_icon', 'ui/hp.png')
     this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
 
     // Main Menu
@@ -41,6 +42,14 @@ export class Preloader extends Phaser.Scene {
     this.load.image('game_over_scene', 'ui/GameOver Scene.png');
     this.load.image('try_again', 'ui/try again button.png');
     this.load.image('exit', 'ui/exit button.png');
+
+    // Audio
+    this.load.audio('game_bgm', 'audio/Kubbi - Digestive biscuit.mp3');
+    this.load.audio('menu_bgm', 'audio/Kevin MacLeod - 8bit Dungeon Level.mp3');
+    this.load.audio('game_over_bgm', 'audio/gameover_bgm.mp3');
+    this.load.audio('death_sound', 'audio/game over.mp3')
+    this.load.audio('play_button_bleep', 'audio/bleep.mp3');
+    this.load.audio('tower_laser', 'audio/laser.mp3');
 
   }
 

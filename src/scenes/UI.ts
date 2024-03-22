@@ -121,12 +121,15 @@ export class UI extends Phaser.Scene {
     });
 
     // LEFT PANEL UI: PLAYER & GAME STATE
-    const currencyText = this.add.text(50, 170, `Currency: 1000`);
-    const playerHp = this.add.text(50, 200, "HP: 100");
+    const hpIcon = this.add.sprite(75, 190, 'hp_icon');
+    hpIcon.setScale(.14);
+    const playerHp = this.add.text(80, 200, ": 100");
+    playerHp.setScale(2);
+    const currencyText = this.add.text(50, 300, `Currency: 1000`);
 
     autorun(() => {
       currencyText.text = `Currency: ${playerState.currency}`;
-      playerHp.text = `HP: ${playerState.playerHealth}`;
+      playerHp.text = `: ${playerState.playerHealth}`;
     });
 
     // playerState.
