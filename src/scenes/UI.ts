@@ -113,6 +113,8 @@ export class UI extends Phaser.Scene {
 
             let isPlaced = false;
 
+            this.createTowerLayer();
+
             this.input.on('pointermove', (pointer: any) => {
               if (isPlaced) return; // Ignore listener if placed 
               tower.x = pointer.x;
@@ -311,8 +313,7 @@ export class UI extends Phaser.Scene {
         this.deleteTower.setVisible(true);
         // this.deleteTower.setColor('#ff0000').setFontSize(30);
         //this.displayTowerInfo(tower);
-        //this.createTowerLayer();
-
+  
       }
     });
   }
@@ -333,20 +334,24 @@ export class UI extends Phaser.Scene {
   }
 
   
-  //public static createTowerLayer = () => {
-  // const towerLayer = [];
-  //
-  // for (const [towerId, tower] of towerState.activeTowers.entries()) {
-  //   const towerX = Math.floor(tower.x / 32);
-  //   const towerY = Math.floor(tower.y / 32);
-  //   const towerKey = `${towerX}x${towerY}`;
-  //
-  //   towerLayer.push(towerKey);
-  //   console.log("towerLayer array", towerLayer, towerId);
-  // }
-  // 
-  //console.log(UI.createTowerLayer)
-  //return towerLayer;
-  //
+  private createTowerLayer = () => {
+  const towerLayer = [];
+  
+  for (const [towerId, tower] of towerState.activeTowers.entries()) {
+    const towerX = Math.floor(tower.x / 32);
+    const towerY = Math.floor(tower.y / 32);
+    const towerKey = `${towerX}x${towerY}`;
+  
+    console.log(towerKey);
+    towerLayer.push(towerKey);
+    console.log("towerLayer array", towerLayer, towerId);
+  }
+  
+  // console.log(UI.createTowerLayer)
+  // Send to state instead
 
-}
+  towerState.setTowerLayer(towerLayer)
+  console.log(towerState.towerLayer);
+  }
+
+};

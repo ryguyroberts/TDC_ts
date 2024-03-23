@@ -3,6 +3,7 @@ import Tower1 from "../towers/Tower1";
 
 class TowerState {
   activeTowers: Map<string, Tower1> = new Map();
+  towerLayer: string[];
 
 
   constructor() {
@@ -11,7 +12,7 @@ class TowerState {
 
   addTower(id: string, tower: Tower1) {
     this.activeTowers.set(id, tower);
-    console.log("active towers", this.activeTowers)
+    // console.log("active towers", this.activeTowers)
   
   }
 
@@ -27,7 +28,10 @@ class TowerState {
     this.activeTowers.clear();
   }
 
-  
+  setTowerLayer(towerLayer: string[]) {
+    this.towerLayer = towerLayer;
+  }
+
 
 };
 

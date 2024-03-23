@@ -4,6 +4,8 @@
 //const towerLayer = UI.createTowerLayer();
 //console.log("towerLayer in findPath:", towerLayer)
 
+import { towerState } from "../states/TowerStore";
+
 const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.TilemapLayer, wallsLayer: Phaser.Tilemaps.TilemapLayer) => {
   //console.log("towerLayer in findPath:", towerLayer);
   
@@ -38,34 +40,38 @@ const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.Tilem
   //console.log("Adding target position to parentForKey:", parentForKey[startKey]);
 
   queue.push(start);
-  console.log("start", start)
-  console.log("queue push start", queue.push(start))
+  // console.log("start", start)
+  // console.log("queue push start", queue.push(start))
 
-  const towerLayer = [
-    "15x1",
-    "15x2",
-    "15x3",
-    "15x4",
-    "15x5",
-    "15x6",
-    "22x8",
-    "22x7",
-    "22x6",
-    "22x5",
-    "23x5",
-    "24x5",
-    "25x5",
-    "26x5",
-    "27x5",
-    "28x5",
-    "29x5",
-    "30x5",
-    "31x5",
-    "32x5",
-    "33x5",
-    "33x4",
-    "33x3"
-]
+// console.log(towerState.towerLayer);
+
+const towerLayer = towerState.towerLayer;
+//   const towerLayer = [
+//     "15x1",
+//     "15x2",
+//     "15x3",
+//     "15x4",
+//     "15x5",
+//     "15x6",
+//     "22x8",
+//     "22x7",
+//     "22x6",
+//     "22x5",
+//     "23x5",
+//     "24x5",
+//     "25x5",
+//     "26x5",
+//     "27x5",
+//     "28x5",
+//     "29x5",
+//     "30x5",
+//     "31x5",
+//     "32x5",
+//     "33x5",
+//     "33x4",
+//     "33x3"
+// ]
+
 
   while (queue.length > 0) {
       const { x, y } = queue.shift() as Point;
@@ -116,9 +122,11 @@ const findPath = (start: Phaser.Math.Vector2, groundLayer: Phaser.Tilemaps.Tilem
         }
         
         //console.log("key", key)
-        //console.log("towerLayer in pathfind", towerLayer)
-        if (towerLayer.includes(key)) {
-          continue;
+        // //console.log("towerLayer in pathfind", towerLayer)
+        if (towerLayer) {
+          if (towerLayer.includes(key)) {
+            continue;
+          }
         }
     
         parentForKey[key] = {
