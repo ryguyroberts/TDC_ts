@@ -83,7 +83,7 @@ export class Preloader extends Phaser.Scene {
   // Once asset all preloaded start our game! (Our main menu here)
 
   create() {
-    this.scene.start('main_game');
+    this.scene.start('main_menu');
   };
 
 };
