@@ -167,6 +167,7 @@ export class MainGame extends Phaser.Scene {
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
+      console.log(mob.x, mob.y);
 
       this.calculateAndMoveMob(mob);
       mob.update();

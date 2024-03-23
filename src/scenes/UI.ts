@@ -61,6 +61,13 @@ export class UI extends Phaser.Scene {
     // RIGHT PANEL UI: TOWER CREATION
     const towerLogo = this.add.sprite(1440, 80, 'tdc_logo');
     towerLogo.setScale(0.53, 0.65);
+    const towerIcon = this.add.sprite(1344, 160, 'tower_icon');
+    towerIcon.setScale(1);
+    const towerIcon2 = this.add.sprite(1441, 160, 'tower_icon_2');
+    towerIcon2.setScale(1);
+    const towerIcon3 = this.add.sprite(1537, 160, 'tower_icon_3');
+    towerIcon3.setScale(1);
+
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined
@@ -128,19 +135,29 @@ export class UI extends Phaser.Scene {
     });
 
     // LEFT PANEL UI: PLAYER & GAME STATE
-    const hpIcon = this.add.sprite(75, 190, 'hp_icon');
-    hpIcon.setScale(0.14);
-    const playerHp = this.add.text(120, 168, ": 100");
-    playerHp.setScale(3);
+    const leftPanelBG = this.add.sprite(this.cameras.main.width / 2 , this.cameras.main.height / 2, 'left_panel');
+    leftPanelBG.setScale(1);
 
-    const currencyIcon = this.add.sprite(75, 280, 'currency');
-    currencyIcon.setScale(0.35);
-    const currencyText = this.add.text(120, 260, `Currency: 1000`);
-    currencyText.setScale(3);
+    const waveText = this.add.bitmapText(65, 48, 'pixelFont', 'WAVE: 1', 32);
+    waveText.setScale(1.25);
+
+    const hpIcon = this.add.sprite(60, 177, 'hp_icon');
+    hpIcon.setScale(0.10);
+
+    const playerHp = this.add.bitmapText(130, 164, "pixelFont", "100", 32);
+    playerHp.setScale(1.25);
+
+    const startWaveButton = this.add.sprite(150, 920, 'start_wave').setInteractive();
+    startWaveButton.setScale(0.12);
+
+    const currencyIcon = this.add.sprite(60, 293, 'currency');
+    currencyIcon.setScale(0.25);
+    const currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`, 32);
+    currencyText.setScale(1.25);
 
     autorun(() => {
-      currencyText.text = `: ${playerState.currency}`;
-      playerHp.text = `: ${playerState.playerHealth}`;
+      currencyText.text = `${playerState.currency}`;
+      playerHp.text = `${playerState.playerHealth}`;
     });
 
     // playerState.
@@ -152,8 +169,8 @@ export class UI extends Phaser.Scene {
     };
 
     // Delete tower button
-    this.deleteTower = this.add.sprite(120, 380, 'destroy_button').setInteractive().setVisible(false);
-    this.deleteTower.setScale(0.30);
+    this.deleteTower = this.add.sprite(147, 385, 'destroy_button').setInteractive().setVisible(false);
+    this.deleteTower.setScale(0.32);
     
     this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
@@ -211,9 +228,10 @@ export class UI extends Phaser.Scene {
     );
 
     // Build phase timer
-    const buildTime = this.add.text(10, 842, 'Placeholder', textStyle);
+    const buildTime = this.add.bitmapText(50, 810, 'pixelFont', 'Placeholder', 32);
     const updateBT = () => {
-      buildTime.setText(`Build Time: ${gamephase.buildtime}`);
+      buildTime.setText(`BUILD: ${gamephase.buildtime} 
+      TIME`);
     };
     updateBT();
 
@@ -222,8 +240,7 @@ export class UI extends Phaser.Scene {
       () => updateBT()
     );
 
-    const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
-    NextPhase.on('pointerdown', () => {
+    startWaveButton.on('pointerdown', () => {
       // if combat stage don't advance change button text?
       if (gamephase.stage === 'combat') {
         return;
