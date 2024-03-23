@@ -44,7 +44,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // No idea shoot time?
     this.shootTime = 2; // Time to reach mob?
     this.shootDelay = 500;
-    this.attackDmg = 20;
+    this.attackDmg = 5;
   };
 
   preUpdate(t: number, dt: number) {
@@ -63,6 +63,8 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
 
     mobs.forEach((mob: Phaser.Physics.Arcade.Sprite) => {
       const distance = Phaser.Math.Distance.Between(this.x, this.y, mob.x, mob.y);
+    
+
       if (distance < closestDistance) {
         closestMob = mob;
         closestDistance = distance;
@@ -130,6 +132,5 @@ Phaser.GameObjects.GameObjectFactory.register('tower1', function(this: Phaser.Ga
   const sprite = new Tower1(this.scene, x, y, texture, frame);
   this.displayList.add(sprite);
   this.updateList.add(sprite);
-
   return sprite;
 });

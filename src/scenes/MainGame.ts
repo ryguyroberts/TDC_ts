@@ -24,6 +24,7 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
+//import { towerState } from "../states/TowerStore";
 import MobTier1 from "../enemies/MobTier1";
 import { towerState } from "../states/TowerStore";
 
@@ -42,7 +43,7 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  // private initialWavePlaySFX: boolean;
+  private initialWavePlaySFX: boolean;
 
   constructor() {
     super('main_game');
@@ -134,8 +135,6 @@ export class MainGame extends Phaser.Scene {
   
 
   };
-
-
   
 
 // Create over ->
@@ -163,21 +162,34 @@ export class MainGame extends Phaser.Scene {
     const mobEntries = Array.from(mobStore.mobs.entries());
     if (mobEntries.length === 0) {
       // If there are no mobs left, transition to the build phase
-      // If less than Max wave game continues
-      if (gamephase.wave < 2 ) {
-        gamephase.stage = 'build';
-        gamephase.wave += 1;
+      // If less than Max wave game continues    
+      
+      gamephase.stage = 'build';
+      gamephase.wave += 1;
+
+    }
+
+        // if (gamephase.wave < 2 ) {
+        // gamephase.stage = 'build';
+        // gamephase.wave += 1;
 
       // Winning condition // Test with Game over right now but this is the win
-      } else {
-        this.restartGame();
-        this.scene.stop('ui');
-        this.bgm.stop();
-        const deathSound = this.sound.add('death_sound');
-        deathSound.play();
-        this.scene.start('game_win');
-    };
-    };
+    //   } else {
+    //     this.restartGame();
+    //     this.scene.stop('ui');
+    //     this.bgm.stop();
+    //     const deathSound = this.sound.add('death_sound');
+    //     deathSound.play();
+    //     this.scene.start('game_win');
+    // };
+
+    mobEntries.forEach(entry => {
+      const mob = entry[1];
+      console.log("mob", mob)
+  
+      this.calculateMobPath(mob);
+      
+    });
   };
 
 
@@ -189,7 +201,7 @@ export class MainGame extends Phaser.Scene {
     mobStore.reset();
   }
 
-  calculateAndMoveMob(mob: MobTier1) {
+  calculateMobPath (mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
     // console.log(startVec);
@@ -207,7 +219,7 @@ export class MainGame extends Phaser.Scene {
     mobEntries.forEach(entry => {
       const mob = entry[1];
 
-      this.calculateAndMoveMob(mob);
+      //this.calculateMobPath(mob);
       mob.update();
 
       const endPointX = 1068; // change to endpoint when ready
