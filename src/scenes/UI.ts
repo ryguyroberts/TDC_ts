@@ -62,10 +62,13 @@ export class UI extends Phaser.Scene {
     // RIGHT PANEL UI: TOWER CREATION
     const towerLogo = this.add.sprite(1440, 80, 'tdc_logo');
     towerLogo.setScale(0.53, 0.65);
+
     const towerIcon = this.add.sprite(1344, 160, 'tower_icon');
     towerIcon.setScale(1);
+
     const towerIcon2 = this.add.sprite(1441, 160, 'tower_icon_2');
     towerIcon2.setScale(1);
+
     const towerIcon3 = this.add.sprite(1537, 160, 'tower_icon_3');
     towerIcon3.setScale(1);
 
@@ -160,15 +163,7 @@ export class UI extends Phaser.Scene {
       currencyText.text = `${playerState.currency}`;
       playerHp.text = `${playerState.playerHealth}`;
     });
-
-    // playerState.
-
-    // Delete_Text Properties
-    const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-      color: '#ffffff',
-      fontSize: '16px',
-    };
-
+ 
     // Delete tower button
     this.deleteTower = this.add.sprite(147, 385, 'destroy_button').setInteractive().setVisible(false);
     this.deleteTower.setScale(0.32);
@@ -213,19 +208,20 @@ export class UI extends Phaser.Scene {
       }
     });
 
-    // Current phase Display for testing
-    const gamePhaseText = this.add.text(10, 875, 'Current Phase: Placeholder', textStyle);
-
-    const updategPT = () => {
-      gamePhaseText.setText(`Current Phase: ${gamephase.stage}`);
-    };
-    // run once
-    updategPT();
-
-    // update text whenever the phase changes
     reaction(
       () => gamephase.stage,
-      () => updategPT()
+      (stage) => {
+        if (stage === 'build') {
+          this.sound.add('wave_complete').play(); // When wave completed, play sfx
+          startWaveButton.setVisible(true);
+          buildTime.setVisible(true);
+        
+          // Removes Timer & Start Wave Button in Combat
+        } else if (stage === 'combat') {
+          startWaveButton.setVisible(false);
+          buildTime.setVisible(false);
+        }
+      }
     );
 
     // Build phase timer

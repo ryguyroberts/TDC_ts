@@ -60,7 +60,6 @@ export class MainGame extends Phaser.Scene {
     // Audio
     this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.08 });
     this.bgm.play();
-    // this.initialWavePlaySFX = true; // For wave_complete sfx, don't want to initialize on game startup
 
     // Animations
     createTowerTier1Anims(this.anims);
@@ -167,7 +166,7 @@ export class MainGame extends Phaser.Scene {
     const mobEntries = Array.from(mobStore.mobs.entries());
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      
+
       this.calculateAndMoveMob(mob);
       mob.update();
 
