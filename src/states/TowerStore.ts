@@ -4,6 +4,7 @@ import Tower1 from "../towers/Tower1";
 class TowerState {
   activeTowers: Map<string, Tower1> = new Map();
 
+
   constructor() {
     makeAutoObservable(this);
   }
@@ -23,6 +24,8 @@ class TowerState {
   reset(): void {
     this.activeTowers.clear();
   }
+
+  
 
 };
 

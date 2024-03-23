@@ -82,23 +82,14 @@ const updateTimer = () => {
 };  
 
 
-// if mobx state has no mobs (all dead) enter build stage
-const checkEndCombat = () => {
-  const mobEntries = Array.from(mobStore.mobs.entries());
-  if (mobEntries.length === 0) {
-    // If there are no mobs left, transition to the build phase
-    gamephase.stage = 'build';
-    gamephase.wave += 1;
-  };
-};
-
-
 //->> Combat Phase Logic <<-//
 // Wave configurations Set by us
 const waveConfigurations: { tier1: number, tier2: number }[] = [
-  { tier1: 10, tier2: 10 }, // Wave 1
-  { tier1: 20, tier2: 20 }, // Wave 2
-  { tier1: 40, tier2: 40 }, // Wave 3
+  { tier1: 1, tier2: 1 }, // Wave 1
+  { tier1: 40, tier2: 20 }, // Wave 2
+  { tier1: 80, tier2: 40 }, // Wave 3
+  { tier1: 160, tier2: 80}, // wave 4
+  { tier1: 0 , tier2: 200}, //Final Wave
   // Wave -> Game Win scene
   // Win state?
   // Add waves
@@ -203,7 +194,6 @@ const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, t
 }
 
 export {
-  checkEndCombat,
   startBuildPhase,
   dynamicPhase,
 };

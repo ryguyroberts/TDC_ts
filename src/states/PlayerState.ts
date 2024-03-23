@@ -31,7 +31,7 @@ class PlayerState {
   }
 
   reset() {
-    this.playerHealth = 100;
+    this.playerHealth = 10;
     this.currency = 1000;
   }
 }

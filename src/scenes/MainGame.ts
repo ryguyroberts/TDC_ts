@@ -15,7 +15,7 @@ import '../enemies/MobTier2';
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { startBuildPhase, dynamicPhase, checkEndCombat} from '../utils/mobUtils';
+import { startBuildPhase, dynamicPhase} from '../utils/mobUtils';
 // import { preprocessMapData } from "../utils/processMap";
 
 // States from Mobx
@@ -54,6 +54,7 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
+    console.log(this.initialWavePlaySFX);
     // Launch UI scene
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
@@ -122,10 +123,24 @@ export class MainGame extends Phaser.Scene {
     // if mob enters array run my check if no more mobs end combat
     reaction(
       () => Array.from(mobStore.mobs.entries()),
-      () => checkEndCombat()
+      () => this.checkEndCombat()
     );
+
     this.checkPlayerHealth();
+
+    // reaction(
+    //   () => Array.from(towerState.activeTowers.entries()),
+        // create Tower Layer 
+    // );
+  
+
   };
+
+
+  
+
+// Create over ->
+
 
   checkPlayerHealth() {
     this.time.addEvent({
@@ -144,12 +159,37 @@ export class MainGame extends Phaser.Scene {
     });
   }
   
+// if mobx state has no mobs (all dead) enter build stage
+  checkEndCombat() {
+    const mobEntries = Array.from(mobStore.mobs.entries());
+    if (mobEntries.length === 0) {
+      // If there are no mobs left, transition to the build phase
+      // If less than Max wave game continues
+      if (gamephase.wave < 2 ) {
+        gamephase.stage = 'build';
+        gamephase.wave += 1;
+
+      // Winning condition // Test with Game over right now but this is the win
+      } else {
+        this.restartGame();
+        this.scene.stop('ui');
+        this.bgm.stop();
+        const deathSound = this.sound.add('death_sound');
+        deathSound.play();
+        this.scene.start('game_win');
+    };
+    };
+  };
+
+
+  
   restartGame() {
     this.time.removeAllEvents(); // stops all timer events
     playerState.reset();
     towerState.reset();
     mobStore.reset();
   }
+
   calculateAndMoveMob(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
@@ -176,7 +216,7 @@ export class MainGame extends Phaser.Scene {
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(5);
+        playerState.takeDamage(1);
       }   
 
     });
