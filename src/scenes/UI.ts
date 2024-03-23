@@ -9,6 +9,8 @@ import { mobStore } from "../states/MobStore";
 import { playerState } from "../states/PlayerState";
 import { gamephase } from "../states/GamePhase";
 
+//Map creation for towers placed
+
 
 
 export class UI extends Phaser.Scene {
@@ -99,13 +101,13 @@ export class UI extends Phaser.Scene {
               const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
               const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
 
-              console.log("grid x and y:", gridX, gridY);
+              //console.log("grid x and y:", gridX, gridY);
             
               // Move tower to nearest grid position
               tower.x = gridX;
               tower.y = gridY;
 
-              console.log("tower x y", tower.x, tower.y);
+              //console.log("tower x y", tower.x, tower.y);
 
               // Restore opacity
               tower.setAlpha(1);
@@ -117,10 +119,11 @@ export class UI extends Phaser.Scene {
 
               // Attach tower selection handler
               this.attachTowerSelection(tower);
-              console.log("tower", tower)
+              //console.log("tower", tower)
 
               //calls to pathfinding to update data
-              //this.pathfindingTowerData(tower.x, tower.y, tower.placed);
+              //UI.createTowerLayer();
+
             });
           }
 
@@ -246,23 +249,43 @@ export class UI extends Phaser.Scene {
         // Display tower info
         this.deleteTower.setVisible(true);
         this.deleteTower.setColor('#ff0000').setFontSize(30);
-        this.displayTowerInfo(tower);
+        //this.displayTowerInfo(tower);
+        //this.createTowerLayer();
+
       }
     });
   }
 
-  private displayTowerInfo(tower: Phaser.GameObjects.Sprite) {
-    console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
-  }
+  // private displayTowerInfo(tower: Phaser.GameObjects.Sprite) {
+    // console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
+  // }
 
   private findSelectedTower(selectedTower: Phaser.GameObjects.Sprite): string | null {
     for (const [towerID, tower] of towerState.activeTowers.entries()) {
       if (tower === selectedTower) {
-        console.log("selectedTower:",selectedTower);
+        //console.log("selectedTower:",selectedTower);
         return towerID;
         
       }
     }
     return null;
   }
+
+  
+  //public static createTowerLayer = () => {
+  // const towerLayer = [];
+  //
+  // for (const [towerId, tower] of towerState.activeTowers.entries()) {
+  //   const towerX = Math.floor(tower.x / 32);
+  //   const towerY = Math.floor(tower.y / 32);
+  //   const towerKey = `${towerX}x${towerY}`;
+  //
+  //   towerLayer.push(towerKey);
+  //   console.log("towerLayer array", towerLayer, towerId);
+  // }
+  // 
+  //console.log(UI.createTowerLayer)
+  //return towerLayer;
+  //
+
 }

@@ -22,6 +22,7 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
+//import { towerState } from "../states/TowerStore";
 import MobTier1 from "../enemies/MobTier1";
 
 
@@ -118,6 +119,13 @@ checkEndCombat() {
     // If there are no mobs left, transition to the build phase
     gamephase.stage = 'build';
   }
+  mobEntries.forEach(entry => {
+    const mob = entry[1];
+    console.log("mob", mob)
+
+    this.calculateMobPath(mob);
+    
+  });
 
 }
 
@@ -264,22 +272,22 @@ checkEndCombat() {
   // }
   }
 
-  createTowerLayer = () => {
-    const towerLayer = [];
+  // createTowerLayer = () => {
+    // const towerLayer = [];
+  // 
+    // for (const [towerId, tower] of towerState.activeTowers.entries()) {
+      // const towerX = Math.floor(tower.x / 32);
+      // const towerY = Math.floor(tower.y / 32);
+      // const towerKey = `${towerX}x${towerY}`;
+  // 
+      // towerLayer.push(towerKey);
+      // console.log("towerLayer array", towerLayer, towerId);
+    // }
+  // 
+    // return towerLayer;
+  // };
   
-    for (const [towerId, tower] of towerState.activeTowers.entries()) {
-      const towerX = Math.floor(tower.x / 32);
-      const towerY = Math.floor(tower.y / 32);
-      const towerKey = `${towerX}x${towerY}`;
-  
-      towerLayer.push(towerKey);
-      console.log("towerLayer array", towerLayer, towerId);
-    }
-  
-    return towerLayer;
-  };
-  
-  calculateAndMoveMob(mob: MobTier1) {
+  calculateMobPath (mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
     // console.log(startVec);
@@ -297,7 +305,7 @@ checkEndCombat() {
     mobEntries.forEach(entry => {
       const mob = entry[1];
 
-      this.calculateAndMoveMob(mob);
+      //this.calculateMobPath(mob);
       mob.update();
 
       const endPointX = 1168; // change to endpoint when ready
