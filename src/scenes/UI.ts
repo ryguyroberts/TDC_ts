@@ -171,10 +171,16 @@ export class UI extends Phaser.Scene {
     currencyIcon.setScale(0.25);
     const currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`, 32);
     currencyText.setScale(1.25);
+    if (playerState.currency >= 1000) { // Adjust text position if < 1000
+      currencyText.setPosition(120, 280);
+    } else { 
+      currencyText.setPosition(130, 280);
+    }
 
     autorun(() => {
       currencyText.text = `${playerState.currency}`;
       playerHp.text = `${playerState.playerHealth}`;
+      waveText.text = `WAVE: ${gamephase.wave}`;
     });
  
     // Delete tower button
