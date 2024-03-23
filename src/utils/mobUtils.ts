@@ -41,6 +41,8 @@ const startBuildPhase = (scene: MainGame) => {
     scene.mobSpawnEvent.remove(false)
   };
 
+  gamephase.combatPhaseStarted = false;
+
   // Probably a better way to do this
   gamephase.buildtime = 60;
 
@@ -106,11 +108,16 @@ const waveConfigurations: { tier1: number, tier2: number }[] = [
 
 
 const startCombatPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group, wave: number) => {
+  if (gamephase.combatPhaseStarted) {
+    return;
+  }
   console.log(`Combat Phase started - Wave ${wave}`);
 
   const waveConfig = waveConfigurations[wave - 1];
+  console.log('wave index', waveConfig);
 
   spawnMobsWithDelay(scene, mobGroup, waveConfig);
+  gamephase.combatPhaseStarted = true;
 };
 
 
@@ -201,6 +208,8 @@ const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, t
    mobStore.addMob(mobID, mob);
 
 }
+
+
 
 export {
   checkEndCombat,

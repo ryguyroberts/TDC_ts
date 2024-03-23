@@ -1,6 +1,12 @@
 import Phaser, { GameObjects } from "phaser";
 import { handlePointerOver, handlePointerOut, setCursor } from "../utils/buttonPop";
 
+// Mobx States
+import { playerState } from "../states/PlayerState";
+import { towerState } from "../states/TowerStore";
+import { mobStore } from "../states/MobStore";
+import { gamephase } from "../states/GamePhase";
+
 export class GameOver extends Phaser.Scene {
   background: GameObjects.Image;
   private exitButton: GameObjects.Image;
@@ -66,14 +72,25 @@ export class GameOver extends Phaser.Scene {
       gameOverBGM.stop();
       clickSFX.play();
       setCursor('default', this);
+      this.restartGame();
       this.scene.start('main_menu');
+      console.log('stage', gamephase.stage);
     });
 
     this.tryAgainButton.on('pointerdown', () => {
       gameOverBGM.stop();
       clickSFX.play();
       setCursor('default', this);
+      this.restartGame();
       this.scene.start('main_game');
+      console.log('stage', gamephase.stage);
     }) 
+  }
+  restartGame() {
+    this.time.removeAllEvents(); // stops all timer events
+    playerState.reset();
+    towerState.reset();
+    mobStore.reset();
+    gamephase.reset();
   }
 }

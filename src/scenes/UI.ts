@@ -252,6 +252,7 @@ export class UI extends Phaser.Scene {
       buildTime.setText(`BUILD: ${gamephase.buildtime} 
       TIME`);
     };
+    
     updateBT();
 
     reaction(
