@@ -1,4 +1,5 @@
 import Phaser, { GameObjects } from "phaser";
+import { handlePointerOut, handlePointerOver, setCursor } from "../utils/buttonPop";
 
 export class MainMenu extends Phaser.Scene {
   private background: GameObjects.Image;
@@ -36,30 +37,22 @@ export class MainMenu extends Phaser.Scene {
     const buttonSFX = this.sound.add('play_button_bleep');
     const clickSFX = this.sound.add('click');
 
+
+
     this.playButton.on('pointerover', () => {
-      this.playButton.setScale(this.hoverScale);
-      this.playButton.setPosition(550, 730);
-      this.setCursor('pointer');
-      buttonSFX.play();
+      handlePointerOver(this.playButton, this.hoverScale, 550, 730, 'pointer', this, buttonSFX);
     });
 
     this.playButton.on('pointerout', () => {
-      this.playButton.setScale(this.normalScale);
-      this.playButton.setPosition(this.originalButtonX, this.originalButtonY);
-      this.setCursor('default');
+      handlePointerOut(this.playButton, this.normalScale, this.originalButtonX, this.originalButtonY, 'default', this);
     });
 
     this.playButton.setInteractive();
     this.playButton.on('pointerdown', () => {
       menuBGM.stop();
       clickSFX.play();
-      this.setCursor('default');
+      setCursor('default', this);
       this.scene.start('main_game');
     });
   }
-
-  setCursor(cursorType: string) {
-    this.input.setDefaultCursor(cursorType);
-  }
-
 }

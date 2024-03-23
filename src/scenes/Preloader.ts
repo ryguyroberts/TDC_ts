@@ -28,12 +28,24 @@ export class Preloader extends Phaser.Scene {
 
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
+    this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
+
+    // Fonts
+    this.load.bitmapFont('pixelFont', 'fonts/pixel_0.png', 'fonts/pixel.xml');
+
+    // Right Panel UI
     this.load.image('ui_tilemap_towers', 'tech_map/enemies x2.png');
     this.load.image('tdc_logo', 'ui/TDC logo.png');
+    this.load.image('tower_icon', 'ui/tower icon.png');
+    this.load.image('tower_icon_2', 'ui/tower icon_2.png');
+    this.load.image('tower_icon_3', 'ui/tower icon_3.png');
+
+    // Left Panel UI
+    this.load.image('left_panel', 'ui/Left UI Panel.png');
     this.load.image('destroy_button', 'ui/destroy button.png');
     this.load.image('hp_icon', 'ui/hp.png');
     this.load.image('currency', 'ui/coin.png');
-    this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
+    this.load.image('start_wave', 'ui/start button.png');
   
     // Main Menu
     this.load.image('main_menu_scene', "ui/TDC Title Scene.png");

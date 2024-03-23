@@ -1,4 +1,5 @@
 import Phaser, { GameObjects } from "phaser";
+import { handlePointerOver, handlePointerOut, setCursor } from "../utils/buttonPop";
 
 export class GameOver extends Phaser.Scene {
   background: GameObjects.Image;
@@ -44,48 +45,35 @@ export class GameOver extends Phaser.Scene {
 
     // Hover and Unhover of buttons
     this.exitButton.on('pointerover', () => {
-      this.exitButton.setScale(this.hoverScale);
-      this.exitButton.setPosition(1000, 600);
-      this.setCursor('pointer');
-      buttonSFX.play();
+      handlePointerOver(this.exitButton, this.hoverScale, 1000, 600, 'pointer', this, buttonSFX);
     });
 
     this.exitButton.on('pointerout', () => {
-      this.exitButton.setScale(this.normalScale);
-      this.exitButton.setPosition(this.originalExitX, this.originalExitY);
-      this.setCursor('default');
+      handlePointerOut(this.exitButton, this.normalScale, this.originalExitX, this.originalExitY, 'default', this);
     });
 
     this.tryAgainButton.on('pointerover', () => {
-      this.tryAgainButton.setScale(this.hoverScale);
-      this.tryAgainButton.setPosition(600, 600);
-      this.setCursor('pointer');
-      buttonSFX.play();
+      handlePointerOver(this.tryAgainButton, this.hoverScale, 600, 600, 'pointer', this, buttonSFX);
     });
 
     this.tryAgainButton.on('pointerout', () => {
-      this.tryAgainButton.setScale(this.normalScale);
-      this.tryAgainButton.setPosition(this.originalTryAgainX, this.originalTryAgainY);
-      this.setCursor('default');
+      handlePointerOut(this.tryAgainButton, this.normalScale, this.originalTryAgainX, this.originalTryAgainY, 'default', this);
+
     });
 
     // Buttons Redirect to new scenes
     this.exitButton.on('pointerdown', () => {
       gameOverBGM.stop();
       clickSFX.play();
-      this.setCursor('default');
+      setCursor('default', this);
       this.scene.start('main_menu');
     });
 
     this.tryAgainButton.on('pointerdown', () => {
       gameOverBGM.stop();
       clickSFX.play();
-      this.setCursor('default');
+      setCursor('default', this);
       this.scene.start('main_game');
     }) 
-  }
-
-  setCursor(cursorType: string) {
-    this.input.setDefaultCursor(cursorType);
   }
 }

@@ -161,11 +161,10 @@ update() {
 
   checkEndPoint(endPointX: number, endPointY: number): boolean {
     // Check if mob crosses the end point
-    const tolerance = 3; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
+    const tolerance = 7; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
     if ((Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) && !this.hasEnteredEndpoint)  {
       this.hasEnteredEndpoint= true;
-      console.log(this.hasEnteredEndpoint);
-      console.log('set end point true');
+      // console.log('mob has entered endpoint');
       return true; // Mob has reached the end
     } else {
       return false; 

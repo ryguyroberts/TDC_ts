@@ -1,5 +1,9 @@
 import Phaser, { Tilemaps } from "phaser";
 
+// Utils
+import { attachTowerSelection, findSelectedTower } from "../utils/uiUtils";
+// import { handlePointerOver, handlePointerOut } from "../utils/buttonPop";
+
 // Mobx State
 import { autorun } from "mobx";
 import { reaction } from "mobx";
@@ -14,8 +18,8 @@ import { gamephase } from "../states/GamePhase";
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private tileSize: number;
-  private deleteTower: Phaser.GameObjects.Sprite;
-  private clickSFX: Phaser.Sound.BaseSound;
+  deleteTower: Phaser.GameObjects.Sprite;
+  clickSFX: Phaser.Sound.BaseSound;
   // tower: Class;
 
   init(data: any) {
@@ -45,7 +49,6 @@ export class UI extends Phaser.Scene {
 
     const allUiLayers: Tilemaps.Tileset[] = [tileset_ui, tilemap_tower_ui];
 
-    uiMap.createLayer('Left Panel UI', allUiLayers);
     uiMap.createLayer('Right Panel UI', allUiLayers);
 
     reaction(
@@ -58,9 +61,30 @@ export class UI extends Phaser.Scene {
       },
     );
 
-    // RIGHT PANEL UI: TOWER CREATION
+    // RIGHT PANEL UI: TOWER ICONS
     const towerLogo = this.add.sprite(1440, 80, 'tdc_logo');
     towerLogo.setScale(0.53, 0.65);
+
+    const towerIcon = this.add.sprite(1344, 160, 'tower_icon').setInteractive();
+    towerIcon.setScale(1);
+
+    // POINTEROVER/OUT events currently not working in UI for some reason.
+    // towerIcon.on('pointerover', () => {
+    //   console.log("you're hovering");
+    //   handlePointerOver(towerIcon, 1.1, 1344, 160, 'pointer', this, this.clickSFX);
+    // })
+
+    // towerIcon.on('pointerout', () => {
+    //   console.log("you're not hovering");
+    //   handlePointerOut(towerIcon, 1, 1344, 160, 'default', this);
+    // }) 
+
+    const towerIcon2 = this.add.sprite(1441, 160, 'tower_icon_2').setInteractive();
+    towerIcon2.setScale(1);
+
+    const towerIcon3 = this.add.sprite(1537, 160, 'tower_icon_3').setInteractive();
+    towerIcon3.setScale(1);
+
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined
@@ -119,7 +143,7 @@ export class UI extends Phaser.Scene {
               buildSFX.play();
 
               // Attach tower selection handler
-              this.attachTowerSelection(tower);
+              attachTowerSelection(tower, this);
             });
           }
 
@@ -128,37 +152,53 @@ export class UI extends Phaser.Scene {
     });
 
     // LEFT PANEL UI: PLAYER & GAME STATE
-    const hpIcon = this.add.sprite(75, 190, 'hp_icon');
-    hpIcon.setScale(0.14);
-    const playerHp = this.add.text(120, 168, ": 100");
-    playerHp.setScale(3);
+    const leftPanelBG = this.add.sprite(this.cameras.main.width / 2 , this.cameras.main.height / 2, 'left_panel');
+    leftPanelBG.setScale(1);
 
-    const currencyIcon = this.add.sprite(75, 280, 'currency');
-    currencyIcon.setScale(0.35);
-    const currencyText = this.add.text(120, 260, `Currency: 1000`);
-    currencyText.setScale(3);
+    const waveText = this.add.bitmapText(65, 48, 'pixelFont', 'WAVE: 1', 32);
+    waveText.setScale(1.25);
+
+    const hpIcon = this.add.sprite(60, 177, 'hp_icon');
+    hpIcon.setScale(0.10);
+
+    const playerHp = this.add.bitmapText(130, 164, "pixelFont", "100", 32);
+    playerHp.setScale(1.25);
+
+    const startWaveButton = this.add.sprite(150, 920, 'start_wave').setInteractive();
+    startWaveButton.setScale(0.12);
+
+    const currencyIcon = this.add.sprite(60, 293, 'currency');
+    currencyIcon.setScale(0.25);
+    const currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`, 32);
+    currencyText.setScale(1.25);
+    if (playerState.currency >= 1000) { // Adjust text position if < 1000
+      currencyText.setPosition(120, 280);
+    } else { 
+      currencyText.setPosition(130, 280);
+    }
 
     autorun(() => {
-      currencyText.text = `: ${playerState.currency}`;
-      playerHp.text = `: ${playerState.playerHealth}`;
+      currencyText.text = `${playerState.currency}`;
+      playerHp.text = `${playerState.playerHealth}`;
+      waveText.text = `WAVE: ${gamephase.wave}`;
     });
-
-    // playerState.
-
-    // Delete_Text Properties
-    const textStyle: Phaser.Types.GameObjects.Text.TextStyle = {
-      color: '#ffffff',
-      fontSize: '16px',
-    };
-
+ 
     // Delete tower button
-    this.deleteTower = this.add.sprite(120, 380, 'destroy_button').setInteractive().setVisible(false);
-    this.deleteTower.setScale(0.30);
+    this.deleteTower = this.add.sprite(147, 385, 'destroy_button').setInteractive().setVisible(false);
+    this.deleteTower.setScale(0.32);
+
+    // this.deleteTower.on('pointerover', () => {
+    //   handlePointerOver(this.deleteTower, 0.33, 147, 385, 'pointer', this);
+    // });
+
+    // this.deleteTower.on('pointerout', () => {
+    //   handlePointerOut(this.deleteTower, 0.32, 147, 385, 'default', this);
+    // })
     
     this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
         const towerToRemove = selectedTowerState.selectedTower;
-        const id = this.findSelectedTower(towerToRemove);
+        const id = findSelectedTower(towerToRemove);
 
         if (id !== null) {
           const towerObj = towerState.getTower(id);
@@ -167,10 +207,6 @@ export class UI extends Phaser.Scene {
           if (towerObj) {
             // Cease the firing of the tower
             towerObj.stopFiring();
-
-            // ClickSFX
-            // this.clickSFX = this.sound.add('click');
-            // this.clickSFX.play();
 
             // Tower Destroy SFX
             const destroySFX = this.sound.add('tower_destroy');
@@ -195,25 +231,26 @@ export class UI extends Phaser.Scene {
       }
     });
 
-    // Current phase Display for testing
-    const gamePhaseText = this.add.text(10, 875, 'Current Phase: Placeholder', textStyle);
-
-    const updategPT = () => {
-      gamePhaseText.setText(`Current Phase: ${gamephase.stage}`);
-    };
-    // run once
-    updategPT();
-
-    // update text whenever the phase changes
     reaction(
       () => gamephase.stage,
-      () => updategPT()
+      (stage) => {
+        if (stage === 'build' ) {
+          startWaveButton.setVisible(true);
+          buildTime.setVisible(true);
+    
+          // Removes Timer & Start Wave Button in Combat
+        } else if (stage === 'combat') {
+          startWaveButton.setVisible(false);
+          buildTime.setVisible(false);
+        }
+      }
     );
 
     // Build phase timer
-    const buildTime = this.add.text(10, 842, 'Placeholder', textStyle);
+    const buildTime = this.add.bitmapText(50, 810, 'pixelFont', 'Placeholder', 32);
     const updateBT = () => {
-      buildTime.setText(`Build Time: ${gamephase.buildtime}`);
+      buildTime.setText(`BUILD: ${gamephase.buildtime} 
+      TIME`);
     };
     updateBT();
 
@@ -222,59 +259,14 @@ export class UI extends Phaser.Scene {
       () => updateBT()
     );
 
-    const NextPhase = this.add.text(10, 905, 'Toggle Combat', textStyle).setInteractive();
-    NextPhase.on('pointerdown', () => {
+    startWaveButton.on('pointerdown', () => {
+      this.clickSFX = this.sound.add('click')
+      this.clickSFX.play();
       // if combat stage don't advance change button text?
       if (gamephase.stage === 'combat') {
         return;
       }
       gamephase.toggleStage();
     });
-  }
-
-  private attachTowerSelection(tower: Phaser.GameObjects.Sprite) {
-    tower.on('pointerdown', () => {
-      // If selected tower is already selected -> Deselect
-      if (selectedTowerState.selectedTower === tower) {
-        tower.clearTint();
-        selectedTowerState.deselectTower();
-
-        // Deactiviate Delete button
-        this.deleteTower.setVisible(false);        
-        // Remove tower info display here
-      } else {
-
-        if (selectedTowerState.selectedTower) {
-          selectedTowerState.selectedTower.clearTint();
-        }
-
-        // Highlight tower
-        tower.setTint(0xff000);
-
-        // Update selectedTower state
-        selectedTowerState.selectTower(tower);
-
-        // Click SFX
-        this.clickSFX = this.sound.add('click');
-        this.clickSFX.play();
-
-        // Display tower info
-        this.deleteTower.setVisible(true);
-        this.displayTowerInfo(tower);
-      }
-    });
-  }
-
-  private displayTowerInfo(tower: Phaser.GameObjects.Sprite) {
-    console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
-  }
-
-  private findSelectedTower(selectedTower: Phaser.GameObjects.Sprite): string | null {
-    for (const [towerID, tower] of towerState.activeTowers.entries()) {
-      if (tower === selectedTower) {
-        return towerID;
-      }
-    }
-    return null;
   }
 }
