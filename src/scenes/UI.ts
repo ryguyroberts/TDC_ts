@@ -298,7 +298,8 @@ export class UI extends Phaser.Scene {
       if (gamephase.stage === 'combat') {
         return;
       }
-      gamephase.toggleStage();
+      // Always switch to combat instead.
+      gamephase.setStage('combat')
     });
 
     const recreateBitMapText = () => {

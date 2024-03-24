@@ -26,6 +26,7 @@ class TowerState {
   
   reset(): void {
     this.activeTowers.clear();
+    this.towerLayer = [];
   }
 
   setTowerLayer(towerLayer: string[]) {

@@ -2,7 +2,7 @@ import { makeAutoObservable, action } from "mobx";
 
 class GamePhase {
   wave: number = 1;
-  stage: string = 'build'; 
+  stage: string;
   buildtime: number;
   // combatPhaseStarted: boolean = false;
   timer: NodeJS.Timeout | null = null;
@@ -11,17 +11,19 @@ class GamePhase {
     makeAutoObservable(this);
   };
  
-  toggleStage() {
-    //
-    // this.stage = this.stage === 'build' ? 'combat' : (this.stage === 'combat' ? 'build' : 'game_end');
-    this.stage = this.stage === 'build' ? 'combat' : 'build';
-    console.log('stage', this.stage);
-  };
+  // toggleStage() {
+  //   //
+  //   // this.stage = this.stage === 'build' ? 'combat' : (this.stage === 'combat' ? 'build' : 'game_end');
+  //   this.stage = this.stage === 'build' ? 'combat' : 'build';
+  //   console.log('stage', this.stage);
+  // };
 
   reset() {
     this.wave = 1;
-    this.stage = 'build';
+    this.setStage('build1');
+    this.clearTimer;
     // this.combatPhaseStarted = false;
+    console.log('set stage to build in reset');
   }
 
 
@@ -38,7 +40,7 @@ class GamePhase {
       } else {
         // If buildtime reaches 0, clear the interval
         this.clearTimer;
-        this.toggleStage();
+        this.setStage('combat');
       }
     }, 1000);
   };
@@ -47,6 +49,11 @@ class GamePhase {
   decrementBuildTime = (): void => {
     this.buildtime--;
   };
+
+  @action
+  setStage = (stage: string) => {
+    this.stage = stage;
+  }
 
   @action
   clearTimer = (): void => {

@@ -12,9 +12,10 @@ interface MainGame extends Phaser.Scene {
 
 //->> The Phase Controller <<-//
 const dynamicPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group) => {
-  if (gamephase.stage === 'build') {
+  if (gamephase.stage === 'build' || gamephase.stage === 'build1') {
     // Do build phase stuff 
     startBuildPhase(scene);
+    console.log(' Set stage to build in Dynamin phase');
 
   } else if (gamephase.stage === 'combat') {
     // Do combat phase stuff

@@ -24,9 +24,8 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
-//import { towerState } from "../states/TowerStore";
+// import { towerState } from "../states/TowerStore";
 import MobTier1 from "../enemies/MobTier1";
-import { towerState } from "../states/TowerStore";
 
 
 export class MainGame extends Phaser.Scene {
@@ -110,8 +109,12 @@ export class MainGame extends Phaser.Scene {
     // Test mobs // Physics is w/e
     this.mobGroup = this.physics.add.group();
 
-    // Start in build Phase!
-    startBuildPhase(this);
+    // I think still some intial logic here. 
+    startBuildPhase(this)
+
+
+      // Start in build Phase!
+    // startBuildPhase(this);
 
 
     // if gamephase changes react appropriately
@@ -140,7 +143,7 @@ export class MainGame extends Phaser.Scene {
 
 // Create over ->
 
-
+// Could make a mob x reaction?
   checkPlayerHealth() {
     this.time.addEvent({
       delay: 100,
@@ -161,14 +164,20 @@ export class MainGame extends Phaser.Scene {
 
   // gameOverPhase() {
   //   gamephase.stage = 'game_end';
-  //   gamephase.toggleStage();
+  
   // }
   
 // if mobx state has no mobs (all dead) enter build stage
 
 // Always true on a reset?
   checkEndCombat() {
+
+    // Only care about this in combat phase
+    if (gamephase.stage !== 'combat') {
+      return;
+    }
     const mobEntries = Array.from(mobStore.mobs.entries());
+    
     if (mobEntries.length === 0) {
       // If there are no mobs left, transition to the build phase
       // If less than Max wave game continues    
@@ -204,13 +213,13 @@ export class MainGame extends Phaser.Scene {
 
 
   
-  restartGame() {
-    this.time.removeAllEvents(); // stops all timer events
-    playerState.reset();
-    towerState.reset();
-    mobStore.reset();
-    gamephase.reset();
-  }
+  // restartGame() {
+  //   this.time.removeAllEvents(); // stops all timer events
+  //   playerState.reset();
+  //   towerState.reset();
+  //   mobStore.reset();
+  //   gamephase.reset();
+  // }
 
   calculateMobPath (mob: MobTier1) {
 

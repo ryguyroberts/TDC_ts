@@ -72,7 +72,8 @@ export class GameOver extends Phaser.Scene {
       gameOverBGM.stop();
       clickSFX.play();
       setCursor('default', this);
-      this.restartGame();
+      window.location.reload()
+      // this.restartGame();
       this.scene.start('main_menu');
     });
 

@@ -152,6 +152,7 @@ update() {
       scene.time.delayedCall(1000, () => {
         const mobDeathSFX = this.scene.sound.add('mob_death');
         mobDeathSFX.play();
+        console.log('maybe chars?', this.value);
         playerState.addFunds(this.value);
         this.destroy();
         mobStore.removeMob(id);
