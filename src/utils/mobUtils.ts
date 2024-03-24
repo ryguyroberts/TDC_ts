@@ -8,7 +8,7 @@ import MobTier2 from "../enemies/MobTier2";
 
 interface MainGame extends Phaser.Scene {
   mobSpawnEvent?: Phaser.Time.TimerEvent;
-  buildPhaseEvent: Phaser.Time.TimerEvent;
+  // buildPhaseEvent: Phaser.Time.TimerEvent;
   buildPhaseEndEv: Phaser.Time.TimerEvent;
 }
 
@@ -23,10 +23,8 @@ const dynamicPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group) =>
     // remove events if around
     if (scene.buildPhaseEndEv) {
       scene.buildPhaseEndEv.remove(false);
-      scene.buildPhaseEvent.remove(false);
+      // scene.buildPhaseEvent.remove(false);
     }
-
-    gamephase.buildtime = 0;
     startCombatPhase(scene, mobGroup, gamephase.wave);
 
   };
@@ -41,47 +39,30 @@ const startBuildPhase = (scene: MainGame) => {
     scene.mobSpawnEvent.remove(false)
   };
 
-  gamephase.combatPhaseStarted = false;
+  // gamephase.combatPhaseStarted = false;
 
-  // Probably a better way to do this
-  gamephase.buildtime = 60;
-
-     // Set a timed event to update build time every second
-     scene.buildPhaseEvent = scene.time.addEvent({
-      delay: 1000, // Delay of 1 second
-      callback: () => {
-        updateTimer();
-      },
-      callbackScope: this,
-      loop: true // Set loop to true to repeat the event
-    });
-
-    const buildTime = 60;
-
+  // Set Buildtime, start timer in Mobx (dynamic)
+  gamephase.buildtime = 10;
+  gamephase.startTimerAction();
+ 
     scene.buildPhaseEndEv = scene.time.addEvent({
-      delay: buildTime * 1000, // Convert seconds to milliseconds
+      delay:  gamephase.buildtime * 1000, // Convert seconds to milliseconds
       callback: endBuild,
       callbackScope: scene
-    });
-
-    scene.time.addEvent({
-      delay: 1000, // Convert seconds to milliseconds
-      callback: updateTimer,
-      callbackScope: this
     });
 };
 
 // Runs at the end of the build phase
 const endBuild = () => {
-  gamephase.combatPhaseStarted = true;
+  // gamephase.combatPhaseStarted = true;
   gamephase.toggleStage();
 }
 
-// Just inrecements timer
-const updateTimer = () => {
-  // increment by 1 for now
-  gamephase.updateTimerAction();
-};  
+// // Just inrecements timer
+// const updateTimer = () => {
+//   // increment by 1 for now
+//   gamephase.updateTimerAction();
+// };  
 
 
 //->> Combat Phase Logic <<-//
@@ -99,15 +80,16 @@ const waveConfigurations: { tier1: number, tier2: number }[] = [
 
 
 const startCombatPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group, wave: number) => {
-  if (gamephase.combatPhaseStarted) {
-    return;
-  }
+  // if (gamephase.combatPhaseStarted) {
+  //   return;
+  // }
   console.log(`Combat Phase started - Wave ${wave}`);
+  gamephase.clearTimer();
 
   const waveConfig = waveConfigurations[wave - 1];
 
   spawnMobsWithDelay(scene, mobGroup, waveConfig);
-  gamephase.combatPhaseStarted = true;
+  // gamephase.combatPhaseStarted = true;
 };
 
 

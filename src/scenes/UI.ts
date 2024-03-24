@@ -385,17 +385,18 @@ export class UI extends Phaser.Scene {
 
   
   private createTowerLayer = () => {
-  const towerLayer = [];
+  const towerLayer:string[] = [];
   
-  for (const [towerId, tower] of towerState.activeTowers.entries()) {
+  towerState.activeTowers.forEach((tower) => {
     const towerX = Math.floor(tower.x / 32);
     const towerY = Math.floor(tower.y / 32);
     const towerKey = `${towerX}x${towerY}`;
   
-    console.log(towerKey);
+     
     towerLayer.push(towerKey);
-    console.log("towerLayer array", towerLayer, towerId);
-  }
+  
+    // console.log("towerLayer array", towerLayer);
+  });
   
   // console.log(UI.createTowerLayer)
   // Send to state instead

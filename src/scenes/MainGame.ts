@@ -116,12 +116,7 @@ export class MainGame extends Phaser.Scene {
 
     // if gamephase changes react appropriately
     reaction(
-      () => {
-        const stage = gamephase.stage
-        if (stage === 'build' || stage === 'combat') {
-          return stage;
-        }
-      },
+      () => gamephase.stage,
       () => dynamicPhase(this, this.mobGroup)
     );
 
@@ -152,7 +147,7 @@ export class MainGame extends Phaser.Scene {
       callback: () => {
         if (playerState.playerHealth <= 0) {
           // this.restartGame();
-          this.gameOverPhase();
+          // this.gameOverPhase();
           this.scene.stop('ui');
           this.bgm.stop();
           const deathSound = this.sound.add('death_sound');
@@ -164,10 +159,10 @@ export class MainGame extends Phaser.Scene {
     });
   }
 
-  gameOverPhase() {
-    gamephase.stage = 'game_end';
-    gamephase.toggleStage();
-  }
+  // gameOverPhase() {
+  //   gamephase.stage = 'game_end';
+  //   gamephase.toggleStage();
+  // }
   
 // if mobx state has no mobs (all dead) enter build stage
   checkEndCombat() {
@@ -240,7 +235,7 @@ export class MainGame extends Phaser.Scene {
       if (mob.checkEndPoint(endPointX, endPointY)) {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(1);
+        playerState.takeDamage(10);
       }   
 
     });

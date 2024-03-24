@@ -29,9 +29,9 @@ class PlayerState {
     }
     return false; // player still alive
   }
-
+  
   reset() {
-    this.playerHealth = 10;
+    this.playerHealth = 100;
     this.currency = 100;
   }
 }

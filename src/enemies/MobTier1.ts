@@ -84,7 +84,7 @@ update() {
     const upDown = dy < 0
     const downDown = dy > 0
 
-    const speed = 50
+    const speed = 300
 
     if (!this.anims.currentAnim){
       throw new Error('No anims!')
