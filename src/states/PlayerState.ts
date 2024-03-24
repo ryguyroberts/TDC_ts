@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class PlayerState {
-  currency: number = 20000;
+  currency: number = 10000;
   playerHealth: number = 100;
 
   constructor() {
@@ -32,7 +32,7 @@ class PlayerState {
 
   reset() {
     this.playerHealth = 10;
-    this.currency = 1000;
+    this.currency = 100;
   }
 }
 

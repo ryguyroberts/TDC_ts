@@ -1,0 +1,439 @@
+{
+	"textures": [
+		{
+			"image": "Tower_tier1",
+			"format": "RGBA8888",
+			"size": {
+				"w": 62,
+				"h": 89
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "tower_t1/shoot-left/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 4,
+						"y": 8,
+						"w": 18,
+						"h": 18
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 18,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-right/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 17,
+						"h": 18
+					},
+					"frame": {
+						"x": 18,
+						"y": 0,
+						"w": 17,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-left/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 8,
+						"w": 16,
+						"h": 18
+					},
+					"frame": {
+						"x": 35,
+						"y": 0,
+						"w": 16,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-up/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 6,
+						"w": 11,
+						"h": 20
+					},
+					"frame": {
+						"x": 51,
+						"y": 0,
+						"w": 11,
+						"h": 20
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-right/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 8,
+						"w": 16,
+						"h": 18
+					},
+					"frame": {
+						"x": 0,
+						"y": 18,
+						"w": 16,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-left/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 8,
+						"w": 14,
+						"h": 18
+					},
+					"frame": {
+						"x": 16,
+						"y": 18,
+						"w": 14,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-left/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 8,
+						"w": 14,
+						"h": 18
+					},
+					"frame": {
+						"x": 30,
+						"y": 18,
+						"w": 14,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-right/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 18
+					},
+					"frame": {
+						"x": 44,
+						"y": 20,
+						"w": 14,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-right/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 18
+					},
+					"frame": {
+						"x": 0,
+						"y": 36,
+						"w": 14,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-up/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 7,
+						"w": 11,
+						"h": 20
+					},
+					"frame": {
+						"x": 14,
+						"y": 36,
+						"w": 11,
+						"h": 20
+					}
+				},
+				{
+					"filename": "tower_t1/idle/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 8,
+						"w": 11,
+						"h": 18
+					},
+					"frame": {
+						"x": 0,
+						"y": 54,
+						"w": 11,
+						"h": 18
+					}
+				},
+				{
+					"filename": "tower_t1/idle/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 25,
+						"y": 36,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/idle/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 36,
+						"y": 38,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-down/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 8,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 25,
+						"y": 53,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-down/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 11,
+						"y": 56,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-up/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 0,
+						"y": 72,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-down/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 10,
+						"w": 11,
+						"h": 16
+					},
+					"frame": {
+						"x": 47,
+						"y": 38,
+						"w": 11,
+						"h": 16
+					}
+				},
+				{
+					"filename": "tower_t1/idle/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 11,
+						"w": 11,
+						"h": 15
+					},
+					"frame": {
+						"x": 47,
+						"y": 54,
+						"w": 11,
+						"h": 15
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-down/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 36,
+						"y": 38,
+						"w": 11,
+						"h": 17
+					}
+				},
+				{
+					"filename": "tower_t1/shoot-up/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 9,
+						"w": 11,
+						"h": 17
+					},
+					"frame": {
+						"x": 0,
+						"y": 72,
+						"w": 11,
+						"h": 17
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

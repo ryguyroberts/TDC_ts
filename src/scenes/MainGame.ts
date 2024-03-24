@@ -43,7 +43,7 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  private initialWavePlaySFX: boolean;
+  // private initialWavePlaySFX: boolean;
 
   constructor() {
     super('main_game');
@@ -55,7 +55,7 @@ export class MainGame extends Phaser.Scene {
 
   create() {
 
-    console.log(this.initialWavePlaySFX);
+    // console.log(this.initialWavePlaySFX);
     // Launch UI scene
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
@@ -95,6 +95,7 @@ export class MainGame extends Phaser.Scene {
     // this.wallsLayer.setDepth(100);
     map.createLayer('effect', allLayers);
     map.createLayer('props', allLayers);
+    map.createLayer('Walls 2', allLayers);
 
 
 
@@ -185,7 +186,7 @@ export class MainGame extends Phaser.Scene {
 
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      console.log("mob", mob)
+      // console.log("mob", mob)
   
       this.calculateMobPath(mob);
       

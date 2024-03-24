@@ -13,7 +13,7 @@ export class Preloader extends Phaser.Scene {
     this.load.image('tilemap_items', 'tech_map/props and items x1.png');
 
     // The actual Map
-    this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map05_test.json');
+    this.load.tilemapTiledJSON('tilemap', 'tech_map/tech_map06.json');
 
     // Sprites
     this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
@@ -21,7 +21,7 @@ export class Preloader extends Phaser.Scene {
     this.load.atlas('mob_t2', 'enemies/mob_t2.png', 'enemies/mob_t2.json')
 
     // Tower
-    this.load.atlas('tower_t1', 'towers/tower_t1.png', 'towers/tower_t1.json')
+    this.load.atlas('tower_t1', 'towers/Tower_tier1.png', 'towers/Tower_tier1.json')
 
     // Projectiles
     this.load.atlas('green_project', 'projectiles/green_project.png', 'projectiles/green_project.json')

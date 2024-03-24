@@ -143,7 +143,7 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
 const spawnMobs = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, mobsToSpawn: number[], spawnDelay: number) => {
   if (mobsToSpawn.length > 0) {
     const mobType = mobsToSpawn.shift();
-    console.log('mob spawned')
+    // console.log('mob spawned')
     createMobOrdered(scene, mobGroup, mobType!);
     scene.time.delayedCall(spawnDelay, () => spawnMobs(scene, mobGroup, mobsToSpawn, spawnDelay));
   }
@@ -181,7 +181,7 @@ const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, t
   }
 
   // Create the right mob?
-  const mob = mobFunction.call(scene.add, 448, 0, mobTexture)
+  const mob = mobFunction.call(scene.add, 450, 10, mobTexture)
 
   // Set properties
   const mobID = Phaser.Math.RND.uuid();

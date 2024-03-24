@@ -19,7 +19,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   private attackDmg: number;
   private projectiles: Phaser.GameObjects.Sprite[] = [];
   placed: boolean = false;
-  price: number;
+  public price: number;
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -40,11 +40,11 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     this.price = 100;
 
     // properties for projectiles
-    this.shootRange = 1000;
+    this.shootRange = 100;
     // No idea shoot time?
     this.shootTime = 2; // Time to reach mob?
     this.shootDelay = 500;
-    this.attackDmg = 5;
+    this.attackDmg = 2;
   };
 
   preUpdate(t: number, dt: number) {
@@ -79,11 +79,47 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   }
 
   shoot(target: Phaser.Physics.Arcade.Sprite) {
+
+    const deltaX = target.x - this.x;
+    const deltaY = target.y - this.y;
+
+    let animationKey = '';
+
+    if (Math.abs(deltaX) > Math.abs(deltaY)) {
+        // Shooting horizontally
+        if (deltaX > 0) {
+            animationKey = 't1_shoot_right';
+        } else {
+            animationKey = 't1_shoot_left';
+        }
+         } else {
+        // Shooting vertically
+        if (deltaY > 0) {
+            animationKey = 't1_shoot_down';
+        } else {
+            animationKey = 't1_shoot_up';
+        }
+    }
+
+    // Play the corresponding animation
+    this.anims.play(animationKey);
+
+
+    const revertToIdle = () => {
+      this.anims.play('t1_idle');
+    };
+
+    // Call the function to revert back to idle after a delay
+    const shootDuration = 1000; // Adjust this value according to your shoot duration
+    this.scene.time.delayedCall(shootDuration, revertToIdle);
+      
     // SFX 
     const laserSFX = this.scene.sound.add('tower_laser');
     laserSFX.play({ volume: 0.05 });
-    
-    // Create sprite and shoot towards the target (mob)
+
+
+
+         // Create sprite and shoot towards the target (mob)
     const projectile = this.scene.add.sprite(this.x, this.y, 'green_project');
     projectile.setDepth(50);
     this.scene.physics.add.existing(projectile);
@@ -92,7 +128,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // Function to continuously check the distance between the projectile and the target
     const checkDistance = () => {
       // Destory tower's created projectiles when a tower is being deleted
-      if (!this.placed) { 
+      if (!this.placed || !target ) {
         this.destroyProjectiles();
         return
       }
@@ -117,15 +153,31 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
   stopFiring() {
     this.shootTime = 0;
   }
+  
+  removeProjectile(projectile: Phaser.GameObjects.Sprite) {
+    const index = this.projectiles.indexOf(projectile);
+    if (index !== -1) {
+        this.projectiles.splice(index, 1);
+    }
+}
 
-  destroyProjectiles() {
-    this.projectiles.forEach(projectile => {
+destroyProjectiles() {
+  this.projectiles.forEach(projectile => {
       if (projectile) {
-        projectile.destroy();
+          projectile.destroy();
+          this.removeProjectile(projectile); // Remove projectile from the projectiles array
       }
-    });
-    this.projectiles = [];
-  }
+  });
+}
+
+  // destroyProjectiles() {
+  //   this.projectiles.forEach(projectile => {
+  //     if (projectile) {
+  //       projectile.destroy();
+  //     }
+  //   });
+  //   this.projectiles = [];
+  // }
 }
 
 Phaser.GameObjects.GameObjectFactory.register('tower1', function(this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {

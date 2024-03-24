@@ -87,6 +87,7 @@ export class UI extends Phaser.Scene {
     const towerIcon3 = this.add.sprite(1537, 160, 'tower_icon_3').setInteractive();
     towerIcon3.setScale(1);
 
+
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {
       // Ensure towerObj is not null / undefined
@@ -99,67 +100,92 @@ export class UI extends Phaser.Scene {
         );
         // Allows for Tower Icons to receive input
         towerSprite.setInteractive();
-
+        let isPlacingTower = false;
         // Tower Sprite Creation
         towerSprite.on('pointerdown', (pointer: any, localX: number, localY: number) => {
-          const tower = this.add.tower1(localX, localY, 'tower1');
-          if (playerState.buyTower(tower.price)) {
+          if(!isPlacingTower) {
+            isPlacingTower = true
+            const price = 100
+            
+              // Can't afford
+            if (!playerState.buyTower(price)) {
+              console.log('cannnot afford');
+              isPlacingTower = false;
+              return;
+              // Can't afford
+            };
+
+            // start creating tower and pass to state
+            console.log(towerObj.name);
+            
+           
+            
+            const tower = this.add.tower1(localX, localY, 'tower1');
             tower.setAlpha(0.5);
             const towerID = Phaser.Math.RND.uuid();
             towerState.addTower(towerID, tower);
             tower.placed = false;
-
             tower.setInteractive();
 
-            let isPlaced = false;
 
-            this.createTowerLayer();
+          };
+          
+        
+          const tower = this.add.tower1(localX, localY, 'tower1');
+          tower.setAlpha(0.5);
+          const towerID = Phaser.Math.RND.uuid();
+          towerState.addTower(towerID, tower);
+          tower.placed = false;
 
-            this.input.on('pointermove', (pointer: any) => {
-              if (isPlaced) return; // Ignore listener if placed 
-              tower.x = pointer.x;
-              tower.y = pointer.y;
+          tower.setInteractive();
 
-            });
+          let isPlaced = false;
+
+          this.createTowerLayer();
+
+          this.input.on('pointermove', (pointer: any) => {
+            if (isPlaced) return; // Ignore listener if placed 
+            tower.x = pointer.x;
+            tower.y = pointer.y;
+
+          });
 
             // Tower Placement
-            this.input.on('pointerup', () => {
-              if (isPlaced) return; // Ignore listener if placed 
+          this.input.on('pointerup', () => {
+            if (isPlaced) return; // Ignore listener if placed 
 
-              // Calc nearest grid position where the pointer is
-              const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
-              const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
+            // Calc nearest grid position where the pointer is
+            const gridX = Math.floor(pointer.x / this.tileSize) * this.tileSize + this.tileSize / 2;
+            const gridY = Math.floor(pointer.y / this.tileSize) * this.tileSize + this.tileSize / 2;
 
-              //console.log("grid x and y:", gridX, gridY);
+            //console.log("grid x and y:", gridX, gridY);
+          
+            // Move tower to nearest grid position
+            tower.x = gridX;
+            tower.y = gridY;
+
+            //console.log("tower x y", tower.x, tower.y);
+
+            // Restore opacity
+            tower.setAlpha(1);
+
+            // Remove pointermove listener
+            this.input.off('pointermove');
+            tower.placed = true;
+            isPlaced = true;
             
-              // Move tower to nearest grid position
-              tower.x = gridX;
-              tower.y = gridY;
+            // Build Tower SFX
+            const buildSFX = this.sound.add('tower_build');
+            buildSFX.play();
 
-              //console.log("tower x y", tower.x, tower.y);
+            // Attach tower selection handler
+            this.attachTowerSelection(tower);
+            //console.log("tower", tower)
 
-              // Restore opacity
-              tower.setAlpha(1);
+            //calls to pathfinding to update data
+            //UI.createTowerLayer();
 
-              // Remove pointermove listener
-              this.input.off('pointermove');
-              tower.placed = true;
-              isPlaced = true;
-              
-              // Build Tower SFX
-              const buildSFX = this.sound.add('tower_build');
-              buildSFX.play();
-
-              // Attach tower selection handler
-              this.attachTowerSelection(tower);
-              //console.log("tower", tower)
-
-              //calls to pathfinding to update data
-              //UI.createTowerLayer();
-
-            });
-          }
-
+          });
         });
       }
     });
@@ -322,6 +348,7 @@ export class UI extends Phaser.Scene {
     // console.log(`Tower selected at position (${tower.x}, ${tower.y})`);
   // }
 
+
   private findSelectedTower(selectedTower: Phaser.GameObjects.Sprite): string | null {
     for (const [towerID, tower] of towerState.activeTowers.entries()) {
       if (tower === selectedTower) {
@@ -351,7 +378,7 @@ export class UI extends Phaser.Scene {
   // Send to state instead
 
   towerState.setTowerLayer(towerLayer)
-  console.log(towerState.towerLayer);
+  // console.log(towerState.towerLayer);
   }
 
 };
