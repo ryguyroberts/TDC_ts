@@ -38,6 +38,7 @@ class GamePhase {
       } else {
         // If buildtime reaches 0, clear the interval
         this.clearTimer;
+        this.toggleStage();
       }
     }, 1000);
   };

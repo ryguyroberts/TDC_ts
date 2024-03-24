@@ -8,8 +8,6 @@ import MobTier2 from "../enemies/MobTier2";
 
 interface MainGame extends Phaser.Scene {
   mobSpawnEvent?: Phaser.Time.TimerEvent;
-  // buildPhaseEvent: Phaser.Time.TimerEvent;
-  buildPhaseEndEv: Phaser.Time.TimerEvent;
 }
 
 //->> The Phase Controller <<-//
@@ -17,14 +15,9 @@ const dynamicPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group) =>
   if (gamephase.stage === 'build') {
     // Do build phase stuff 
     startBuildPhase(scene);
+
   } else if (gamephase.stage === 'combat') {
     // Do combat phase stuff
-
-    // remove events if around
-    if (scene.buildPhaseEndEv) {
-      scene.buildPhaseEndEv.remove(false);
-      // scene.buildPhaseEvent.remove(false);
-    }
     startCombatPhase(scene, mobGroup, gamephase.wave);
 
   };
@@ -45,24 +38,7 @@ const startBuildPhase = (scene: MainGame) => {
   gamephase.buildtime = 10;
   gamephase.startTimerAction();
  
-    scene.buildPhaseEndEv = scene.time.addEvent({
-      delay:  gamephase.buildtime * 1000, // Convert seconds to milliseconds
-      callback: endBuild,
-      callbackScope: scene
-    });
 };
-
-// Runs at the end of the build phase
-const endBuild = () => {
-  // gamephase.combatPhaseStarted = true;
-  gamephase.toggleStage();
-}
-
-// // Just inrecements timer
-// const updateTimer = () => {
-//   // increment by 1 for now
-//   gamephase.updateTimerAction();
-// };  
 
 
 //->> Combat Phase Logic <<-//

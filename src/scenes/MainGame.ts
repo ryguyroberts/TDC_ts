@@ -165,6 +165,8 @@ export class MainGame extends Phaser.Scene {
   // }
   
 // if mobx state has no mobs (all dead) enter build stage
+
+// Always true on a reset?
   checkEndCombat() {
     const mobEntries = Array.from(mobStore.mobs.entries());
     if (mobEntries.length === 0) {
@@ -173,6 +175,7 @@ export class MainGame extends Phaser.Scene {
       
       gamephase.stage = 'build';
       gamephase.wave += 1;
+      console.log('incremented in checkend');
 
     }
 
