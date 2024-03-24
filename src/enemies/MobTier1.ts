@@ -6,7 +6,7 @@ import { mobStore} from "../states/MobStore";
 declare global {
   namespace Phaser.GameObjects {
     interface GameObjectFactory {
-      mob_t1(x: number, y: number, texture: string, frame?: string | number): MobTier1
+      mob_t1(x: number, y: number, texture: string, frame: string): MobTier1
     }
   }
 }
@@ -19,21 +19,25 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
   
   // for currency state
   value: number = 100;
-
+  
   private hasEnteredEndpoint: boolean = false;
 
   // For path state
   private movePath: Phaser.Math.Vector2[] = []
   private moveToTarget?: Phaser.Math.Vector2
  
+  // For Anims
+  private runFrameKey: string;
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
-    super(scene, x, y, texture, frame);
+  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame: string ) {
+
+    super(scene, x, y, texture, frame); 
     scene.physics.world.enable(this);
-    this.anims.play('mob_t1_run');
-    this.setDepth(100);
-   
+        this.runFrameKey = frame;
+    this.anims.play(this.runFrameKey);
+
+
   };
 
   moveAlong(path: Phaser.Math.Vector2[]) {
@@ -84,27 +88,27 @@ update() {
     const upDown = dy < 0
     const downDown = dy > 0
 
-    const speed = 300
+    const speed = 50;
 
     if (!this.anims.currentAnim){
       throw new Error('No anims!')
     }
 
     if (leftDown) {
-        this.anims.play('mob_t1_run', true)
+        this.anims.play(this.runFrameKey, true)
         this.setVelocity(-speed, 0)
 
         this.flipX = true
     } else if (rightDown) {
-        this.anims.play('mob_t1_run', true)
+        this.anims.play(this.runFrameKey, true)
         this.setVelocity(speed, 0)
 
         this.flipX = false
     } else if (upDown) {
-        this.anims.play('mob_t1_run', true)
+        this.anims.play(this.runFrameKey, true)
         this.setVelocity(0, -speed)
     } else if (downDown) {
-        this.anims.play('mob_t1_run', true)
+        this.anims.play(this.runFrameKey, true)
         this.setVelocity(0, speed)
     } else {
         const parts = this.anims.currentAnim.key.split('-')
@@ -152,7 +156,6 @@ update() {
       scene.time.delayedCall(1000, () => {
         const mobDeathSFX = this.scene.sound.add('mob_death');
         mobDeathSFX.play();
-        console.log('maybe chars?', this.value);
         playerState.addFunds(this.value);
         this.destroy();
         mobStore.removeMob(id);
@@ -174,7 +177,7 @@ update() {
 };
 
 // Add Mob t1 to game object Factory
-Phaser.GameObjects.GameObjectFactory.register('mob_t1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
+Phaser.GameObjects.GameObjectFactory.register('mob_t1', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame: string) {
   const sprite = new MobTier1(this.scene, x, y, texture, frame);
   this.displayList.add(sprite);
   this.updateList.add(sprite);

@@ -6,6 +6,7 @@ import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
 import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
+import { createMobTier3Anims } from "../anims/MobTier3Anims";
 
 
 // Import Sprites Classes
@@ -67,6 +68,7 @@ export class MainGame extends Phaser.Scene {
     createMobTier1Anims(this.anims);
     createMobTier2Anims(this.anims);
     createGreenProjectAnims(this.anims);
+    createMobTier3Anims(this.anims);
 
 
     // Tileset

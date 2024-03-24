@@ -36,7 +36,7 @@ const startBuildPhase = (scene: MainGame) => {
   // gamephase.combatPhaseStarted = false;
 
   // Set Buildtime, start timer in Mobx (dynamic)
-  gamephase.buildtime = 10;
+  gamephase.buildtime = 60;
   gamephase.startTimerAction();
  
 };
@@ -129,24 +129,27 @@ const createMobOrdered = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.G
 const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, tier: number) => {
 
   let mobTexture: string;
-  let mobFunction: (x: number, y: number, texture: string) => MobTier1 | MobTier2;
+  let mobFrame: string;
+  let mobFunction: (x: number, y: number, texture: string, frame: string) => MobTier1 | MobTier2;
 
   // Determine which mob texture and creation function to use based on the tier
   switch (tier) {
     case 1:
-      mobTexture = 'mob_t1';
+      mobTexture = 'mob_t3';
+      mobFrame = 'mob_t3_run';
       mobFunction = scene.add.mob_t1;
       break;
     case 2:
       mobTexture = 'mob_t1';
+      mobFrame = 'mob_t1_run';
       mobFunction = scene.add.mob_t2;
       break;
     default:
       throw new Error(`Unsupported mob tier: ${tier}`);
   }
-
+  
   // Create the right mob?
-  const mob = mobFunction.call(scene.add, 450, 10, mobTexture)
+  const mob = mobFunction.call(scene.add, 450, 10, mobTexture, mobFrame);
 
   // Set properties
   const mobID = Phaser.Math.RND.uuid();
