@@ -17,18 +17,18 @@ export class Preloader extends Phaser.Scene {
 
     // Sprites
     this.load.atlas('fauna', 'fauna/fauna.png', 'fauna/fauna.json');
-    this.load.atlas('mob_t1', 'enemies/mob_t1.png', 'enemies/mob_t1.json')
-    this.load.atlas('mob_t2', 'enemies/mob_t2.png', 'enemies/mob_t2.json')
+    this.load.atlas('mob_t1', 'enemies/mob_t1.png', 'enemies/mob_t1.json');
+    this.load.atlas('mob_t2', 'enemies/mob_t2.png', 'enemies/mob_t2.json');
 
     // Tower
-    this.load.atlas('tower_t1', 'towers/tower_t1.png', 'towers/tower_t1.json')
+    this.load.atlas('tower_t1', 'towers/tower_t1.png', 'towers/tower_t1.json');
 
     // Projectiles
-    this.load.atlas('green_project', 'projectiles/green_project.png', 'projectiles/green_project.json')
+    this.load.atlas('green_project', 'projectiles/green_project.png', 'projectiles/green_project.json');
 
     // UI
     this.load.image('ui_tilemap_left_ui', 'tech_map/ui x2.png');
-    this.load.tilemapTiledJSON('ui_tilemap','tech_map/tech_map03_ui.json');
+    this.load.tilemapTiledJSON('ui_tilemap', 'tech_map/tech_map03_ui.json');
 
     // Fonts
     this.load.bitmapFont('pixelFont', 'fonts/pixel_0.png', 'fonts/pixel.xml');
@@ -46,10 +46,10 @@ export class Preloader extends Phaser.Scene {
     this.load.image('hp_icon', 'ui/hp.png');
     this.load.image('currency', 'ui/coin.png');
     this.load.image('start_wave', 'ui/start button.png');
-  
+
     // Main Menu
     this.load.image('main_menu_scene', "ui/TDC Title Scene.png");
-    this.load.image('play_button', 'ui/play button.png')
+    this.load.image('play_button', 'ui/play button.png');
 
     // Game Over
     this.load.image('game_over_scene', 'ui/GameOver Scene.png');
@@ -68,7 +68,7 @@ export class Preloader extends Phaser.Scene {
     // Gameplay SFX
     this.load.audio('wave_complete', 'audio/wave complete.mp3');
     this.load.audio('death_sound', 'audio/game over.mp3');
-    
+
     // Tower SFX
     this.load.audio('tower_build', 'audio/buildtower.mp3');
     this.load.audio('tower_laser', 'audio/laser.mp3');
@@ -77,11 +77,9 @@ export class Preloader extends Phaser.Scene {
     // Mob SFX
     this.load.audio('mob_hit', 'audio/mob hit.mp3');
     this.load.audio('mob_death', 'audio/mobdeath.mp3');
-  
   }
 
   // Once asset all preloaded start our game! (Our main menu here)
-
   create() {
     this.scene.start('main_menu');
   };

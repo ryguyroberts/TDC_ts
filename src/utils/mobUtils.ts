@@ -73,7 +73,7 @@ const startBuildPhase = (scene: MainGame) => {
 
 // Runs at the end of the build phase
 const endBuild = () => {
-  console.log('end build stage');
+  gamephase.combatPhaseStarted = true;
   gamephase.toggleStage();
 }
 
@@ -86,12 +86,15 @@ const updateTimer = () => {
 
 // if mobx state has no mobs (all dead) enter build stage
 const checkEndCombat = () => {
-  const mobEntries = Array.from(mobStore.mobs.entries());
-  if (mobEntries.length === 0) {
-    // If there are no mobs left, transition to the build phase
-    gamephase.stage = 'build';
-    gamephase.wave += 1;
-  };
+  if (gamephase.combatPhaseStarted) {
+    const mobEntries = Array.from(mobStore.mobs.entries());
+    if (mobEntries.length === 0) {
+      // If there are no mobs left, transition to the build phase
+      gamephase.stage = 'build';
+      gamephase.wave += 1;
+      gamephase.combatPhaseStarted = false;
+    };
+  }
 };
 
 
@@ -114,7 +117,6 @@ const startCombatPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group
   console.log(`Combat Phase started - Wave ${wave}`);
 
   const waveConfig = waveConfigurations[wave - 1];
-  console.log('wave index', waveConfig);
 
   spawnMobsWithDelay(scene, mobGroup, waveConfig);
   gamephase.combatPhaseStarted = true;

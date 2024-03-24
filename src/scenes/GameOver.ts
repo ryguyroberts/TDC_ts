@@ -74,7 +74,6 @@ export class GameOver extends Phaser.Scene {
       setCursor('default', this);
       this.restartGame();
       this.scene.start('main_menu');
-      console.log('stage', gamephase.stage);
     });
 
     this.tryAgainButton.on('pointerdown', () => {
@@ -83,7 +82,6 @@ export class GameOver extends Phaser.Scene {
       setCursor('default', this);
       this.restartGame();
       this.scene.start('main_game');
-      console.log('stage', gamephase.stage);
     }) 
   }
   restartGame() {
