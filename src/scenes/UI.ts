@@ -5,8 +5,7 @@ import Phaser, { Tilemaps } from "phaser";
 // import { handlePointerOver, handlePointerOut } from "../utils/buttonPop";
 
 // Mobx State
-import { autorun } from "mobx";
-import { reaction } from "mobx";
+import { autorun, reaction, IReactionDisposer } from "mobx";
 import { towerState } from "../states/TowerStore";
 import selectedTowerState from "../states/selected_tower";
 import { mobStore } from "../states/MobStore";
@@ -37,7 +36,7 @@ export class UI extends Phaser.Scene {
     // Init mobgroup
     this.mobGroup = this.physics.add.group();
 
-      // UI Tilemap Creation
+    // UI Tilemap Creation
     const uiMap = this.make.tilemap({ key: 'ui_tilemap' });
     const tileset_ui = uiMap.addTilesetImage('ui x2', 'ui_tilemap_left_ui');
     const tilemap_tower_ui = uiMap.addTilesetImage('enemies x2', 'ui_tilemap_towers');
@@ -169,14 +168,14 @@ export class UI extends Phaser.Scene {
             // Restore opacity
             tower.setAlpha(1);
 
-            // Remove pointermove listener
-            this.input.off('pointermove');
-            tower.placed = true;
-            isPlaced = true;
-            
-            // Build Tower SFX
-            const buildSFX = this.sound.add('tower_build');
-            buildSFX.play();
+              // Remove pointermove listener
+              this.input.off('pointermove');
+              tower.placed = true;
+              isPlaced = true;
+
+              // Build Tower SFX
+              const buildSFX = this.sound.add('tower_build');
+              buildSFX.play();
 
             // Attach tower selection handler
             this.attachTowerSelection(tower);
@@ -191,16 +190,16 @@ export class UI extends Phaser.Scene {
     });
 
     // LEFT PANEL UI: PLAYER & GAME STATE
-    const leftPanelBG = this.add.sprite(this.cameras.main.width / 2 , this.cameras.main.height / 2, 'left_panel');
+    const leftPanelBG = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'left_panel');
     leftPanelBG.setScale(1);
 
-    const waveText = this.add.bitmapText(65, 48, 'pixelFont', 'WAVE: 1', 32);
+    let waveText = this.add.bitmapText(65, 48, 'pixelFont', 'WAVE: 1');
     waveText.setScale(1.25);
 
     const hpIcon = this.add.sprite(60, 177, 'hp_icon');
     hpIcon.setScale(0.10);
 
-    const playerHp = this.add.bitmapText(130, 164, "pixelFont", "100", 32);
+    let playerHp = this.add.bitmapText(130, 164, "pixelFont", "100");
     playerHp.setScale(1.25);
 
     const startWaveButton = this.add.sprite(150, 920, 'start_wave').setInteractive();
@@ -208,20 +207,27 @@ export class UI extends Phaser.Scene {
 
     const currencyIcon = this.add.sprite(60, 293, 'currency');
     currencyIcon.setScale(0.25);
-    const currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`, 32);
+    let currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`);
     currencyText.setScale(1.25);
     if (playerState.currency >= 1000) { // Adjust text position if < 1000
       currencyText.setPosition(120, 280);
-    } else { 
+    } else {
       currencyText.setPosition(130, 280);
     }
 
-    autorun(() => {
+    // Build phase timer
+    let buildTime = this.add.bitmapText(50, 810, 'pixelFont', 'Placeholder');
+
+    let autorunDisposer: IReactionDisposer;
+
+    autorunDisposer = autorun(() => {
       currencyText.text = `${playerState.currency}`;
       playerHp.text = `${playerState.playerHealth}`;
       waveText.text = `WAVE: ${gamephase.wave}`;
+      buildTime.setText(`BUILD: ${gamephase.buildtime} 
+      TIME`);
     });
- 
+
     // Delete tower button
     this.deleteTower = this.add.sprite(147, 385, 'destroy_button').setInteractive().setVisible(false);
     this.deleteTower.setScale(0.32);
@@ -233,7 +239,7 @@ export class UI extends Phaser.Scene {
     // this.deleteTower.on('pointerout', () => {
     //   handlePointerOut(this.deleteTower, 0.32, 147, 385, 'default', this);
     // })
-    
+
     this.deleteTower.on('pointerdown', () => {
       if (selectedTowerState.selectedTower) {
         const towerToRemove = selectedTowerState.selectedTower;
@@ -273,10 +279,10 @@ export class UI extends Phaser.Scene {
     reaction(
       () => gamephase.stage,
       (stage) => {
-        if (stage === 'build' ) {
+        if (stage === 'build') {
           startWaveButton.setVisible(true);
           buildTime.setVisible(true);
-    
+
           // Removes Timer & Start Wave Button in Combat
         } else if (stage === 'combat') {
           startWaveButton.setVisible(false);
@@ -285,21 +291,8 @@ export class UI extends Phaser.Scene {
       }
     );
 
-    // Build phase timer
-    const buildTime = this.add.bitmapText(50, 810, 'pixelFont', 'Placeholder', 32);
-    const updateBT = () => {
-      buildTime.setText(`BUILD: ${gamephase.buildtime} 
-      TIME`);
-    };
-    updateBT();
-
-    reaction(
-      () => gamephase.buildtime,
-      () => updateBT()
-    );
-
     startWaveButton.on('pointerdown', () => {
-      this.clickSFX = this.sound.add('click')
+      this.clickSFX = this.sound.add('click');
       this.clickSFX.play();
       // if combat stage don't advance change button text?
       if (gamephase.stage === 'combat') {
@@ -307,6 +300,36 @@ export class UI extends Phaser.Scene {
       }
       gamephase.toggleStage();
     });
+
+    const recreateBitMapText = () => {
+      autorunDisposer();
+
+      waveText.destroy();
+      waveText = this.add.bitmapText(65, 48, 'pixelFont', 'WAVE: 1', 32);
+      waveText.setScale(1.25);
+
+      playerHp.destroy();
+      playerHp = this.add.bitmapText(130, 164, "pixelFont", "100", 32);
+      playerHp.setScale(1.25);
+
+      currencyText.destroy();
+      currencyText = this.add.bitmapText(120, 280, 'pixelFont', `1000`, 32);
+      currencyText.setScale(1.25);
+
+      buildTime.destroy();
+      buildTime = this.add.bitmapText(50, 810, 'pixelFont', 'Placeholder', 32);
+    };
+
+
+    reaction(
+      () => {
+        if (gamephase.stage === 'game_end') {
+          console.log('we are going to destroy, recreate bitmap text, & dispose of autorun');
+          return;
+        }
+      },
+      () => recreateBitMapText()
+    );
 
 
   }

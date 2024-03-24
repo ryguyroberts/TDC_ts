@@ -43,7 +43,7 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  // private initialWavePlaySFX: boolean;
+  // private reactionDisposer: (() => void) | null = null;
 
   constructor() {
     super('main_game');
@@ -116,7 +116,12 @@ export class MainGame extends Phaser.Scene {
 
     // if gamephase changes react appropriately
     reaction(
-      () => gamephase.stage,
+      () => {
+        const stage = gamephase.stage
+        if (stage === 'build' || stage === 'combat') {
+          return stage;
+        }
+      },
       () => dynamicPhase(this, this.mobGroup)
     );
 
@@ -146,7 +151,8 @@ export class MainGame extends Phaser.Scene {
       delay: 100,
       callback: () => {
         if (playerState.playerHealth <= 0) {
-          this.restartGame();
+          // this.restartGame();
+          this.gameOverPhase();
           this.scene.stop('ui');
           this.bgm.stop();
           const deathSound = this.sound.add('death_sound');
@@ -156,6 +162,11 @@ export class MainGame extends Phaser.Scene {
       },
       loop: true,
     });
+  }
+
+  gameOverPhase() {
+    gamephase.stage = 'game_end';
+    gamephase.toggleStage();
   }
   
 // if mobx state has no mobs (all dead) enter build stage
@@ -200,6 +211,7 @@ export class MainGame extends Phaser.Scene {
     playerState.reset();
     towerState.reset();
     mobStore.reset();
+    gamephase.reset();
   }
 
   calculateMobPath (mob: MobTier1) {
