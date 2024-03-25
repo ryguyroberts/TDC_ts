@@ -3,6 +3,7 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import MobTier1 from "../enemies/MobTier1";
 import MobTier2 from "../enemies/MobTier2";
+import MobTier3 from "../enemies/MobTier3";
 
 // The interfaces are coming
 
@@ -20,7 +21,6 @@ const dynamicPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group) =>
   } else if (gamephase.stage === 'combat') {
     // Do combat phase stuff
     startCombatPhase(scene, mobGroup, gamephase.wave);
-
   };
 };
 
@@ -32,24 +32,22 @@ const startBuildPhase = (scene: MainGame) => {
   if (scene.mobSpawnEvent) {
     scene.mobSpawnEvent.remove(false)
   };
-
   // gamephase.combatPhaseStarted = false;
 
   // Set Buildtime, start timer in Mobx (dynamic)
   gamephase.buildtime = 60;
   gamephase.startTimerAction();
- 
 };
 
 
 //->> Combat Phase Logic <<-//
 // Wave configurations Set by us
-const waveConfigurations: { tier1: number, tier2: number }[] = [
-  { tier1: 1, tier2: 1 }, // Wave 1
-  { tier1: 40, tier2: 20 }, // Wave 2
-  { tier1: 80, tier2: 40 }, // Wave 3
-  { tier1: 160, tier2: 80}, // wave 4
-  { tier1: 0 , tier2: 200}, //Final Wave
+const waveConfigurations: { tier1: number, tier2: number, tier3: number }[] = [
+  { tier1: 1, tier2: 1, tier3: 1}, // Wave 1
+  { tier1: 40, tier2: 20, tier3: 0}, // Wave 2
+  { tier1: 80, tier2: 40, tier3: 0}, // Wave 3
+  { tier1: 160, tier2: 80, tier3: 0}, // wave 4
+  { tier1: 0 , tier2: 200, tier3: 0}, //Final Wave
   // Wave -> Game Win scene
   // Win state?
   // Add waves
@@ -70,7 +68,7 @@ const startCombatPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group
 };
 
 
-const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, waveConfig: { tier1: number, tier2: number}) => {
+const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, waveConfig: { tier1: number, tier2: number, tier3: number}) => {
   // Array to spawn mobs
   const mobsToSpawn: number[] = [];
 
@@ -81,8 +79,12 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
     mobsToSpawn.push(1); // Tier 1 mob
   };
   //add tier 2 mob amount
-    for (let i = 0; i < waveConfig.tier2; i++) {
+  for (let i = 0; i < waveConfig.tier2; i++) {
     mobsToSpawn.push(2); // Tier 1 mob
+  };
+
+  for (let i = 0; i < waveConfig.tier3; i++) {
+    mobsToSpawn.push(3); // Tier 1 mob
   };
 
   
@@ -100,7 +102,7 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
   // Shuffle Array
   Phaser.Utils.Array.Shuffle(mobsToSpawn);
 
-  // Spawn mobs with Delay!
+  // Spawn mobs with Delay! Adjust Delay here
     spawnMobs(scene, mobGroup, mobsToSpawn, 1000);
 };
 
@@ -108,10 +110,9 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
 const spawnMobs = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, mobsToSpawn: number[], spawnDelay: number) => {
   if (mobsToSpawn.length > 0) {
     const mobType = mobsToSpawn.shift();
-    // console.log('mob spawned')
     createMobOrdered(scene, mobGroup, mobType!);
     scene.time.delayedCall(spawnDelay, () => spawnMobs(scene, mobGroup, mobsToSpawn, spawnDelay));
-  }
+  };
 };
 
 
@@ -122,34 +123,38 @@ const createMobOrdered = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.G
     createMob(scene, mobGroup, 1); // Tier 1 mob
   } else if (mobType === 2) {
     createMob(scene, mobGroup, 2); // Tier 2 mob
-  };
+  } else if (mobType === 3) {
+    createMob(scene, mobGroup, 3); // Tier 3 mob
+  }
 };
 
 
 const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, tier: number) => {
 
   let mobTexture: string;
-  let mobFrame: string;
-  let mobFunction: (x: number, y: number, texture: string, frame: string) => MobTier1 | MobTier2;
+  let mobFunction: (x: number, y: number, texture: string) => MobTier1 | MobTier2 | MobTier3;
 
   // Determine which mob texture and creation function to use based on the tier
   switch (tier) {
     case 1:
-      mobTexture = 'mob_t3';
-      mobFrame = 'mob_t3_run';
+      mobTexture = 'mob_t1';
       mobFunction = scene.add.mob_t1;
       break;
     case 2:
       mobTexture = 'mob_t1';
-      mobFrame = 'mob_t1_run';
       mobFunction = scene.add.mob_t2;
       break;
+    case 3:
+      mobTexture = 'mob_t3';
+      mobFunction = scene.add.mob_t3;
+      break;
+      
     default:
       throw new Error(`Unsupported mob tier: ${tier}`);
-  }
+  };
   
   // Create the right mob?
-  const mob = mobFunction.call(scene.add, 450, 10, mobTexture, mobFrame);
+  const mob = mobFunction.call(scene.add, 450, 10, mobTexture);
 
   // Set properties
   const mobID = Phaser.Math.RND.uuid();
@@ -159,7 +164,7 @@ const createMob = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, t
    mobGroup.add(mob);
    mobStore.addMob(mobID, mob);
 
-}
+};
 
 
 

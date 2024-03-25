@@ -6,14 +6,14 @@ import MobTier1 from "./MobTier1";
 declare global {
   namespace Phaser.GameObjects {
     interface GameObjectFactory {
-      mob_t2(x: number, y: number, texture: string, frame: string | number): MobTier2
+      mob_t2(x: number, y: number, texture: string, frame?: string | number): MobTier2
     }
   }
 }
 
 export default class MobTier2 extends MobTier1 {
 
-  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame: string) {
+  constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string) {
     super(scene, x, y, texture, frame);
 
     this.health = 500; 
@@ -24,7 +24,7 @@ export default class MobTier2 extends MobTier1 {
 };
 
 // Add Mob t1 to game object Factory
-Phaser.GameObjects.GameObjectFactory.register('mob_t2', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame: string) {
+Phaser.GameObjects.GameObjectFactory.register('mob_t2', function (this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string) {
   const sprite = new MobTier2(this.scene, x, y, texture, frame);
   this.displayList.add(sprite);
   this.updateList.add(sprite);

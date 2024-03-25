@@ -13,6 +13,7 @@ import { createMobTier3Anims } from "../anims/MobTier3Anims";
 import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
+import '../enemies/MobTier3';
 
 // Utitilies
 import findPath from '../utils/findPath';
