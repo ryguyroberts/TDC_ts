@@ -11,6 +11,9 @@ import { createMobTier5Anims } from "../anims/MobTier5Anims";
 
 // Import Sprites Classes
 import '../towers/Tower1';
+import '../towers/Tower2';
+import '../towers/Tower3';
+
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 import '../enemies/MobTier3';

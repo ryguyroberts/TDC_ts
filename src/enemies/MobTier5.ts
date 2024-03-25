@@ -21,8 +21,6 @@ export default class MobTier5 extends MobTier1 {
     this.deathFrame = 'mob_t5_die';
     this.speed = 20;
     this.health = 1000;
-
-
   };
 
 };

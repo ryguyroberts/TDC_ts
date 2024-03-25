@@ -15,6 +15,7 @@ import { gamephase } from "../states/GamePhase";
 //Map creation for towers placed
 
 
+
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private tileSize: number;
@@ -118,7 +119,7 @@ export class UI extends Phaser.Scene {
             
            
             
-            const tower = this.add.tower1(localX, localY, 'tower1');
+            const tower = this.add.tower3(localX, localY, 'tower1');
             tower.setAlpha(0.5);
             const towerID = Phaser.Math.RND.uuid();
             towerState.addTower(towerID, tower);
@@ -129,7 +130,7 @@ export class UI extends Phaser.Scene {
           };
           
         
-          const tower = this.add.tower1(localX, localY, 'tower1');
+          const tower = this.add.tower3(localX, localY, 'tower1');
           tower.setAlpha(0.5);
           const towerID = Phaser.Math.RND.uuid();
           towerState.addTower(towerID, tower);

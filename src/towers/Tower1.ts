@@ -12,14 +12,25 @@ declare global {
 }
 
 export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
-  private shootRange: number;
-  private shootTime: number;
-  private shootDelay: number;
-  private mobGroup!: Phaser.Physics.Arcade.Group;
-  private attackDmg: number;
+
+  // Tower properties
+  public shootRange: number;
+  public shootTime: number;
+  public shootDelay: number;
+  public attackDmg: number;
+
+  // Projectile properties
   private projectiles: Phaser.GameObjects.Sprite[] = [];
+  public projectileSpeed: number;
+  public projectFrame: string;
+  public projectTint : number;
+  public projectSize : number;
+
+
+  private mobGroup!: Phaser.Physics.Arcade.Group;
   placed: boolean = false;
   public price: number;
+
 
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string | number) {
 
@@ -45,6 +56,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     this.shootTime = 2; // Time to reach mob?
     this.shootDelay = 500;
     this.attackDmg = 10;
+    this.projectileSpeed = 200
   };
 
   preUpdate(t: number, dt: number) {
@@ -122,6 +134,15 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
          // Create sprite and shoot towards the target (mob)
     const projectile = this.scene.add.sprite(this.x, this.y, 'green_project');
     projectile.setDepth(50);
+
+    if  (this.projectTint) {
+      projectile.setTint(this.projectTint)
+    };
+
+    if  (this.projectSize) {
+      projectile.setScale(this.projectSize)
+    };
+  
     this.scene.physics.add.existing(projectile);
     this.projectiles.push(projectile)
 
@@ -133,16 +154,15 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
         return
       }
 
-      if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 10) {
+      if (target && Phaser.Math.Distance.Between(projectile.x, projectile.y, target.x, target.y) < 20) {
         projectile.destroy();
-
         if (target instanceof MobTier1) { // Ensure target is MobTier1
           (target as MobTier1).decreaseHealth(this.attackDmg, target.getData('id'), this.scene); // Cast target to MobTier1 and call decreaseHealth
           mobStore.updateMobHealth(target.getData('id'), target.health);
         }
         // another if here? for mobtier
       } else {
-        this.scene.physics.moveToObject(projectile, target, 200); // Speed of the projectile?
+        this.scene.physics.moveToObject(projectile, target, this.projectileSpeed); // Speed of the projectile?
         this.scene.time.delayedCall(100, checkDistance);
       }
     };
@@ -166,18 +186,9 @@ destroyProjectiles() {
       if (projectile) {
           projectile.destroy();
           this.removeProjectile(projectile); // Remove projectile from the projectiles array
-      }
+      };
   });
 }
-
-  // destroyProjectiles() {
-  //   this.projectiles.forEach(projectile => {
-  //     if (projectile) {
-  //       projectile.destroy();
-  //     }
-  //   });
-  //   this.projectiles = [];
-  // }
 }
 
 Phaser.GameObjects.GameObjectFactory.register('tower1', function(this: Phaser.GameObjects.GameObjectFactory, x: number, y: number, texture: string, frame?: string | number) {
