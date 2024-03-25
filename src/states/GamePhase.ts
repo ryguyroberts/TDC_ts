@@ -36,7 +36,6 @@ class GamePhase {
     this.timer = setInterval(() => {
       if (this.buildtime > 0) {
         this.decrementBuildTime(); // Decrement buildtime
-        console.log(this.buildtime);
       } else {
         // If buildtime reaches 0, clear the interval
         this.clearTimer;

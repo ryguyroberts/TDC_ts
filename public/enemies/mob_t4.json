@@ -1,0 +1,271 @@
+{
+	"textures": [
+		{
+			"image": "mob_t4",
+			"format": "RGBA8888",
+			"size": {
+				"w": 62,
+				"h": 114
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "mob_t4/die/07.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 1,
+						"w": 32,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 32,
+						"h": 29
+					}
+				},
+				{
+					"filename": "mob_t4/die/08.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 2,
+						"w": 30,
+						"h": 27
+					},
+					"frame": {
+						"x": 32,
+						"y": 0,
+						"w": 30,
+						"h": 27
+					}
+				},
+				{
+					"filename": "mob_t4/die/06.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 1,
+						"y": 1,
+						"w": 29,
+						"h": 30
+					},
+					"frame": {
+						"x": 32,
+						"y": 27,
+						"w": 29,
+						"h": 30
+					}
+				},
+				{
+					"filename": "mob_t4/die/05.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 2,
+						"y": 5,
+						"w": 28,
+						"h": 27
+					},
+					"frame": {
+						"x": 0,
+						"y": 29,
+						"w": 28,
+						"h": 27
+					}
+				},
+				{
+					"filename": "mob_t4/run/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 5,
+						"y": 3,
+						"w": 20,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 56,
+						"w": 20,
+						"h": 29
+					}
+				},
+				{
+					"filename": "mob_t4/run/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 3,
+						"w": 15,
+						"h": 29
+					},
+					"frame": {
+						"x": 0,
+						"y": 85,
+						"w": 15,
+						"h": 29
+					}
+				},
+				{
+					"filename": "mob_t4/die/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 6,
+						"w": 18,
+						"h": 26
+					},
+					"frame": {
+						"x": 15,
+						"y": 85,
+						"w": 18,
+						"h": 26
+					}
+				},
+				{
+					"filename": "mob_t4/die/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 7,
+						"w": 16,
+						"h": 25
+					},
+					"frame": {
+						"x": 20,
+						"y": 57,
+						"w": 16,
+						"h": 25
+					}
+				},
+				{
+					"filename": "mob_t4/die/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 7,
+						"w": 16,
+						"h": 25
+					},
+					"frame": {
+						"x": 36,
+						"y": 57,
+						"w": 16,
+						"h": 25
+					}
+				},
+				{
+					"filename": "mob_t4/die/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 7,
+						"w": 16,
+						"h": 25
+					},
+					"frame": {
+						"x": 20,
+						"y": 57,
+						"w": 16,
+						"h": 25
+					}
+				},
+				{
+					"filename": "mob_t4/run/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 7,
+						"w": 16,
+						"h": 25
+					},
+					"frame": {
+						"x": 36,
+						"y": 57,
+						"w": 16,
+						"h": 25
+					}
+				},
+				{
+					"filename": "mob_t4/run/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 8,
+						"y": 7,
+						"w": 16,
+						"h": 25
+					},
+					"frame": {
+						"x": 36,
+						"y": 57,
+						"w": 16,
+						"h": 25
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "http://free-tex-packer.com",
+		"version": "0.6.7"
+	}
+}

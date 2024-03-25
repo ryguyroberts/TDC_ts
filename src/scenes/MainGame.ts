@@ -5,15 +5,18 @@ import Phaser, { Tilemaps } from "phaser";
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
 import { createMobTier2Anims } from "../anims/MobTier2Anims";
-import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 import { createMobTier3Anims } from "../anims/MobTier3Anims";
-
+import { createMobTier4Anims } from "../anims/MobTier4Anims";
+import { createMobTier5Anims } from "../anims/MobTier5Anims";
 
 // Import Sprites Classes
 import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 import '../enemies/MobTier3';
+
+// Projectile Sprites
+import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
 // Utitilies
 import findPath from '../utils/findPath';
@@ -31,7 +34,6 @@ import MobTier1 from "../enemies/MobTier1";
 
 
 export class MainGame extends Phaser.Scene {
-  // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   // R.I.P
   // private fauna!: Fauna;
 
@@ -68,8 +70,11 @@ export class MainGame extends Phaser.Scene {
     createTowerTier1Anims(this.anims);
     createMobTier1Anims(this.anims);
     createMobTier2Anims(this.anims);
-    createGreenProjectAnims(this.anims);
     createMobTier3Anims(this.anims);
+    createMobTier4Anims(this.anims);
+    createMobTier5Anims(this.anims);
+
+    createGreenProjectAnims(this.anims);
 
 
     // Tileset
@@ -248,7 +253,8 @@ export class MainGame extends Phaser.Scene {
       const endPointX = 1068; // change to endpoint when ready
       const endPointY = 907; // change to endpoint when ready
       if (mob.checkEndPoint(endPointX, endPointY)) {
-        // Code the deletion of mob here 
+        // Code the deletion of mob here
+        // Put a flag on the mob? 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
         playerState.takeDamage(10);
       }   

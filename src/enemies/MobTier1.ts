@@ -159,7 +159,10 @@ update() {
       scene.time.delayedCall(1000, () => {
         const mobDeathSFX = this.scene.sound.add('mob_death');
         mobDeathSFX.play();
-        playerState.addFunds(this.value);
+        // if it died while in end zone no funds
+        if (!this.hasEnteredEndpoint) {
+          playerState.addFunds(this.value);
+        };
         this.destroy();
         mobStore.removeMob(id);
       });
