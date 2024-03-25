@@ -42,7 +42,7 @@ const startBuildPhase = (scene: MainGame) => {
 // Wave configurations Set by us
 const waveConfigurations: { tier1: number, tier2: number, tier3: number, tier4: number, tier5: number }[] = [
   { tier1: 1, tier2: 1, tier3: 1, tier4: 1, tier5: 1}, // Wave 1
-  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // Wave 2
+  { tier1: 10, tier2: 10, tier3: 10, tier4: 10, tier5: 10}, // Wave 2
   { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // Wave 3
   { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // wave 4
   { tier1: 1 , tier2: 1, tier3: 0, tier4: 0, tier5: 0}, //Final Wave
