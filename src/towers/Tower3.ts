@@ -20,10 +20,10 @@ export default class Tower3 extends Tower1 {
     this.shootRange = 450;
     this.shootTime = 1;
     this.shootDelay = 2500;
-    this.projectileSpeed = 400;
+    this.projectileSpeed = 300;
     this.projectTint= 0x0F82E2;
     this.projectSize= 3.0;
-    this.attackDmg = 25;
+    this.attackDmg = 100;
   };
 };
 

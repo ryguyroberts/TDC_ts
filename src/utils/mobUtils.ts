@@ -2,12 +2,9 @@
 import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import MobTier1 from "../enemies/MobTier1";
-// import MobTier2 from "../enemies/MobTier2";
-// import MobTier3 from "../enemies/MobTier3";
-// import MobTier4 from "../enemies/MobTier4";
-// import MobTier5 from "../enemies/MobTier5";
 
-// The interfaces are coming
+
+// Interfaces
 
 interface MainGame extends Phaser.Scene {
   mobSpawnEvent?: Phaser.Time.TimerEvent;
@@ -34,7 +31,6 @@ const startBuildPhase = (scene: MainGame) => {
   if (scene.mobSpawnEvent) {
     scene.mobSpawnEvent.remove(false)
   };
-  // gamephase.combatPhaseStarted = false;
 
   // Set Buildtime, start timer in Mobx (dynamic)
   gamephase.buildtime = 60;
@@ -46,24 +42,22 @@ const startBuildPhase = (scene: MainGame) => {
 // Wave configurations Set by us
 const waveConfigurations: { tier1: number, tier2: number, tier3: number, tier4: number, tier5: number }[] = [
   { tier1: 1, tier2: 1, tier3: 1, tier4: 1, tier5: 1}, // Wave 1
-  { tier1: 40, tier2: 20, tier3: 0, tier4: 0, tier5: 0}, // Wave 2
-  { tier1: 80, tier2: 40, tier3: 0, tier4: 0, tier5: 0}, // Wave 3
-  { tier1: 160, tier2: 80, tier3: 0, tier4: 0, tier5: 0}, // wave 4
-  { tier1: 0 , tier2: 200, tier3: 0, tier4: 0, tier5: 0}, //Final Wave
+  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // Wave 2
+  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // Wave 3
+  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // wave 4
+  { tier1: 1 , tier2: 1, tier3: 0, tier4: 0, tier5: 0}, //Final Wave
 ];
 
 
 const startCombatPhase = (scene: MainGame, mobGroup: Phaser.Physics.Arcade.Group, wave: number) => {
-  // if (gamephase.combatPhaseStarted) {
-  //   return;
-  // }
+
   console.log(`Combat Phase started - Wave ${wave}`);
   gamephase.clearTimer();
 
   const waveConfig = waveConfigurations[wave - 1];
 
   spawnMobsWithDelay(scene, mobGroup, waveConfig);
-  // gamephase.combatPhaseStarted = true;
+
 };
 
 
@@ -71,8 +65,7 @@ const spawnMobsWithDelay = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade
   // Array to spawn mobs
   const mobsToSpawn: number[] = [];
 
-  // For loops? what is this 2023
-  // Prolly will get DRYer
+  // Prolly will get Dryer
   // add tier 1 mob amount
   for (let i = 0; i < waveConfig.tier1; i++) {
     mobsToSpawn.push(1);
@@ -119,7 +112,6 @@ const spawnMobs = (scene: Phaser.Scene, mobGroup: Phaser.Physics.Arcade.Group, m
     scene.time.delayedCall(spawnDelay, () => spawnMobs(scene, mobGroup, mobsToSpawn, spawnDelay));
   };
 };
-
 
 
 //After been randomized create the order

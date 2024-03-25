@@ -9,23 +9,20 @@ declare global {
       mob_t1(x: number, y: number, texture: string, frame?: string): MobTier1
     }
   }
-}
+};
 
 export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
-  // For health state
   accessor health: number = 100;
-  // private speed: number = 200;
-  
-  // for currency state
   value: number = 100;
   speed: number = 50;
   
+  // Track if mob has reached end of map
   private hasEnteredEndpoint: boolean = false;
 
   // For path state
-  private movePath: Phaser.Math.Vector2[] = []
-  private moveToTarget?: Phaser.Math.Vector2
+  private movePath: Phaser.Math.Vector2[] = [];
+  private moveToTarget?: Phaser.Math.Vector2;
  
   // For Anims
   runFrame: string;
@@ -37,7 +34,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
     super(scene, x, y, texture, frame); 
     scene.physics.world.enable(this);
     this.runFrame = 'mob_t1_run';
-    this.deathFrame = 'mob_t1_death'
+    this.deathFrame = 'mob_t1_death';
     this.anims.play(this.runFrame);
 
 
@@ -128,7 +125,7 @@ update() {
 
   decreaseHealth(amount: number, id: string, scene: Phaser.Scene) {
     if (this.health <= 0) {
-      // Spider bot is already dead, no need to apply further changes
+      //Mob is already dead, no need to apply further changes
       return;
     };
     this.health -= amount;
@@ -145,8 +142,6 @@ update() {
 
     // Remove mob object if health is zero
     if (this.health <= 0) {
-      // this.setVelocity(0, 0);
-      // this.setTint(0xff0000);
       if (!this.body){
         throw new Error('No body to remove health');
       };
@@ -174,8 +169,7 @@ update() {
     const tolerance = 7; // Will allow for a small difference in range, difficult to get exact position coord, adjust accordingly
     if ((Math.abs(this.x - endPointX) <= tolerance && Math.abs(this.y - endPointY) <= tolerance) && !this.hasEnteredEndpoint)  {
       this.hasEnteredEndpoint= true;
-      // console.log('mob has entered endpoint');
-      return true; // Mob has reached the end
+      return true;
     } else {
       return false; 
     };

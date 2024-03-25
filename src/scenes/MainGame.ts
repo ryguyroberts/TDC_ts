@@ -26,7 +26,6 @@ import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 // Utitilies
 import findPath from '../utils/findPath';
 import { startBuildPhase, dynamicPhase} from '../utils/mobUtils';
-// import { preprocessMapData } from "../utils/processMap";
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -34,14 +33,12 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
-// import { towerState } from "../states/TowerStore";
+
+// For TS
 import MobTier1 from "../enemies/MobTier1";
 
 
 export class MainGame extends Phaser.Scene {
-  // R.I.P
-  // private fauna!: Fauna;
-
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -51,7 +48,6 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  // private reactionDisposer: (() => void) | null = null;
 
   constructor() {
     super('main_game');
@@ -64,6 +60,7 @@ export class MainGame extends Phaser.Scene {
   create() {
 
     // console.log(this.initialWavePlaySFX);
+
     // Launch UI scene
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
@@ -116,26 +113,18 @@ export class MainGame extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: false})
        
 
-    // Collision Debugging // 
-    // debugDraw(this.wallsLayer, this)
 
     // Test mobs // Physics is w/e
     this.mobGroup = this.physics.add.group();
 
-    // I think still some intial logic here. 
+    // Start in build phase
     startBuildPhase(this)
-
-
-      // Start in build Phase!
-    // startBuildPhase(this);
-
 
     // if gamephase changes react appropriately
     reaction(
       () => gamephase.stage,
       () => dynamicPhase(this, this.mobGroup)
     );
-
 
     // if mob enters array run my check if no more mobs end combat
     reaction(
@@ -145,18 +134,12 @@ export class MainGame extends Phaser.Scene {
 
     this.checkPlayerHealth();
 
-    // reaction(
-    //   () => Array.from(towerState.activeTowers.entries()),
-        // create Tower Layer 
-    // );
-  
-
   };
   
 
 // Create over ->
 
-// Could make a mob x reaction?
+// Event to keep checking HP
   checkPlayerHealth() {
     this.time.addEvent({
       delay: 100,
@@ -174,77 +157,45 @@ export class MainGame extends Phaser.Scene {
       loop: true,
     });
   }
+   
 
-  // gameOverPhase() {
-  //   gamephase.stage = 'game_end';
-  
-  // }
-  
 // if mobx state has no mobs (all dead) enter build stage
-
-// Always true on a reset?
   checkEndCombat() {
-
     // Only care about this in combat phase
     if (gamephase.stage !== 'combat') {
       return;
-    }
+    };
     const mobEntries = Array.from(mobStore.mobs.entries());
-    
-    if (mobEntries.length === 0) {
+
+        if (mobEntries.length === 0) {
       // If there are no mobs left, transition to the build phase
       // If less than Max wave game continues    
       
-      gamephase.stage = 'build';
-      gamephase.wave += 1;
-      console.log('incremented in checkend');
+      if (gamephase.wave >= 5) {
+        this.scene.stop('ui');
+        this.scene.start('game_over');
+        this.bgm.stop();
+        // Win sound?
 
+      } else {
+        gamephase.stage = 'build';
+        gamephase.wave += 1;
+      }
     }
-
-        // if (gamephase.wave < 2 ) {
-        // gamephase.stage = 'build';
-        // gamephase.wave += 1;
-
-      // Winning condition // Test with Game over right now but this is the win
-    //   } else {
-    //     this.restartGame();
-    //     this.scene.stop('ui');
-    //     this.bgm.stop();
-    //     const deathSound = this.sound.add('death_sound');
-    //     deathSound.play();
-    //     this.scene.start('game_win');
-    // };
-
+       
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      // console.log("mob", mob)
-  
       this.calculateMobPath(mob);
-      
     });
   };
 
 
-  
-  // restartGame() {
-  //   this.time.removeAllEvents(); // stops all timer events
-  //   playerState.reset();
-  //   towerState.reset();
-  //   mobStore.reset();
-  //   gamephase.reset();
-  // }
-
   calculateMobPath (mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
-    // console.log(startVec);
     const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
-    // console.log(path);
-    // console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
-
     mob.moveAlong(path);
-    // Move the mob along the path
-    // mob.moveAlong(path);
+ 
   }
 
   update() {
@@ -252,15 +203,13 @@ export class MainGame extends Phaser.Scene {
     mobEntries.forEach(entry => {
       const mob = entry[1];
 
-      //this.calculateMobPath(mob);
       mob.update();
 
-      const endPointX = 1068; // change to endpoint when ready
-      const endPointY = 907; // change to endpoint when ready
+      // Logic
+      const endPointX = 1068;
+      const endPointY = 907; 
       if (mob.checkEndPoint(endPointX, endPointY)) {
-        // Code the deletion of mob here
-        // Put a flag on the mob? 
-        mob.decreaseHealth(mob.health, mob.getData('id'), this);
+          mob.decreaseHealth(mob.health, mob.getData('id'), this);
         playerState.takeDamage(10);
       }   
 
