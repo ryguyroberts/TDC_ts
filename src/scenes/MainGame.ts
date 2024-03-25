@@ -14,6 +14,8 @@ import '../towers/Tower1';
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
 import '../enemies/MobTier3';
+import '../enemies/MobTier4';
+import '../enemies/MobTier5';
 
 // Projectile Sprites
 import { createGreenProjectAnims } from "../anims/GreenProjectAnims";

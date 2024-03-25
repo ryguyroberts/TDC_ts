@@ -15,7 +15,6 @@ import { gamephase } from "../states/GamePhase";
 //Map creation for towers placed
 
 
-
 export class UI extends Phaser.Scene {
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private tileSize: number;
