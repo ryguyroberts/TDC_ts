@@ -2,6 +2,7 @@ import { Game, Types } from "phaser";
 import { Preloader } from "./scenes/Preloader";
 import { MainMenu } from "./scenes/MainMenu";
 import { GameOver } from "./scenes/GameOver";
+import { GameWin } from "./scenes/GameWin";
 import { UI } from "./scenes/UI";
 import { MainGame } from "./scenes/MainGame";
 
@@ -32,6 +33,7 @@ const config: Types.Core.GameConfig = {
       UI,
       MainMenu,
       GameOver,
+      GameWin,
     ]
 };
 

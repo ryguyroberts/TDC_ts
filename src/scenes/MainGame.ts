@@ -98,7 +98,7 @@ export class MainGame extends Phaser.Scene {
 
     this.notGroundLayer = map.createLayer('notGround', allLayers) as Phaser.Tilemaps.TilemapLayer;
     this.notGroundLayer.setTint();
-   
+
     // map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     // this.wallsLayer.setDepth(100);
@@ -110,8 +110,8 @@ export class MainGame extends Phaser.Scene {
 
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true });
-    this.groundLayer.setCollisionByProperty({ collides: false})
-       
+    this.groundLayer.setCollisionByProperty({ collides: false });
+
 
 
     // Test mobs // Physics is w/e
@@ -119,6 +119,7 @@ export class MainGame extends Phaser.Scene {
 
     // Start in build phase
     startBuildPhase(this)
+
 
     // if gamephase changes react appropriately
     reaction(
@@ -135,7 +136,7 @@ export class MainGame extends Phaser.Scene {
     this.checkPlayerHealth();
 
   };
-  
+
 
 // Create over ->
 
@@ -157,25 +158,27 @@ export class MainGame extends Phaser.Scene {
       loop: true,
     });
   }
-   
 
 // if mobx state has no mobs (all dead) enter build stage
+
+
   checkEndCombat() {
     // Only care about this in combat phase
     if (gamephase.stage !== 'combat') {
       return;
     };
-    const mobEntries = Array.from(mobStore.mobs.entries());
 
-        if (mobEntries.length === 0) {
+     const mobEntries = Array.from(mobStore.mobs.entries());
+    
+    if (mobEntries.length === 0) {
       // If there are no mobs left, transition to the build phase
       // If less than Max wave game continues    
       
       if (gamephase.wave >= 5) {
         this.scene.stop('ui');
-        this.scene.start('game_over');
+        this.scene.start('game_win');
         this.bgm.stop();
-        // Win sound?
+  
 
       } else {
         gamephase.stage = 'build';
@@ -185,12 +188,15 @@ export class MainGame extends Phaser.Scene {
        
     mobEntries.forEach(entry => {
       const mob = entry[1];
+      // console.log("mob", mob)
+  
       this.calculateMobPath(mob);
+      
     });
   };
 
 
-  calculateMobPath (mob: MobTier1) {
+  calculateMobPath(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
     const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
@@ -211,7 +217,7 @@ export class MainGame extends Phaser.Scene {
       if (mob.checkEndPoint(endPointX, endPointY)) {
           mob.decreaseHealth(mob.health, mob.getData('id'), this);
         playerState.takeDamage(10);
-      }   
+      }
 
     });
   }
