@@ -17,7 +17,7 @@ import '../enemies/MobTier2';
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { startBuildPhase, dynamicPhase} from '../utils/mobUtils';
+import { startBuildPhase, dynamicPhase } from '../utils/mobUtils';
 // import { preprocessMapData } from "../utils/processMap";
 
 // States from Mobx
@@ -90,7 +90,7 @@ export class MainGame extends Phaser.Scene {
 
     this.notGroundLayer = map.createLayer('notGround', allLayers) as Phaser.Tilemaps.TilemapLayer;
     this.notGroundLayer.setTint();
-   
+
     // map.createLayer('Tile Layer 1', allLayers);
     this.wallsLayer = map.createLayer('Wall Layer', allLayers) as Phaser.Tilemaps.TilemapLayer;
     // this.wallsLayer.setDepth(100);
@@ -102,8 +102,8 @@ export class MainGame extends Phaser.Scene {
 
     // turn on collision based on tiled property
     this.wallsLayer.setCollisionByProperty({ collides: true });
-    this.groundLayer.setCollisionByProperty({ collides: false})
-       
+    this.groundLayer.setCollisionByProperty({ collides: false });
+
 
     // Collision Debugging // 
     // debugDraw(this.wallsLayer, this)
@@ -112,10 +112,10 @@ export class MainGame extends Phaser.Scene {
     this.mobGroup = this.physics.add.group();
 
     // I think still some intial logic here. 
-    startBuildPhase(this)
+    startBuildPhase(this);
 
 
-      // Start in build Phase!
+    // Start in build Phase!
     // startBuildPhase(this);
 
 
@@ -136,16 +136,16 @@ export class MainGame extends Phaser.Scene {
 
     // reaction(
     //   () => Array.from(towerState.activeTowers.entries()),
-        // create Tower Layer 
+    // create Tower Layer 
     // );
-  
+
 
   };
-  
 
-// Create over ->
 
-// Could make a mob x reaction?
+  // Create over ->
+
+  // Could make a mob x reaction?
   checkPlayerHealth() {
     this.time.addEvent({
       delay: 100,
@@ -163,53 +163,45 @@ export class MainGame extends Phaser.Scene {
       loop: true,
     });
   }
-  
-// if mobx state has no mobs (all dead) enter build stage
 
-// Always true on a reset?
+  // if mobx state has no mobs (all dead) enter build stage
+
+  // Always true on a reset?
   checkEndCombat() {
 
     // Only care about this in combat phase
     if (gamephase.stage !== 'combat') {
       return;
-    }
+    };
     const mobEntries = Array.from(mobStore.mobs.entries());
-    
+
+    // If there are no mobs left, transition to the build phase
     if (mobEntries.length === 0) {
-      // If there are no mobs left, transition to the build phase
-      // If less than Max wave game continues    
       
+      // Game win condition
+      if (gamephase.wave >= 5) {
+        this.scene.stop('ui');
+        this.scene.start('game_win');
+        this.bgm.stop();
+      }
+      
+      // If less than Max wave game continues    
       gamephase.stage = 'build';
       gamephase.wave += 1;
       console.log('incremented in checkend');
-
     }
-
-        // if (gamephase.wave < 2 ) {
-        // gamephase.stage = 'build';
-        // gamephase.wave += 1;
-
-      // Winning condition // Test with Game over right now but this is the win
-    //   } else {
-    //     this.restartGame();
-    //     this.scene.stop('ui');
-    //     this.bgm.stop();
-    //     const deathSound = this.sound.add('death_sound');
-    //     deathSound.play();
-    //     this.scene.start('game_win');
-    // };
 
     mobEntries.forEach(entry => {
       const mob = entry[1];
       // console.log("mob", mob)
-  
+
       this.calculateMobPath(mob);
-      
+
     });
   };
 
 
-  
+
   // restartGame() {
   //   this.time.removeAllEvents(); // stops all timer events
   //   playerState.reset();
@@ -218,7 +210,7 @@ export class MainGame extends Phaser.Scene {
   //   gamephase.reset();
   // }
 
-  calculateMobPath (mob: MobTier1) {
+  calculateMobPath(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
     // console.log(startVec);
@@ -245,7 +237,7 @@ export class MainGame extends Phaser.Scene {
         // Code the deletion of mob here 
         mob.decreaseHealth(mob.health, mob.getData('id'), this);
         playerState.takeDamage(10);
-      }   
+      }
 
     });
   }
