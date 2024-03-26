@@ -44,7 +44,6 @@ export class MainGame extends Phaser.Scene {
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private notGroundLayer!: Phaser.Tilemaps.TilemapLayer;
   private bgm: Phaser.Sound.BaseSound;
-  // private reactionDisposer: (() => void) | null = null;
 
   constructor() {
     super('main_game');
@@ -164,11 +163,6 @@ export class MainGame extends Phaser.Scene {
       loop: true,
     });
   }
-
-  // gameOverPhase() {
-  //   gamephase.stage = 'game_end';
-  
-  // }
   
 // if mobx state has no mobs (all dead) enter build stage
 

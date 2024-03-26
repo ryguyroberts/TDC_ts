@@ -57,10 +57,15 @@ export class Preloader extends Phaser.Scene {
     this.load.image('try_again', 'ui/try again button.png');
     this.load.image('exit', 'ui/exit button.png');
 
+    // Game Win
+    this.load.image('game_win_scene', 'ui/WinGame Scene.png');
+
     // BGM 
     this.load.audio('game_bgm', 'audio/Kubbi - Digestive biscuit.mp3');
     this.load.audio('menu_bgm', 'audio/Kevin MacLeod - 8bit Dungeon Level.mp3');
     this.load.audio('game_over_bgm', 'audio/gameover_bgm.mp3');
+    this.load.audio('game_win_bgm', 'audio/gamewin bgm.mp3');
+    this.load.audio('ff_win', 'audio/ff win sfx.mp3');
 
     // Button SFX
     this.load.audio('play_button_bleep', 'audio/bleep.mp3');
