@@ -70,12 +70,18 @@ export class UI extends Phaser.Scene {
 
     const basicTowerIcon = this.add.sprite(1344, 160, 'tower_icon').setInteractive({ useHandCursor: true });
     basicTowerIcon.setScale(1);
+    const basicTowerPrice = this.add.sprite(1344, 205, 'basic_price');
+    basicTowerPrice.setScale(0.13);
 
     const longRangeTowerIcon = this.add.sprite(1441, 160, 'tower_icon_2').setInteractive();
     longRangeTowerIcon.setScale(1);
+    const longRangePrice = this.add.sprite(1441, 205, 'second_tower_price');
+    longRangePrice.setScale(0.13);
 
     const machineGunTowerIcon = this.add.sprite(1537, 160, 'tower_icon_3').setInteractive();
     machineGunTowerIcon.setScale(1);
+    const machineGunPrice = this.add.sprite(1537, 205, 'third_tower_price');
+    machineGunPrice.setScale(0.13);
 
     // Iterate over tower objects
     towers.objects.forEach(towerObj => {

@@ -40,6 +40,9 @@ export class Preloader extends Phaser.Scene {
     this.load.image('tower_icon', 'ui/tower icon.png');
     this.load.image('tower_icon_2', 'ui/tower icon_2.png');
     this.load.image('tower_icon_3', 'ui/tower icon_3.png');
+    this.load.image('basic_price', 'ui/basic price.png');
+    this.load.image('second_tower_price', 'ui/second tower price.png');
+    this.load.image('third_tower_price', 'ui/most expensive price.png');
 
     // Left Panel UI
     this.load.image('left_panel', 'ui/Left UI Panel.png');
