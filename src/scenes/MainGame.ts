@@ -196,6 +196,8 @@ export class MainGame extends Phaser.Scene {
   };
 
 
+
+
   calculateMobPath(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
