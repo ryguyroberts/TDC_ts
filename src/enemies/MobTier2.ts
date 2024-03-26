@@ -16,7 +16,7 @@ export default class MobTier2 extends MobTier1 {
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string) {
     super(scene, x, y, texture, frame);
 
-    this.speed = 30;
+    this.speed = 65;
     this.health = 1000; 
     this.setScale(2.0);
 

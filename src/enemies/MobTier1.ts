@@ -15,7 +15,7 @@ export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
   accessor health: number = 200;
   value: number = 100;
-  speed: number = 50;
+  speed: number = 75;
   
   // Track if mob has reached end of map
   private hasEnteredEndpoint: boolean = false;

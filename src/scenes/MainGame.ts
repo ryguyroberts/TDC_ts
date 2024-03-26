@@ -4,7 +4,6 @@ import Phaser, { Tilemaps } from "phaser";
 // Import Animations
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
-import { createMobTier2Anims } from "../anims/MobTier2Anims";
 import { createMobTier3Anims } from "../anims/MobTier3Anims";
 import { createMobTier4Anims } from "../anims/MobTier4Anims";
 import { createMobTier5Anims } from "../anims/MobTier5Anims";
@@ -71,7 +70,6 @@ export class MainGame extends Phaser.Scene {
     // Animations
     createTowerTier1Anims(this.anims);
     createMobTier1Anims(this.anims);
-    createMobTier2Anims(this.anims);
     createMobTier3Anims(this.anims);
     createMobTier4Anims(this.anims);
     createMobTier5Anims(this.anims);
@@ -174,7 +172,7 @@ export class MainGame extends Phaser.Scene {
       // If there are no mobs left, transition to the build phase
       // If less than Max wave game continues    
       
-      if (gamephase.wave >= 5) {
+      if (gamephase.wave >= 2) {
         this.scene.stop('ui');
         this.scene.start('game_win');
         this.bgm.stop();
@@ -218,9 +216,8 @@ export class MainGame extends Phaser.Scene {
       const endPointY = 907; 
       if (mob.checkEndPoint(endPointX, endPointY)) {
           mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(10);
+        playerState.takeDamage(1);
       }
-
     });
   }
 };

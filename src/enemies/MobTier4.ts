@@ -17,7 +17,7 @@ export default class MobTier4 extends MobTier1 {
     super(scene, x, y, texture, frame);
 
     this.health = 1000; 
-    this.speed = 75;
+    this.speed = 90;
     this.runFrame = 'mob_t4_run';
     this.deathFrame = 'mob_t4_die';
 

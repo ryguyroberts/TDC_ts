@@ -17,6 +17,7 @@ export default class Tower2 extends Tower1 {
     super(scene, x, y, texture, frame);
 
     this.setTint(0xFF7800)
+    this.shootRange = 175;
     this.shootTime = 0.5;
     this.shootDelay = 100;
     this.projectileSpeed = 200;
