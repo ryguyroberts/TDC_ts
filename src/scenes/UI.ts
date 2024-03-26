@@ -124,7 +124,7 @@ export class UI extends Phaser.Scene {
               } else {
                 price = 300;
                 if (!cannotAffordTower(price, this)) {
-                  this.createTower(pointer, this.add.tower3(pointer.x, pointer.y, 'tower1'));
+                  this.createTower(pointer, this.add.tower1(pointer.x, pointer.y, 'tower1'));
                 }
               }
             };
