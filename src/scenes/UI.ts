@@ -127,7 +127,6 @@ export class UI extends Phaser.Scene {
             if (!this.isPlacingTower) {
               this.isPlacingTower = true;
               let price = 0;
-              // this.isContinuousBuilding = true;
 
               // Create Basic Tower  
               if (towerObj.id === 2) {
