@@ -16,7 +16,7 @@ export default class MobTier4 extends MobTier1 {
   constructor(scene: Phaser.Scene, x: number, y: number, texture: string, frame?: string) {
     super(scene, x, y, texture, frame);
 
-    this.health = 800; 
+    this.health = 1000; 
     this.speed = 75;
     this.runFrame = 'mob_t4_run';
     this.deathFrame = 'mob_t4_die';

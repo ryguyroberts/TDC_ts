@@ -33,7 +33,7 @@ const startBuildPhase = (scene: MainGame) => {
   };
 
   // Set Buildtime, start timer in Mobx (dynamic)
-  gamephase.buildtime = 60;
+  gamephase.buildtime = 120;
   gamephase.startTimerAction();
 };
 
@@ -42,10 +42,10 @@ const startBuildPhase = (scene: MainGame) => {
 // Wave configurations Set by us
 const waveConfigurations: { tier1: number, tier2: number, tier3: number, tier4: number, tier5: number }[] = [
   { tier1: 1, tier2: 1, tier3: 1, tier4: 1, tier5: 1}, // Wave 1
-  { tier1: 10, tier2: 10, tier3: 10, tier4: 10, tier5: 10}, // Wave 2
-  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // Wave 3
-  { tier1: 1, tier2: 1, tier3: 0, tier4: 0, tier5: 0}, // wave 4
-  { tier1: 1 , tier2: 1, tier3: 0, tier4: 0, tier5: 0}, //Final Wave
+  { tier1: 20, tier2: 20, tier3: 10, tier4: 10, tier5: 2}, // Wave 2
+  { tier1: 40, tier2: 20, tier3: 15, tier4: 15, tier5: 3}, // Wave 3
+  { tier1: 80, tier2: 40, tier3: 20, tier4: 20, tier5: 4}, // wave 4
+  { tier1: 120 , tier2: 80, tier3: 25, tier4: 25, tier5: 10}, //Final Wave
 ];
 
 

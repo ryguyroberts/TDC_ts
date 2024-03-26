@@ -17,7 +17,7 @@ export default class MobTier2 extends MobTier1 {
     super(scene, x, y, texture, frame);
 
     this.speed = 30;
-    this.health = 500; 
+    this.health = 1000; 
     this.setScale(2.0);
 
   };
