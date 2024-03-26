@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 class PlayerState {
-  currency: number = 10000;
+  currency: number = 1000;
   playerHealth: number = 100;
 
   constructor() {
