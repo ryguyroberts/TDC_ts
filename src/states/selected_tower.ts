@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 
 class SelectedTowerState {
   selectedTower: Phaser.GameObjects.Sprite | null = null;
+  previousTowerRangeDisplay: Phaser.GameObjects.Arc | null = null;
   
   constructor() {
     makeAutoObservable(this);
@@ -15,8 +16,8 @@ class SelectedTowerState {
     this.selectedTower = null;
   }
 
-  displayInfo() {
-    
+  setPreviousTowerRangeDisplay(rangeDisplay: Phaser.GameObjects.Arc | null) {
+    this.previousTowerRangeDisplay = rangeDisplay;
   }
 }
 
