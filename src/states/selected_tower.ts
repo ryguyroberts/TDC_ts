@@ -19,6 +19,10 @@ class SelectedTowerState {
   setPreviousTowerRangeDisplay(rangeDisplay: Phaser.GameObjects.Arc | null) {
     this.previousTowerRangeDisplay = rangeDisplay;
   }
+
+  getCurrentTowerRangeDisplay() {
+    return this.previousTowerRangeDisplay;
+  }
 }
 
 const selectedTowerState = new SelectedTowerState();

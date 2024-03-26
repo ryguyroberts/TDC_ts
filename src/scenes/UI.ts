@@ -93,26 +93,26 @@ export class UI extends Phaser.Scene {
         this.isPlacingTower = false;
 
         // TowerSprite pointerover and pointerout listeners 
-          towerSprite.on('pointerover', () => {
-            if (towerObj.id === 2) {
-              handlePointerOver(basicTowerIcon, 1.1, 1344, 160, 'pointer', this, this.clickSFX);
-            } else if (towerObj.id === 3) {
-              handlePointerOver(longRangeTowerIcon, 1.1, 1441, 160, 'pointer', this, this.clickSFX);
-            } else {
-              handlePointerOver(machineGunTowerIcon, 1.1, 1537, 160, 'pointer', this, this.clickSFX);
-            }
-          });
-  
-          towerSprite.on('pointerout', () => {
-            if (towerObj.id === 2) {
-              handlePointerOut(basicTowerIcon, 1, 1344, 160, 'default', this);
-            } else if (towerObj.id === 3) {
-              handlePointerOut(longRangeTowerIcon, 1, 1441, 160, 'default', this);
-            } else {
-              handlePointerOut(machineGunTowerIcon, 1, 1537, 160, 'default', this);
-            }
-          });
-  
+        towerSprite.on('pointerover', () => {
+          if (towerObj.id === 2) {
+            handlePointerOver(basicTowerIcon, 1.1, 1344, 160, 'pointer', this, this.clickSFX);
+          } else if (towerObj.id === 3) {
+            handlePointerOver(longRangeTowerIcon, 1.1, 1441, 160, 'pointer', this, this.clickSFX);
+          } else {
+            handlePointerOver(machineGunTowerIcon, 1.1, 1537, 160, 'pointer', this, this.clickSFX);
+          }
+        });
+
+        towerSprite.on('pointerout', () => {
+          if (towerObj.id === 2) {
+            handlePointerOut(basicTowerIcon, 1, 1344, 160, 'default', this);
+          } else if (towerObj.id === 3) {
+            handlePointerOut(longRangeTowerIcon, 1, 1441, 160, 'default', this);
+          } else {
+            handlePointerOut(machineGunTowerIcon, 1, 1537, 160, 'default', this);
+          }
+        });
+
         // Tower Creation
         towerSprite.on('pointerdown', (pointer: any) => {
           if (!(gamephase.stage === 'combat')) { // Tower Placement Only Allowed in Build Phase
@@ -222,6 +222,9 @@ export class UI extends Phaser.Scene {
             // Remove tower sprite from game
             towerObj.placed = false;
             towerToRemove.destroy();
+
+            // Remove tower range display
+            selectedTowerState.getCurrentTowerRangeDisplay()?.destroy();
 
             // Remove tower from active towers state 
             towerState.removeTower(id);
