@@ -4,21 +4,27 @@ import Phaser, { Tilemaps } from "phaser";
 // Import Animations
 import { createTowerTier1Anims } from "../anims/TowerTier1Anims";
 import { createMobTier1Anims } from "../anims/MobTier1Anims";
-import { createMobTier2Anims } from "../anims/MobTier2Anims";
-import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 import { createMobTier3Anims } from "../anims/MobTier3Anims";
-
+import { createMobTier4Anims } from "../anims/MobTier4Anims";
+import { createMobTier5Anims } from "../anims/MobTier5Anims";
 
 // Import Sprites Classes
 import '../towers/Tower1';
 import '../towers/Tower2';
+import '../towers/Tower3';
+
 import '../enemies/MobTier1';
 import '../enemies/MobTier2';
+import '../enemies/MobTier3';
+import '../enemies/MobTier4';
+import '../enemies/MobTier5';
+
+// Projectile Sprites
+import { createGreenProjectAnims } from "../anims/GreenProjectAnims";
 
 // Utitilies
 import findPath from '../utils/findPath';
-import { startBuildPhase, dynamicPhase } from '../utils/mobUtils';
-// import { preprocessMapData } from "../utils/processMap";
+import { startBuildPhase, dynamicPhase} from '../utils/mobUtils';
 
 // States from Mobx
 // import { reaction } from "mobx";
@@ -26,15 +32,12 @@ import { mobStore } from "../states/MobStore";
 import { gamephase } from "../states/GamePhase";
 import { reaction } from "mobx";
 import { playerState } from "../states/PlayerState";
-// import { towerState } from "../states/TowerStore";
+
+// For TS
 import MobTier1 from "../enemies/MobTier1";
 
 
 export class MainGame extends Phaser.Scene {
-  // private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
-  // R.I.P
-  // private fauna!: Fauna;
-
 
   private mobGroup!: Phaser.Physics.Arcade.Group;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
@@ -56,6 +59,7 @@ export class MainGame extends Phaser.Scene {
   create() {
 
     // console.log(this.initialWavePlaySFX);
+
     // Launch UI scene
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
@@ -66,9 +70,11 @@ export class MainGame extends Phaser.Scene {
     // Animations
     createTowerTier1Anims(this.anims);
     createMobTier1Anims(this.anims);
-    createMobTier2Anims(this.anims);
-    createGreenProjectAnims(this.anims);
     createMobTier3Anims(this.anims);
+    createMobTier4Anims(this.anims);
+    createMobTier5Anims(this.anims);
+
+    createGreenProjectAnims(this.anims);
 
 
     // Tileset
@@ -105,18 +111,12 @@ export class MainGame extends Phaser.Scene {
     this.groundLayer.setCollisionByProperty({ collides: false });
 
 
-    // Collision Debugging // 
-    // debugDraw(this.wallsLayer, this)
 
     // Test mobs // Physics is w/e
     this.mobGroup = this.physics.add.group();
 
-    // I think still some intial logic here. 
-    startBuildPhase(this);
-
-
-    // Start in build Phase!
-    // startBuildPhase(this);
+    // Start in build phase
+    startBuildPhase(this)
 
 
     // if gamephase changes react appropriately
@@ -124,7 +124,6 @@ export class MainGame extends Phaser.Scene {
       () => gamephase.stage,
       () => dynamicPhase(this, this.mobGroup)
     );
-
 
     // if mob enters array run my check if no more mobs end combat
     reaction(
@@ -134,18 +133,12 @@ export class MainGame extends Phaser.Scene {
 
     this.checkPlayerHealth();
 
-    // reaction(
-    //   () => Array.from(towerState.activeTowers.entries()),
-    // create Tower Layer 
-    // );
-
-
   };
 
 
-  // Create over ->
+// Create over ->
 
-  // Could make a mob x reaction?
+// Event to keep checking HP
   checkPlayerHealth() {
     this.time.addEvent({
       delay: 100,
@@ -164,63 +157,51 @@ export class MainGame extends Phaser.Scene {
     });
   }
 
-  // if mobx state has no mobs (all dead) enter build stage
+// if mobx state has no mobs (all dead) enter build stage
 
-  // Always true on a reset?
+
   checkEndCombat() {
-
     // Only care about this in combat phase
     if (gamephase.stage !== 'combat') {
       return;
     };
-    const mobEntries = Array.from(mobStore.mobs.entries());
 
-    // If there are no mobs left, transition to the build phase
+     const mobEntries = Array.from(mobStore.mobs.entries());
+    
     if (mobEntries.length === 0) {
+      // If there are no mobs left, transition to the build phase
+      // If less than Max wave game continues    
       
-      // Game win condition
-      if (gamephase.wave >= 5) {
+      if (gamephase.wave >= 2) {
         this.scene.stop('ui');
         this.scene.start('game_win');
         this.bgm.stop();
-      }
-      
-      // If less than Max wave game continues    
-      gamephase.stage = 'build';
-      gamephase.wave += 1;
-      console.log('incremented in checkend');
-    }
+  
 
+      } else {
+        gamephase.stage = 'build';
+        gamephase.wave += 1;
+      }
+    }
+       
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      // console.log("mob", mob)
 
+  
       this.calculateMobPath(mob);
-
+      
     });
   };
 
 
 
-  // restartGame() {
-  //   this.time.removeAllEvents(); // stops all timer events
-  //   playerState.reset();
-  //   towerState.reset();
-  //   mobStore.reset();
-  //   gamephase.reset();
-  // }
 
   calculateMobPath(mob: MobTier1) {
 
     const startVec = this.groundLayer.worldToTileXY(mob.x, mob.y);
-    // console.log(startVec);
     const path = findPath(startVec, this.groundLayer, this.wallsLayer); // Use findPath function
-    // console.log(path);
-    // console.log(this.groundLayer.worldToTileXY(mob.x, mob.y))
-
     mob.moveAlong(path);
-    // Move the mob along the path
-    // mob.moveAlong(path);
+ 
   }
 
   update() {
@@ -228,17 +209,15 @@ export class MainGame extends Phaser.Scene {
     mobEntries.forEach(entry => {
       const mob = entry[1];
 
-      //this.calculateMobPath(mob);
       mob.update();
 
-      const endPointX = 1068; // change to endpoint when ready
-      const endPointY = 907; // change to endpoint when ready
+      // Logic
+      const endPointX = 1068;
+      const endPointY = 907; 
       if (mob.checkEndPoint(endPointX, endPointY)) {
-        // Code the deletion of mob here 
-        mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(10);
+          mob.decreaseHealth(mob.health, mob.getData('id'), this);
+        playerState.takeDamage(1);
       }
-
     });
   }
 };

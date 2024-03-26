@@ -147,7 +147,7 @@ export class UI extends Phaser.Scene {
               } else {
                 price = 300;
                 if (!cannotAffordTower(price, this)) {
-                  this.createTower(pointer, this.add.tower1(pointer.x, pointer.y, 'tower1'));
+                  this.createTower(pointer, this.add.tower3(pointer.x, pointer.y, 'tower1'));
                 }
               }
             };
@@ -235,6 +235,8 @@ export class UI extends Phaser.Scene {
             // Remove tower from active towers state 
             towerState.removeTower(id);
             this.deleteTower.setVisible(false);
+            this.createTowerLayer();
+
           }
 
         }
@@ -331,20 +333,46 @@ export class UI extends Phaser.Scene {
     });
   };
 
-
+  //function called upon to provide pathfinding the new locations of towers
   private createTowerLayer = () => {
-    const towerLayer: string[] = [];
+  const towerLayer = [];
+  
+  for (const [towerId, tower] of towerState.activeTowers.entries()) {
+    const towerX = Math.floor(tower.x / 32);
+    const towerY = Math.floor(tower.y / 32);
+    const towerKey = `${towerX}x${towerY}`;
+    towerId;
+  
+    towerLayer.push(towerKey);
+  }
+  
+  // Send to state instead
+  towerState.setTowerLayer(towerLayer)
+  }
 
-    towerState.activeTowers.forEach((tower) => {
-      const towerX = Math.floor(tower.x / 32);
-      const towerY = Math.floor(tower.y / 32);
-      const towerKey = `${towerX}x${towerY}`;
+  // validTowerPlacement = (tower: Phaser.GameObjects.Sprite) => {
+  //   let validPlacement = false;
+  //   let occupied = towerState.towerLayer;
 
-      towerLayer.push(towerKey);
-    });
+  //   const towerX = Math.floor(tower.x / 32);
+  //   const towerY = Math.floor(tower.y / 32);
+  //   const towerKey = `${towerX}x${towerY}`;
+    
+  //   if (towerX < 10 && towerX > 39 ) {
+  //     console.log("cannot place tower here")
+  //   }
 
-    // Send to state instead
-    towerState.setTowerLayer(towerLayer);
-  };
+  //   if (occupied.includes(towerKey)) {
+  //     console.log("cannot place tower on another tower")
+  //   }
 
+  //   if (!findPath) {
+  //     console.log("no path found")
+  //   }
+
+  //   else validPlacement = true;
+
+  //   return validPlacement;
+  // }
+  
 };

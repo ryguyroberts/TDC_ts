@@ -1,16 +1,16 @@
 {
 	"textures": [
 		{
-			"image": "mob_t1",
+			"image": "mob_t4",
 			"format": "RGBA8888",
 			"size": {
-				"w": 61,
-				"h": 231
+				"w": 91,
+				"h": 111
 			},
 			"scale": 1,
 			"frames": [
 				{
-					"filename": "mob_t1/die/06.png",
+					"filename": "mob_t4/die/07.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -31,28 +31,7 @@
 					}
 				},
 				{
-					"filename": "mob_t1/die/05.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 1,
-						"w": 29,
-						"h": 30
-					},
-					"frame": {
-						"x": 32,
-						"y": 0,
-						"w": 29,
-						"h": 30
-					}
-				},
-				{
-					"filename": "mob_t1/die/03.png",
+					"filename": "mob_t4/die/08.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -62,18 +41,18 @@
 					"spriteSourceSize": {
 						"x": 1,
 						"y": 2,
-						"w": 28,
-						"h": 30
+						"w": 30,
+						"h": 27
 					},
 					"frame": {
-						"x": 0,
-						"y": 29,
-						"w": 28,
-						"h": 30
+						"x": 32,
+						"y": 0,
+						"w": 30,
+						"h": 27
 					}
 				},
 				{
-					"filename": "mob_t1/run/03.png",
+					"filename": "mob_t4/die/06.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -81,20 +60,20 @@
 						"h": 32
 					},
 					"spriteSourceSize": {
-						"x": 4,
+						"x": 1,
 						"y": 1,
-						"w": 27,
-						"h": 31
+						"w": 29,
+						"h": 30
 					},
 					"frame": {
-						"x": 0,
-						"y": 59,
-						"w": 27,
-						"h": 31
+						"x": 62,
+						"y": 0,
+						"w": 29,
+						"h": 30
 					}
 				},
 				{
-					"filename": "mob_t1/run/01.png",
+					"filename": "mob_t4/die/05.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -103,145 +82,19 @@
 					},
 					"spriteSourceSize": {
 						"x": 2,
-						"y": 1,
-						"w": 25,
-						"h": 31
-					},
-					"frame": {
-						"x": 0,
-						"y": 90,
-						"w": 25,
-						"h": 31
-					}
-				},
-				{
-					"filename": "mob_t1/die/04.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 1,
-						"y": 2,
-						"w": 28,
-						"h": 30
-					},
-					"frame": {
-						"x": 0,
-						"y": 121,
-						"w": 28,
-						"h": 30
-					}
-				},
-				{
-					"filename": "mob_t1/die/00.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 24,
-						"h": 28
-					},
-					"frame": {
-						"x": 25,
-						"y": 90,
-						"w": 24,
-						"h": 28
-					}
-				},
-				{
-					"filename": "mob_t1/die/01.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 24,
-						"h": 28
-					},
-					"frame": {
-						"x": 27,
-						"y": 59,
-						"w": 24,
-						"h": 28
-					}
-				},
-				{
-					"filename": "mob_t1/idle/01.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 4,
-						"w": 24,
-						"h": 28
-					},
-					"frame": {
-						"x": 28,
-						"y": 30,
-						"w": 24,
-						"h": 28
-					}
-				},
-				{
-					"filename": "mob_t1/idle/02.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
 						"y": 5,
-						"w": 24,
+						"w": 28,
 						"h": 27
 					},
 					"frame": {
-						"x": 0,
-						"y": 151,
-						"w": 24,
-						"h": 27
-					}
-				},
-				{
-					"filename": "mob_t1/idle/04.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 5,
-						"w": 24,
-						"h": 27
-					},
-					"frame": {
-						"x": 0,
-						"y": 178,
-						"w": 24,
+						"x": 32,
+						"y": 27,
+						"w": 28,
 						"h": 27
 					}
 				},
 				{
-					"filename": "mob_t1/run/04.png",
+					"filename": "mob_t4/run/03.png",
 					"rotated": false,
 					"trimmed": true,
 					"sourceSize": {
@@ -249,79 +102,163 @@
 						"h": 32
 					},
 					"spriteSourceSize": {
-						"x": 3,
-						"y": 6,
-						"w": 26,
-						"h": 26
-					},
-					"frame": {
-						"x": 0,
-						"y": 205,
-						"w": 26,
-						"h": 26
-					}
-				},
-				{
-					"filename": "mob_t1/idle/03.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
-						"y": 6,
-						"w": 24,
-						"h": 26
-					},
-					"frame": {
-						"x": 24,
-						"y": 151,
-						"w": 24,
-						"h": 26
-					}
-				},
-				{
-					"filename": "mob_t1/run/02.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 5,
-						"y": 6,
-						"w": 21,
-						"h": 26
-					},
-					"frame": {
-						"x": 24,
-						"y": 177,
-						"w": 21,
-						"h": 26
-					}
-				},
-				{
-					"filename": "mob_t1/die/02.png",
-					"rotated": false,
-					"trimmed": true,
-					"sourceSize": {
-						"w": 32,
-						"h": 32
-					},
-					"spriteSourceSize": {
-						"x": 3,
+						"x": 6,
 						"y": 4,
-						"w": 24,
+						"w": 18,
 						"h": 28
 					},
 					"frame": {
-						"x": 25,
-						"y": 90,
-						"w": 24,
+						"x": 0,
+						"y": 29,
+						"w": 18,
 						"h": 28
+					}
+				},
+				{
+					"filename": "mob_t4/die/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 24
+					},
+					"frame": {
+						"x": 18,
+						"y": 29,
+						"w": 14,
+						"h": 24
+					}
+				},
+				{
+					"filename": "mob_t4/die/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 24
+					},
+					"frame": {
+						"x": 18,
+						"y": 53,
+						"w": 14,
+						"h": 24
+					}
+				},
+				{
+					"filename": "mob_t4/die/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 7,
+						"y": 6,
+						"w": 18,
+						"h": 26
+					},
+					"frame": {
+						"x": 0,
+						"y": 57,
+						"w": 18,
+						"h": 26
+					}
+				},
+				{
+					"filename": "mob_t4/run/01.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 10,
+						"y": 4,
+						"w": 13,
+						"h": 28
+					},
+					"frame": {
+						"x": 0,
+						"y": 83,
+						"w": 13,
+						"h": 28
+					}
+				},
+				{
+					"filename": "mob_t4/die/03.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 24
+					},
+					"frame": {
+						"x": 18,
+						"y": 29,
+						"w": 14,
+						"h": 24
+					}
+				},
+				{
+					"filename": "mob_t4/run/02.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 24
+					},
+					"frame": {
+						"x": 18,
+						"y": 53,
+						"w": 14,
+						"h": 24
+					}
+				},
+				{
+					"filename": "mob_t4/run/04.png",
+					"rotated": false,
+					"trimmed": true,
+					"sourceSize": {
+						"w": 32,
+						"h": 32
+					},
+					"spriteSourceSize": {
+						"x": 9,
+						"y": 8,
+						"w": 14,
+						"h": 24
+					},
+					"frame": {
+						"x": 18,
+						"y": 53,
+						"w": 14,
+						"h": 24
 					}
 				}
 			]
