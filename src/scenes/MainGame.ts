@@ -185,7 +185,7 @@ export class MainGame extends Phaser.Scene {
 
     mobEntries.forEach(entry => {
       const mob = entry[1];
-      console.log("mob", mob)
+      //console.log("mob", mob)
   
       this.calculateMobPath(mob);
       

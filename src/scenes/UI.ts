@@ -12,6 +12,7 @@ import selectedTowerState from "../states/selected_tower";
 import { mobStore } from "../states/MobStore";
 import { playerState } from "../states/PlayerState";
 import { gamephase } from "../states/GamePhase";
+//import findPath from "../utils/findPath";
 
 //Map creation for towers placed
 
@@ -113,8 +114,6 @@ export class UI extends Phaser.Scene {
 
             let isPlaced = false;
 
-            this.createTowerLayer();
-
             this.input.on('pointermove', (pointer: any) => {
               if (isPlaced) return; // Ignore listener if placed 
               tower.x = pointer.x;
@@ -135,6 +134,11 @@ export class UI extends Phaser.Scene {
               // Move tower to nearest grid position
               tower.x = gridX;
               tower.y = gridY;
+              
+              //need to add logic to prevent towers from being placed
+              //this.validTowerPlacement(tower);
+
+
 
               //console.log("tower x y", tower.x, tower.y);
 
@@ -155,7 +159,7 @@ export class UI extends Phaser.Scene {
               //console.log("tower", tower)
 
               //calls to pathfinding to update data
-              //UI.createTowerLayer();
+              this.createTowerLayer();
 
             });
           }
@@ -232,6 +236,7 @@ export class UI extends Phaser.Scene {
             // Remove tower from active towers state 
             towerState.removeTower(id);
             this.deleteTower.setVisible(false);
+            this.createTowerLayer();
 
           }
 
@@ -333,7 +338,7 @@ export class UI extends Phaser.Scene {
     return null;
   }
 
-  
+  //function called upon to provide pathfinding the new locations of towers
   private createTowerLayer = () => {
   const towerLayer = [];
   
@@ -341,17 +346,38 @@ export class UI extends Phaser.Scene {
     const towerX = Math.floor(tower.x / 32);
     const towerY = Math.floor(tower.y / 32);
     const towerKey = `${towerX}x${towerY}`;
+    towerId;
   
-    console.log(towerKey);
     towerLayer.push(towerKey);
-    console.log("towerLayer array", towerLayer, towerId);
   }
   
-  // console.log(UI.createTowerLayer)
   // Send to state instead
-
   towerState.setTowerLayer(towerLayer)
-  console.log(towerState.towerLayer);
   }
 
+  // validTowerPlacement = (tower: Phaser.GameObjects.Sprite) => {
+  //   let validPlacement = false;
+  //   let occupied = towerState.towerLayer;
+
+  //   const towerX = Math.floor(tower.x / 32);
+  //   const towerY = Math.floor(tower.y / 32);
+  //   const towerKey = `${towerX}x${towerY}`;
+    
+  //   if (towerX < 10 && towerX > 39 ) {
+  //     console.log("cannot place tower here")
+  //   }
+
+  //   if (occupied.includes(towerKey)) {
+  //     console.log("cannot place tower on another tower")
+  //   }
+
+  //   if (!findPath) {
+  //     console.log("no path found")
+  //   }
+
+  //   else validPlacement = true;
+
+  //   return validPlacement;
+  // }
+  
 };
