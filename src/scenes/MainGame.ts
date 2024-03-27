@@ -172,7 +172,7 @@ export class MainGame extends Phaser.Scene {
       // If there are no mobs left, transition to the build phase
       // If less than Max wave game continues    
       
-      if (gamephase.wave >= 2) {
+      if (gamephase.wave >= 5) {
         this.scene.stop('ui');
         this.scene.start('game_win');
         this.bgm.stop();
@@ -216,7 +216,7 @@ export class MainGame extends Phaser.Scene {
       const endPointY = 907; 
       if (mob.checkEndPoint(endPointX, endPointY)) {
           mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(1);
+        playerState.takeDamage(25);
       }
     });
   }

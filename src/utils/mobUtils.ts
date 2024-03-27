@@ -33,7 +33,7 @@ const startBuildPhase = (scene: MainGame) => {
   };
 
   // Set Buildtime, start timer in Mobx (dynamic)
-  gamephase.buildtime = 120;
+  gamephase.buildtime = 60;
   gamephase.startTimerAction();
 };
 
