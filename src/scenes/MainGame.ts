@@ -216,7 +216,7 @@ export class MainGame extends Phaser.Scene {
       const endPointY = 907; 
       if (mob.checkEndPoint(endPointX, endPointY)) {
           mob.decreaseHealth(mob.health, mob.getData('id'), this);
-        playerState.takeDamage(25);
+        playerState.takeDamage(1);
       }
     });
   }

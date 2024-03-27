@@ -55,7 +55,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
     // No idea shoot time?
     this.shootTime = 2; // Time to reach mob?
     this.shootDelay = 500;
-    this.attackDmg = 5;
+    this.attackDmg = 1;
     this.projectileSpeed = 200
   };
 

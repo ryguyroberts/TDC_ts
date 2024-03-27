@@ -13,7 +13,7 @@ declare global {
 
 export default class MobTier1 extends Phaser.Physics.Arcade.Sprite {
 
-  accessor health: number = 200;
+  accessor health: number = 500;
   value: number = 100;
   speed: number = 75;
   
