@@ -42,8 +42,8 @@ export class UI extends Phaser.Scene {
     const towers = uiMap.getObjectLayer('Tower Creation UI');
 
     // Init SFX
-    this.buildTowerSFX = this.sound.add('tower_build');
-    this.clickSFX = this.sound.add('click');
+    this.buildTowerSFX = this.sound.add('tower_build', {volume: 0.08});
+    this.clickSFX = this.sound.add('click', {volume: 0.00});
 
     // Error case if tileset is null
     if (!tileset_ui || !tilemap_tower_ui || !towers) {

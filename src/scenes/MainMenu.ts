@@ -24,7 +24,7 @@ export class MainMenu extends Phaser.Scene {
     this.playButton.setScale(0.5);
 
     // Menu BGM
-    const menuBGM = this.sound.add('menu_bgm', { loop: true, volume: 0.15 });
+    const menuBGM = this.sound.add('menu_bgm', { loop: true, volume: 0.04 });
     menuBGM.play();
 
     // Initialize position & scale values for button

@@ -132,8 +132,8 @@ update() {
 
     // if not dead do the tint or kill it 
     if (this.health > 0) {
-      const hitSFX = this.scene.sound.add('mob_hit');
-      hitSFX.play( { volume: 0.5 });
+      const hitSFX = this.scene.sound.add('mob_hit', {volume: 0.1});
+      hitSFX.play();
       this.setTint(0xff0000);
       scene.time.delayedCall(400, () => {
         this.clearTint(); // Revert the tint back to its original color after 0.4 seconds

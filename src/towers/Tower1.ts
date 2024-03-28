@@ -127,7 +127,7 @@ export default class Tower1 extends Phaser.Physics.Arcade.Sprite {
       
     // SFX 
     const laserSFX = this.scene.sound.add('tower_laser');
-    laserSFX.play({ volume: 0.05 });
+    laserSFX.play({ volume: 0.007 });
 
 
 

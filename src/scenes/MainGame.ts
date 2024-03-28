@@ -64,7 +64,7 @@ export class MainGame extends Phaser.Scene {
     this.scene.launch('ui', { mobGroup: this.mobGroup });
 
     // Audio
-    this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.08 });
+    this.bgm = this.sound.add('game_bgm', { loop: true, volume: 0.02 });
     this.bgm.play();
 
     // Animations
