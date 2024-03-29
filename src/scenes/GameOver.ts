@@ -24,7 +24,7 @@ export class GameOver extends Phaser.Scene {
     this.tryAgainButton = this.add.image(815, 600, "try_again");
 
     // Game Over BGM
-    const gameOverBGM = this.sound.add('game_over_bgm', { loop: true, volume: 0.3 });
+    const gameOverBGM = this.sound.add('game_over_bgm', { loop: true, volume: 0.2 });
     gameOverBGM.play();
 
     // Button SFX
