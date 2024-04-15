@@ -23,9 +23,10 @@ Using a breadth-first algorithm, Mobs are able to dynamically route themselves t
   <img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/open_wave_algo.gif?raw=true" width=250px alt="OpenWaveAlgo"/>
 </div>
 
-
-
 ### More Complex Path
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/medium_wave.gif?raw=true" alt="MediumWave" />
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/medium_wave_algo.gif?raw=true" alt="MediumWaveAlgo"/>
+
 
 ### Most Complex Path
 
