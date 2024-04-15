@@ -7,7 +7,7 @@ Tower Defense Classic is an in browser game built with the Phaser library and Ty
 # Features
 
 ## Towers and Mobs
-Both a variety of mobs and towers in the game, with each having their own unique properties. Mobs having properties for animations, speed and hit points. Towers having properties for projectiles: speed, damage, firerate, travel time. All mobs and towers are based off an orignal mob or tower class and extended out from there.
+Both a variety of mobs and towers are present in the game, with each having their own unique properties. Mobs having properties for animations, speed and hit points. Towers having properties for projectiles: speed, damage, firerate, travel time. All mobs and towers are based off an orignal mob or tower class and extended out from there.
 
 ### Mobs
 <img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/mobs.gif?raw=true" alt="Mobs"/>
