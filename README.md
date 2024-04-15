@@ -1,6 +1,6 @@
 # Tower Defense Classic
 
-<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Screenshots/new%20Main%20Menu.png" width=50% height=50%>
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Screenshots/new%20Main%20Menu.png?raw=true" width=50% height=50%>
 
 Tower Defense Classic is an in browser game built with the Phaser library and Typescript. The goal of the game is to build towers and defend your end zone from approaching mobs as you cycle through a combat and build phase. A player loses lives when a mob reaches the end zone and eventually the player will lose if their lives reaches zero. If a player defeats all mobs in every wave, they are instead victorious! Unlike most modern Tower Defenses, which have a static path which the enemy mobs will follow. This version allows the Player to build mazes with their towers to route mobs. Which is how older Warcraft 3 and Starcraft 2 custom map Tower Defenses worked, hence the "classic" in the name".
 
@@ -9,6 +9,11 @@ Tower Defense Classic is an in browser game built with the Phaser library and Ty
 ## Towers and Mobs
 Both a variety of mobs and towers in the game, with each having their own unique properties. Mobs having properties for animations, speed and hit points. Towers having properties for projectiles: speed, damage, firerate, travel time. All mobs and towers are based off an orignal mob or tower class and extended out from there.
 
+### Mobs
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/mobs.gif?raw=true" alt="Mobs"/>
+
+### Towers
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/towers.gif?raw=true" alt="Towers"/>
 
 
 ## Game State managed by MobX
@@ -36,10 +41,13 @@ Using a breadth-first algorithm, Mobs are able to dynamically route themselves t
 
 <img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/complex_maze.gif?raw=true" alt="ComplexWave"/>
 
-
 ## Requirements
 
 [Node.js](https://nodejs.org) is required to install dependencies and run scripts via `npm`.
+
+## Dependencies
+- Phaser: 3.80.1
+- MobX: 6.12.0
 
 ## Available Commands
 
@@ -58,8 +66,6 @@ The local development server runs on `http://localhost:8080` by default. Please 
 Once the server is running you can edit any of the files in the `src` folder. Webpack will automatically recompile your code and then reload the browser.
 
 ## Project Structure
-
-We have provided a default project structure to get you started. This is as follows:
 
 - `index.html` - A basic HTML page to contain the game.
 - `src` - Contains the game source code.
