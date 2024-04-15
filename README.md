@@ -2,7 +2,9 @@
 
 
 
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Screenshots/new%20Main%20Menu.png" width=50% height=50%>
 
+Tower Defense Classic is an in browser game built with the Phaser library and Typescript. The goal of the game is to build towers and defend your end zone from approaching mobs as you cycle through a combat and build phase. A player loses lives when a mob reaches the end zone and eventually the player will lose if their lives reaches zero. If a player defeats all mobs in every wave, they are instead victorious! Unlike most modern Tower Defenses, which have a static path which the enemy mobs will follow. This version allows the Player to build mazes with their towers to route mobs. Which is how older Warcraft 3 and Starcraft 2 custom map Tower Defenses worked, hence the "classic" in the name".
 
 
 
