@@ -6,6 +6,11 @@ Tower Defense Classic is an in browser game built with the Phaser library and Ty
 
 # Features
 
+## Towers and Mobs
+Both a variety of mobs and towers in the game, with each having their own unique properties. Mobs having properties for animations, speed and hit points. Towers having properties for projectiles: speed, damage, firerate, travel time. All mobs and towers are based off an orignal mob or tower class and extended out from there.
+
+
+
 ## Game State managed by MobX
 All states in the game are managed by Mobx. Including: HP, Current, Lives, Timers, MobStore and TowerStore
 
@@ -24,12 +29,12 @@ Using a breadth-first algorithm, Mobs are able to dynamically route themselves t
 </div>
 
 ### More Complex Path
-<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/medium_wave.gif?raw=true" alt="MediumWave" />
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/medium_wave.gif?raw=true" alt="MediumWave" width=600px/>
 <img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/medium_wave_algo.gif?raw=true" alt="MediumWaveAlgo"/>
-
 
 ### Most Complex Path
 
+<img src="https://github.com/ryguyroberts/TDC_ts/blob/main/docs/Gifs/complex_maze.gif?raw=true" alt="ComplexWave"/>
 
 
 ## Requirements
